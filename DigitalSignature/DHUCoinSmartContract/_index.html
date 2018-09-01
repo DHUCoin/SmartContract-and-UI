@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+    <script src="javascript/functions.js" type="text/javascript"></script>
+    <script src="javascript/display_functions.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>DHUCoin Admin Page</h1>
+        <span id="countIns"></span>
+        <h2 id="transactionResult"></h2>
+        <div>
+            <span id="insTrans"></span>
+        </div>
+        <span id="transBlock"></span>
+
+        <!-- <img id="loader" src="https://loading.io/spinners/double-ring/lg.double-ring-spinner.gif"> -->
+        <img id="loader" src="img/Loading.gif">
+    </div>
+
+    <div class="container">
+        <div id="seperator1">
+            <div id="divValidation" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">Whitelisting</div>
+                    <li>
+                        <label for="toVerifyAdd">Enter an address to whitelist</label>
+                        <input id="toVerifyAdd" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                        <button id="btnVerify" class="button">Whitelist Address</button>
+                    </li>
+
+                    <li>
+                        <label for="addToRemove">Enter an address to blacklist</label>
+                        <input id="addToRemove" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                        <button id="btnRemoveAdd" class="button">Blacklist Address</button>
+                    </li>
+
+                    <li>
+                        <label for="addToChk">Enter an address to check the verification status</label>
+                        <input id="addToChk" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                        <button id="btnCheckVer" class="button">Check If Verified</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="divVestedContract" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">Vested Contract</div>
+
+                    <li>
+                        <label>Check grant vested DHU contract address</label>
+                        <button id="btnChkGVCA" class="button">Check Vested Contract Address</button>
+
+                        <label for="vestedContractAdd">Enter grant vested DHU contract address</label>
+                        <input id="vestedContractAdd" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                        <button id="btnSetVestedContract" class="button">Update Contract Address</button>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div id="divICOPrice" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">ICO Controls</div>
+
+                    <li>
+                        <label>Check current ICO start block</label>
+                        <button id="btnCheckSBlk" class="button">Check ICO Start Block</button>
+
+                        <label for="newStartBlock">Enter new ICO start block</label>
+                        <input id="newStartBlock" type="text" placeholder="New start block" class="fitTextBox">
+                        <button id="btnNewStartBlock" class="button">Change Start Block</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check current ICO end block</label>
+                        <button id="btnCheckEBlk" class="button">Check ICO End Block</button>
+
+                        <label for="newEndBlock">Enter new ICO end block</label>
+                        <input id="newEndBlock" type="text" placeholder="New end block" class="fitTextBox">
+                        <button id="btnNewEndBlock" class="button">Change End Block</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Halt ICO</label>
+                        <button id="btnHaltICO" class="button">Halt ICO</button>
+
+                        <label for="addMW">Unhalt ICO</label>
+                        <button id="btnUnhaltICO" class="button">Unhalt ICO</button>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div id="divICOPrice" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">ICO Price Controls</div>
+
+                    <li>
+                        <label>Check start price (numerator & denominator)</label>
+                        <button id="btnChkCurPrice" class="button">Check Start Price</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check price update wait time</label>
+                        <button id="btnChkPriceUp" class="button">Check Price Update Wait Time</button>
+
+                        <label for="valChngPriUpdTime">Enter a value (in seconds) to change price update wait time</label>
+                        <input id="valChngPriUpdTime" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                        <button id="btnChngPriUpdTime" class="button">Change Update Price Wait Time</button>
+                    </li>
+
+                    <li style="margin-top: 50px">
+                        <label for="updatePriceTop">Enter new price numerator</label>
+                        <input id="updatePriceTop" type="text" placeholder="New top integer" class="fitTextBox">
+                        <button id="btnUpdatePrice" class="button">Update Price Numerator</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check current ICO price denominator</label>
+                        <button id="btnChkICOBtm" class="button">Check ICO Denominator</button>
+
+                        <label for="updatePriceBtm">Enter new price denominator</label>
+                        <input id="updatePriceBtm" type="text" placeholder="New bottom integer" class="fitTextBox">
+                        <button id="btnUpdateBtmPrice" class="button">Update Price Denominator</button>
+                    </li>
+
+                    <li style="margin-top: 50px">
+                        <label for="valDHUPrice">Enter a value to check DHU prices</label>
+                        <input id="valDHUPrice" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                        <button id="btnChkDHUPri" class="button">Check DHU Prices</button>
+                    </li>
+
+                </ul>
+            </div>
+
+            <!-- <div>
+                            <label for="spenderToApprove">Enter an address to approve</label>
+                            <input id="spenderToApprove" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                            <label for="valueToApprove">Enter a value</label>
+                            <input id="valueToApprove" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                            <button id="btnApprove" class="button">Approve</button>
+                        </div> -->
+            <!-- <div>
+                            <label for="spenderToChngApproval">Enter an address for changing approval</label>
+                            <input id="spenderToChngApproval" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                            <label for="oldValueToApprove">Enter old value</label>
+                            <input id="oldValueToApprove" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                            <label for="newValueToApprove">Enter new value</label>
+                            <input id="newValueToApprove" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                            <button id="btnChangeApprove" class="button">Change Approval</button>
+                        </div> -->
+
+        </div>
+
+        <div id="seperator2">
+            <div id="divMainSecondWallet" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">Controlling Wallets</div>
+
+                    <li>
+                        <labe>
+                            Check current main wallet</label>
+                            <button id="btnChkMainWallet" class="button">Check Main Wallet</button>
+
+                            <label for="addMW">Enter new main wallet address</label>
+                            <input id="addMW" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                            <button id="btnNewMW" class="button">Change Address</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check current secondary wallet</label>
+                        <button id="btnChkSecWallet" class="button">Check Secondary Wallet</button>
+
+                        <label for="addSW">Enter new secondary wallet address</label>
+                        <input id="addSW" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                        <button id="btnNewSW" class="button">Change Address</button>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div id="divLiquidity" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">Liquidity</div>
+
+                    <li>
+                        <label>Liquidate</label>
+                        <button id="btnLiquidate" class="button">Liquidate</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Add liquidity to the contract</label>
+                        <button id="btnAddLiquidity" class="button">Add Liquidity</button>
+
+                        <label for="tokensToRemoveLiq">Enter the amount of tokens to remove from liquidity</label>
+                        <input id="tokensToRemoveLiq" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                        <button id="btnRemoveLiquidity" class="button">Remove Liquidity</button>
+                    </li>
+
+
+                    <li style="margin-top: 50px">
+                        <label for="tokensToLiquidate">Enter the amount of tokens to liquidate</label>
+                        <input id="tokensToLiquidate" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                        <button id="btnRequestLiquidation" class="button">Request Liquidation</button>
+
+                        <label for="addLiquidations">Enter an address to check liquidation request status</label>
+                        <input id="addLiquidations" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                        <button id="btnChkLiqReqSta" class="button">Check Liquidation Request Status</button>
+                    </li>
+
+
+                    <li style="margin-top: 50px">
+                        <label for="valLiquidChk">Enter a value to check liquidation</label>
+                        <input id="valLiquidChk" type="text" placeholder="E.g. 1000" class="fitTextBox">
+                        <button id="btnCheckLiq" class="button">Check Liquidation</button>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div id="divTrading" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">Trading</div>
+                    <li>
+                        <label>Check trading status</label>
+                        <button id="btnSetTrading" class="button">Check Trading Status</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Enable trading</label>
+                        <button id="btnEnableTrading" class="button">Enable Trading</button>
+                    </li>
+
+                    <li style="margin-top: 50px">
+                        <label for="addToChkBal">Enter an address to check investor balance</label>
+                        <input id="addToChkBal" type="text" placeholder="E.g. 0xbe375fb4db2ea7f8b30e47c798cc6b56bf455712" class="fitTextBox">
+                        <button id="btnCheckBal" class="button">Check Balance</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="divInfo" class="gridView">
+                <ul>
+                    <div style="margin-bottom: 20px; color: white; font-size: 22px;">Contract Info</div>
+
+                    <li>
+                        <label>Check total created tokens</label>
+                        <button id="btnCheckSup" class="button">Check Total Supply</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check contract token symbol</label>
+                        <button id="btnCheckSym" class="button">Check Token Symbol</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check contract name</label>
+                        <button id="btnCheckName" class="button">Check Contract Name</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check maximum possible supply of tokens</label>
+                        <button id="btnMaxSupply" class="button">Check Max Supply</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check minimum amount of investment</label>
+                        <button id="btnChkMinInv" class="button">Check Min Investment Value</button>
+                    </li>
+
+                    <li>
+                        <label style="margin-top: 50px">Check the number of decimals</label>
+                        <button id="btnChkDecimals" class="button">Check Decimals</button>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <button id="floatButton" title="Go to top">👆</button>
+    </div>
+
+</body>
+</html>
