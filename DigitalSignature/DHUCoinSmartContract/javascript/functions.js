@@ -1655,7 +1655,7 @@ $(document).ready(function () {
 
 
 
-		web3.eth.accounts.sign(hex_msg,'xD', function (err, res) {
+		web3.personal.sign(hex_msg,addr, function (err, res) {
 			if (err) {
 				alert('something went wrong puta');
 			} else {
@@ -1668,7 +1668,7 @@ $(document).ready(function () {
 				if (v_decimal != 27 || v_decimal != 28) {
 					v_decimal += 27
 				}
-				// var fixed_msg = `\x19Ethereum Signed Message:\n${_toVerifyAdd.length}${_toVerifyAdd}`;
+				var fixed_msg = `\x19Ethereum Signed Message:\n${_toVerifyAdd.length}${_toVerifyAdd}`;
 				var fixed_msg = _toVerifyAdd;
 				var fixed_msg_sha = web3.sha3(fixed_msg);
 
