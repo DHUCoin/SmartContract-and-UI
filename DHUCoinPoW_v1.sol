@@ -133,9 +133,8 @@ contract DHUCoin is StandardToken{
 
     uint256 public previousUpdateTime = 0;
     
-    // Strucure of price
+    // Struture of price
     PriceDHU public currentPrice;
-    Student public registeredStudent;
     uint256 public minInvestment = 0.01 ether;
     
     // For tokens allocated to the team
@@ -174,7 +173,6 @@ contract DHUCoin is StandardToken{
     
     // For students' info
     struct Student{
-        address studentAddress;
         string studentID;
         string firstName;
         string lastName;
@@ -354,39 +352,35 @@ contract DHUCoin is StandardToken{
         }
     }
     
-    function addStudent(string _studentID, string _firstName, string _lastName, uint _gpa) public{
-        verified[msg.sender] = true;
-        var student = students[msg.sender];
-        uint index;
+    function addStudent(string _studentID, string _firstName, string _lastName, uint _gpa) public {
+        // Automatically whitelist student 
+        verified[msg.sender] = true;      
+
+        Student storage student = students[msg.sender];
+
+        // Delete student from struct and mapping if already present
         for(uint i = 0; i < studentsAccounts.length; i ++){
-            if(msg.sender == studentsAccounts[i]){
-                index = i;
-                
-                studentsAccounts[index] = studentsAccounts[studentsAccounts.length - 1];
-                delete studentsAccounts[index];
+            if(msg.sender == studentsAccounts[i]){  
+                studentsAccounts[i] = studentsAccounts[studentsAccounts.length - 1];
+                delete studentsAccounts[i];
                 delete students[msg.sender];
                 studentsAccounts.length --;
-
-                student.studentID = _studentID;
-                student.firstName = _firstName;
-                student.lastName = _lastName;
-                student.gpa = _gpa;
             }
         }
         
+        // Add student info
         student.studentID = _studentID;
         student.firstName = _firstName;
         student.lastName = _lastName;
         student.gpa = _gpa;
-        
         studentsAccounts.push(msg.sender) - 1;
         
-        if (student.gpa >= 3 && student.gpa <= 4){
-            applicableStudents[msg.sender] = true;
-        }
-        else {
-            applicableStudents[msg.sender] = false;
-        }
+        // if (student.gpa >= 3 && student.gpa <= 4){
+        //     applicableStudents[msg.sender] = true;
+        // }
+        // else {
+        //     applicableStudents[msg.sender] = false;
+        // }
         emit Verification(msg.sender);
         emit Authorization(msg.sender);
         emit StudentInfo(msg.sender, _studentID, _firstName, _lastName, _gpa);
@@ -395,17 +389,17 @@ contract DHUCoin is StandardToken{
     function removeStudent(address _studentAddress) public onlyControllingWallets{
         verified[_studentAddress] = false;
         applicableStudents[_studentAddress] = false;
-        uint index;
+
+        // Delete student from struct and mapping
         for(uint i = 0; i < studentsAccounts.length; i ++){
             if(_studentAddress == studentsAccounts[i]){
-                index = i;
+                studentsAccounts[i] = studentsAccounts[studentsAccounts.length - 1];
+                delete studentsAccounts[i];
+                delete students[_studentAddress];
+                studentsAccounts.length --;
             }
-        }
-        
-        studentsAccounts[index] = studentsAccounts[studentsAccounts.length - 1];
-        delete studentsAccounts[index];
-        delete students[_studentAddress];
-        studentsAccounts.length --;
+        }      
+
         emit Verification(_studentAddress);
         emit Authorization(_studentAddress);
     }
@@ -499,9 +493,7 @@ contract DHUCoin is StandardToken{
     {
     }
 
-    function _jAdd( uint256 x1,uint256 z1,
-                    uint256 x2,uint256 z2) constant
-        returns(uint256 x3,uint256 z3)
+    function _jAdd( uint256 x1,uint256 z1, uint256 x2,uint256 z2) constant returns(uint256 x3,uint256 z3)
     {
         (x3, z3) = (  addmod( mulmod(z2, x1 , n) ,
                               mulmod(x2, z1 , n),
@@ -510,9 +502,7 @@ contract DHUCoin is StandardToken{
                     );
     }
 
-    function _jSub( uint256 x1,uint256 z1,
-                    uint256 x2,uint256 z2) constant
-        returns(uint256 x3,uint256 z3)
+    function _jSub( uint256 x1,uint256 z1, uint256 x2,uint256 z2) constant returns(uint256 x3,uint256 z3)
     {
         (x3, z3) = (  addmod( mulmod(z2, x1, n),
                               mulmod(n - x2, z1, n),
@@ -521,16 +511,12 @@ contract DHUCoin is StandardToken{
                     );
     }
 
-    function _jMul( uint256 x1,uint256 z1,
-                    uint256 x2,uint256 z2) constant
-        returns(uint256 x3,uint256 z3)
+    function _jMul( uint256 x1,uint256 z1, uint256 x2,uint256 z2) constant returns(uint256 x3,uint256 z3)
     {
         (x3, z3) = (  mulmod(x1, x2 , n), mulmod(z1, z2 , n));
     }
 
-    function _jDiv( uint256 x1,uint256 z1,
-                    uint256 x2,uint256 z2) constant
-        returns(uint256 x3,uint256 z3)
+    function _jDiv( uint256 x1,uint256 z1, uint256 x2,uint256 z2) constant returns(uint256 x3,uint256 z3)
     {
         (x3, z3) = (  mulmod(x1, z2 , n), mulmod(z1 , x2 , n));
     }
@@ -553,9 +539,7 @@ contract DHUCoin is StandardToken{
         return t;
     }
 
-    function _ecAdd( uint256 x1,uint256 y1,uint256 z1,
-                    uint256 x2,uint256 y2,uint256 z2) constant
-        returns(uint256 x3,uint256 y3,uint256 z3)
+    function _ecAdd( uint256 x1,uint256 y1,uint256 z1, uint256 x2,uint256 y2,uint256 z2) constant returns(uint256 x3,uint256 y3,uint256 z3)
     {
         uint256 l;
         uint256 lz;
@@ -603,14 +587,12 @@ contract DHUCoin is StandardToken{
 
     }
 
-    function _ecDouble(uint256 x1,uint256 y1,uint256 z1) constant
-        returns(uint256 x3,uint256 y3,uint256 z3)
+    function _ecDouble(uint256 x1,uint256 y1,uint256 z1) constant returns(uint256 x3,uint256 y3,uint256 z3)
     {
         (x3,y3,z3) = _ecAdd(x1,y1,z1,x1,y1,z1);
     }
 
-    function _ecMul(uint256 d, uint256 x1,uint256 y1,uint256 z1) constant
-        returns(uint256 x3,uint256 y3,uint256 z3)
+    function _ecMul(uint256 d, uint256 x1,uint256 y1,uint256 z1) constant returns(uint256 x3,uint256 y3,uint256 z3)
     {
         uint256 remaining = d;
         uint256 px = x1;
@@ -635,8 +617,7 @@ contract DHUCoin is StandardToken{
         (x3,y3,z3) = (acx,acy,acz);
     }
 
-    function publicKey(uint256 privKey) constant
-        returns(uint256 qx, uint256 qy)
+    function publicKey(uint256 privKey) constant returns(uint256 qx, uint256 qy)
     {
         uint256 x;
         uint256 y;
@@ -647,8 +628,7 @@ contract DHUCoin is StandardToken{
         qy = mulmod(y , z ,n);
     }
 
-    function deriveKey(uint256 privKey, uint256 pubX, uint256 pubY) constant
-        returns(uint256 qx, uint256 qy)
+    function deriveKey(uint256 privKey, uint256 pubX, uint256 pubY) constant returns(uint256 qx, uint256 qy)
     {
         uint256 x;
         uint256 y;
@@ -735,13 +715,11 @@ contract DHUCoin is StandardToken{
 
     }
     
-    // Enable digital signature. Generate signature with JS
-    function findAddress(bytes32 msgHash, uint8 v, bytes32 r, bytes32 s) returns (address) {
-        return ecrecover(msgHash, v, r, s);
-    }
-    
-    function isSigned(address _addr, bytes32 msgHash, uint8 v, bytes32 r, bytes32 s) returns (bool) {
-        return ecrecover(msgHash, v, r, s) == _addr;
+    // Find out if the student info is signed by the student himself
+        function isSigned(address _addr, bytes32 hash, uint8 v, bytes32 r, bytes32 s) constant returns(bool) {
+        bytes memory prefix = "\x19Ethereum Signed Message:\n32";
+        bytes32 prefixedHash = keccak256(prefix, hash);
+        return ecrecover(prefixedHash, v, r, s) == (_addr);
     }
     
     // Mining function for reward
