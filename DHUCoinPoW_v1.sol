@@ -173,6 +173,7 @@ contract DHUCoin is StandardToken{
     
     // For students' info
     struct Student{
+        string signature;
         string studentID;
         string firstName;
         string lastName;
@@ -352,7 +353,7 @@ contract DHUCoin is StandardToken{
         }
     }
     
-    function addStudent(string _studentID, string _firstName, string _lastName, uint _gpa) public {
+    function addStudent(string _signature, string _studentID, string _firstName, string _lastName, uint _gpa) public {
         // Automatically whitelist student 
         verified[msg.sender] = true;      
 
@@ -369,6 +370,7 @@ contract DHUCoin is StandardToken{
         }
         
         // Add student info
+        student.signature = _signature;
         student.studentID = _studentID;
         student.firstName = _firstName;
         student.lastName = _lastName;
@@ -408,8 +410,8 @@ contract DHUCoin is StandardToken{
         return studentsAccounts;
     }
     
-    function getOneStudent(address _address) view public returns (string, string, string, uint) {
-        return (students[_address].studentID, students[_address].firstName, students[_address].lastName, students[_address].gpa);
+    function getOneStudent(address _address) view public returns (string, string, string, string, uint) {
+        return (students[_address].signature, students[_address].studentID, students[_address].firstName, students[_address].lastName, students[_address].gpa);
     }
     
     function studentsNumber() view public returns (uint) {
