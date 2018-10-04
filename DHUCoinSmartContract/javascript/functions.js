@@ -1,4 +1,41 @@
 $(document).ready(function () {
+	// const qr = new EthereumQRPlugin();
+	// const qrCode = qr.toCanvas({
+	// 	"to": "0x074b420fbc61bcca59e1a370733330fe5bc9f8bd",
+	// 	"from": "0xda261f1d3b1ee75a3423525757442781d4df50d9",
+	// 	"value": 1,
+	// 	"gas": 100000,
+	// 	"mode": "contract_function",
+	// 	"functionSignature": {
+	// 	  "name": "transfer",
+	// 	  "payable": false,
+	// 	  "name": "symbol",
+	// 		"outputs": [
+	// 			{
+	// 			"name": "",
+	// 			"type": "string"
+	// 		}
+	// 	]
+	// 	},
+	// 	"argsDefaults": [
+	// 	  {
+	// 		"name": "to",
+	// 		"value": "0xtokensrecipient"
+	// 	  },
+	// 	  {
+	// 		"name": "value",
+	// 		"value": 1000000000000000000
+	// 	  }
+	// 	]
+	//   }, {
+	// 	selector: '#ethereum-qr-code',
+	//   })
+	  
+	//   qrCode.then((code) => {
+	// 	console.log('Your QR is generated!')
+	// 	console.log(code.value)
+	//   });
+
 	//Initiating web3 provider
 	if (typeof web3 !== 'undefined') {
 		web3 = new Web3(web3.currentProvider);
@@ -1428,7 +1465,7 @@ $(document).ready(function () {
 		}
 
 		showHideLoader(1);
-		_DHUCoinContract.verifyInvestor(_toVerifyAdd, (err, res) => {
+		_DHUCoinContract.verifyParticipant(_toVerifyAdd, (err, res) => {
 			if (err) {
 				showHideLoader(0);
 			}
@@ -1448,7 +1485,7 @@ $(document).ready(function () {
 		}
 
 		showHideLoader(1);
-		_DHUCoinContract.removeVerifiedInvestor(_addToRemove, (err, res) => {
+		_DHUCoinContract.removeVerifiedParticipant(_addToRemove, (err, res) => {
 			if (err) {
 				showHideLoader(0);
 			}
@@ -1809,6 +1846,7 @@ $(document).ready(function () {
 			if (err) {
 				curEvent = Events["AuthorizeEvent"];
 			}
+			ResetNavbar();
 		});
 	});
 
