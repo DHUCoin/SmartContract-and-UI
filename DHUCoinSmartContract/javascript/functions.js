@@ -1405,7 +1405,7 @@ $(document).ready(function () {
 		}
 	]);
 
-	var _DHUCoinContract = DHUCoinContract.at('0x074b420fbc61bcca59e1a370733330fe5bc9f8bd');
+	var _DHUCoinContract = DHUCoinContract.at('0x34613100f76905f273bee17ddd46aff38d7ee5f1');
 
 	//Creates an instance of the contract
 	//$("#btnDeployAdd").click(function () {
