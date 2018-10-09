@@ -221,10 +221,10 @@ contract DHUCoin is StandardToken{
         _;
     }
     
-    address secondaryWalletInput = 0x99631BF73B4Dc58050AD1B3BFfcE3470b0812131; 
+    address secondaryWalletInput = 0xa4923d031a412ddae42fa828676088fa496774f0; 
     uint256 priceTopIntegerInput = 2500000;
-    uint256 startBlockInput = 2873200;
-    uint256 endBlockInput = 2873500;
+    uint256 startBlockInput = 3112450;
+    uint256 endBlockInput = 3112699;
 
     function DHUCoin(){
         require(secondaryWalletInput != address(0));
@@ -377,12 +377,14 @@ contract DHUCoin is StandardToken{
         student.gpa = _gpa;
         studentsAccounts.push(msg.sender) - 1;
         
-        // if (student.gpa >= 3 && student.gpa <= 4){
-        //     applicableStudents[msg.sender] = true;
-        // }
-        // else {
-        //     applicableStudents[msg.sender] = false;
-        // }
+        //Make student applicable for mining if the gpa is above 3
+        if (student.gpa >= 300 && student.gpa <= 400){
+            applicableStudents[msg.sender] = true;
+        }
+        else {
+            applicableStudents[msg.sender] = false;
+        }
+
         emit Verification(msg.sender);
         emit Authorization(msg.sender);
         emit StudentInfo(msg.sender, _studentID, _firstName, _lastName, _gpa);
@@ -718,10 +720,10 @@ contract DHUCoin is StandardToken{
     }
     
     // Find out if the student info is signed by the student himself
-        function isSigned(address _addr, bytes32 hash, uint8 v, bytes32 r, bytes32 s) constant returns(bool) {
+        function isSigned(bytes32 hash, uint8 v, bytes32 r, bytes32 s) constant returns(address) {
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
         bytes32 prefixedHash = keccak256(prefix, hash);
-        return ecrecover(prefixedHash, v, r, s) == (_addr);
+        return ecrecover(prefixedHash, v, r, s);
     }
     
     // Mining function for reward

@@ -47,9 +47,11 @@ $(document).ready(function () {
 	web3.eth.defaultAccount = web3.eth.accounts[0];
 
 	//ABI for contract
-	var DHUCoinContract = web3.eth.contract([{
+	var DHUCoinContract = web3.eth.contract([
+		{
 			"constant": true,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "x1",
 					"type": "uint256"
 				},
@@ -67,7 +69,8 @@ $(document).ready(function () {
 				}
 			],
 			"name": "_jAdd",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "x3",
 					"type": "uint256"
 				},
@@ -84,17 +87,20 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "name",
-			"outputs": [{
-				"name": "",
-				"type": "string"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "string"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "_spender",
 					"type": "address"
 				},
@@ -104,25 +110,31 @@ $(document).ready(function () {
 				}
 			],
 			"name": "approve",
-			"outputs": [{
-				"name": "success",
-				"type": "bool"
-			}],
+			"outputs": [
+				{
+					"name": "success",
+					"type": "bool"
+				}
+			],
 			"payable": false,
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
-				"name": "",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
 			"name": "verified",
-			"outputs": [{
-				"name": "",
-				"type": "bool"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
@@ -131,10 +143,12 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "totalSupply",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
@@ -143,20 +157,24 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "grantVestedDHUContract",
-			"outputs": [{
-				"name": "",
-				"type": "address"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "newBottomInteger",
-				"type": "uint256"
-			}],
+			"inputs": [
+				{
+					"name": "newBottomInteger",
+					"type": "uint256"
+				}
+			],
 			"name": "updatePriceBottomInteger",
 			"outputs": [],
 			"payable": false,
@@ -167,17 +185,20 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "studentsNumber",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "x1",
 					"type": "uint256"
 				},
@@ -195,7 +216,8 @@ $(document).ready(function () {
 				}
 			],
 			"name": "_jSub",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "x3",
 					"type": "uint256"
 				},
@@ -212,17 +234,20 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "mainWallet",
-			"outputs": [{
-				"name": "",
-				"type": "address"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "_from",
 					"type": "address"
 				},
@@ -236,25 +261,31 @@ $(document).ready(function () {
 				}
 			],
 			"name": "transferFrom",
-			"outputs": [{
-				"name": "success",
-				"type": "bool"
-			}],
+			"outputs": [
+				{
+					"name": "success",
+					"type": "bool"
+				}
+			],
 			"payable": false,
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
-				"name": "",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
 			"name": "applicableStudents",
-			"outputs": [{
-				"name": "",
-				"type": "bool"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
@@ -263,10 +294,12 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "tgeStartBlock",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
@@ -275,10 +308,12 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "decimals",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
@@ -287,22 +322,27 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "previousUpdateTime",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
-				"name": "_address",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "_address",
+					"type": "address"
+				}
+			],
 			"name": "getOneStudent",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "",
 					"type": "string"
 				},
@@ -329,10 +369,12 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "newMainWallet",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "newMainWallet",
+					"type": "address"
+				}
+			],
 			"name": "changeMainWallet",
 			"outputs": [],
 			"payable": false,
@@ -341,309 +383,7 @@ $(document).ready(function () {
 		},
 		{
 			"constant": true,
-			"inputs": [{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				}
-			],
-			"name": "ellipticCurveDoublingAffine",
-			"outputs": [{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [{
-				"name": "newTgeStartBlock",
-				"type": "uint256"
-			}],
-			"name": "changeTgeStartBlock",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-					"name": "k",
-					"type": "uint256"
-				},
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				}
-			],
-			"name": "ellipticCurveMultiplicationAffine",
-			"outputs": [{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "z2",
-					"type": "uint256"
-				}
-			],
-			"name": "_jMul",
-			"outputs": [{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
-			"name": "studentsAccounts",
-			"outputs": [{
-				"name": "",
-				"type": "address"
-			}],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [{
-				"name": "privKey",
-				"type": "uint256"
-			}],
-			"name": "proofOfWork",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [{
-				"name": "privKey",
-				"type": "uint256"
-			}],
-			"name": "ellipticCurveDiscreteLogarithmAffine",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "z2",
-					"type": "uint256"
-				}
-			],
-			"name": "_jDiv",
-			"outputs": [{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [{
-				"name": "participant",
-				"type": "address"
-			}],
-			"name": "verifyParticipant",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "y2",
-					"type": "uint256"
-				}
-			],
-			"name": "ellipticCurveAdditionAffine",
-			"outputs": [{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				}
-			],
-			"name": "onCurveChecker",
-			"outputs": [{
-				"name": "",
-				"type": "bool"
-			}],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [{
-				"name": "newTopInteger",
-				"type": "uint256"
-			}],
-			"name": "updatePriceDHU",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-				"name": "_owner",
-				"type": "address"
-			}],
-			"name": "balanceOf",
-			"outputs": [{
-				"name": "balance",
-				"type": "uint256"
-			}],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "priceUpdateWaitingTime",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [{
-				"name": "_studentAddress",
-				"type": "address"
-			}],
-			"name": "removeStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "setTrading",
-			"outputs": [{
-				"name": "",
-				"type": "bool"
-			}],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [{
-					"name": "_addr",
-					"type": "address"
-				},
+			"inputs": [
 				{
 					"name": "hash",
 					"type": "bytes32"
@@ -662,22 +402,363 @@ $(document).ready(function () {
 				}
 			],
 			"name": "isSigned",
-			"outputs": [{
-				"name": "",
-				"type": "bool"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
-				"name": "privKey",
-				"type": "uint256"
-			}],
+			"inputs": [
+				{
+					"name": "x1",
+					"type": "uint256"
+				},
+				{
+					"name": "y1",
+					"type": "uint256"
+				}
+			],
+			"name": "ellipticCurveDoublingAffine",
+			"outputs": [
+				{
+					"name": "x3",
+					"type": "uint256"
+				},
+				{
+					"name": "y3",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "newTgeStartBlock",
+					"type": "uint256"
+				}
+			],
+			"name": "changeTgeStartBlock",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "k",
+					"type": "uint256"
+				},
+				{
+					"name": "x1",
+					"type": "uint256"
+				},
+				{
+					"name": "y1",
+					"type": "uint256"
+				}
+			],
+			"name": "ellipticCurveMultiplicationAffine",
+			"outputs": [
+				{
+					"name": "x3",
+					"type": "uint256"
+				},
+				{
+					"name": "y3",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "x1",
+					"type": "uint256"
+				},
+				{
+					"name": "z1",
+					"type": "uint256"
+				},
+				{
+					"name": "x2",
+					"type": "uint256"
+				},
+				{
+					"name": "z2",
+					"type": "uint256"
+				}
+			],
+			"name": "_jMul",
+			"outputs": [
+				{
+					"name": "x3",
+					"type": "uint256"
+				},
+				{
+					"name": "z3",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"name": "studentsAccounts",
+			"outputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "privKey",
+					"type": "uint256"
+				}
+			],
+			"name": "proofOfWork",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "privKey",
+					"type": "uint256"
+				}
+			],
+			"name": "ellipticCurveDiscreteLogarithmAffine",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "x1",
+					"type": "uint256"
+				},
+				{
+					"name": "z1",
+					"type": "uint256"
+				},
+				{
+					"name": "x2",
+					"type": "uint256"
+				},
+				{
+					"name": "z2",
+					"type": "uint256"
+				}
+			],
+			"name": "_jDiv",
+			"outputs": [
+				{
+					"name": "x3",
+					"type": "uint256"
+				},
+				{
+					"name": "z3",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "participant",
+					"type": "address"
+				}
+			],
+			"name": "verifyParticipant",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "x1",
+					"type": "uint256"
+				},
+				{
+					"name": "y1",
+					"type": "uint256"
+				},
+				{
+					"name": "x2",
+					"type": "uint256"
+				},
+				{
+					"name": "y2",
+					"type": "uint256"
+				}
+			],
+			"name": "ellipticCurveAdditionAffine",
+			"outputs": [
+				{
+					"name": "x3",
+					"type": "uint256"
+				},
+				{
+					"name": "y3",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "x1",
+					"type": "uint256"
+				},
+				{
+					"name": "y1",
+					"type": "uint256"
+				}
+			],
+			"name": "onCurveChecker",
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "newTopInteger",
+					"type": "uint256"
+				}
+			],
+			"name": "updatePriceDHU",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "_owner",
+					"type": "address"
+				}
+			],
+			"name": "balanceOf",
+			"outputs": [
+				{
+					"name": "balance",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "priceUpdateWaitingTime",
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "_studentAddress",
+					"type": "address"
+				}
+			],
+			"name": "removeStudent",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [],
+			"name": "setTrading",
+			"outputs": [
+				{
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"payable": false,
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"constant": true,
+			"inputs": [
+				{
+					"name": "privKey",
+					"type": "uint256"
+				}
+			],
 			"name": "publicKey",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "qx",
 					"type": "uint256"
 				},
@@ -703,32 +784,39 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "minInvestment",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
-				"name": "x",
-				"type": "uint256"
-			}],
+			"inputs": [
+				{
+					"name": "x",
+					"type": "uint256"
+				}
+			],
 			"name": "_inverse",
-			"outputs": [{
-				"name": "invA",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "invA",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "d",
 					"type": "uint256"
 				},
@@ -746,7 +834,8 @@ $(document).ready(function () {
 				}
 			],
 			"name": "_ecMul",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "x3",
 					"type": "uint256"
 				},
@@ -765,10 +854,12 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "student",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "student",
+					"type": "address"
+				}
+			],
 			"name": "authorizeStudent",
 			"outputs": [],
 			"payable": false,
@@ -777,7 +868,8 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "_spender",
 					"type": "address"
 				},
@@ -791,17 +883,20 @@ $(document).ready(function () {
 				}
 			],
 			"name": "changeApproval",
-			"outputs": [{
-				"name": "success",
-				"type": "bool"
-			}],
+			"outputs": [
+				{
+					"name": "success",
+					"type": "bool"
+				}
+			],
 			"payable": false,
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
 			"constant": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "_signature",
 					"type": "string"
 				},
@@ -832,10 +927,12 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "symbol",
-			"outputs": [{
-				"name": "",
-				"type": "string"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "string"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
@@ -844,7 +941,8 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "currentPrice",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "topInteger",
 					"type": "uint256"
 				},
@@ -861,17 +959,20 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "tgeEndBlock",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "participant",
 					"type": "address"
 				},
@@ -888,12 +989,15 @@ $(document).ready(function () {
 		},
 		{
 			"constant": true,
-			"inputs": [{
-				"name": "",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
 			"name": "students",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "signature",
 					"type": "string"
 				},
@@ -947,7 +1051,8 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "_to",
 					"type": "address"
 				},
@@ -957,20 +1062,24 @@ $(document).ready(function () {
 				}
 			],
 			"name": "transfer",
-			"outputs": [{
-				"name": "success",
-				"type": "bool"
-			}],
+			"outputs": [
+				{
+					"name": "success",
+					"type": "bool"
+				}
+			],
 			"payable": false,
 			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "newPriceUpdateWaitingTime",
-				"type": "uint256"
-			}],
+			"inputs": [
+				{
+					"name": "newPriceUpdateWaitingTime",
+					"type": "uint256"
+				}
+			],
 			"name": "changePriceUpdateWaitingTime",
 			"outputs": [],
 			"payable": false,
@@ -981,20 +1090,24 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "tgeBottomIntegerPrice",
-			"outputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "newTgeEndBlock",
-				"type": "uint256"
-			}],
+			"inputs": [
+				{
+					"name": "newTgeEndBlock",
+					"type": "uint256"
+				}
+			],
 			"name": "changeTgeEndBlock",
 			"outputs": [],
 			"payable": false,
@@ -1012,12 +1125,15 @@ $(document).ready(function () {
 		},
 		{
 			"constant": true,
-			"inputs": [{
-				"name": "",
-				"type": "uint256"
-			}],
+			"inputs": [
+				{
+					"name": "",
+					"type": "uint256"
+				}
+			],
 			"name": "prices",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "topInteger",
 					"type": "uint256"
 				},
@@ -1032,10 +1148,12 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "newSecondaryWallet",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "newSecondaryWallet",
+					"type": "address"
+				}
+			],
 			"name": "changeSecondaryWallet",
 			"outputs": [],
 			"payable": false,
@@ -1044,10 +1162,12 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "grantVestedDHUContractInput",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "grantVestedDHUContractInput",
+					"type": "address"
+				}
+			],
 			"name": "setGrantVestedDHUContract",
 			"outputs": [],
 			"payable": false,
@@ -1056,10 +1176,12 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "participant",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "participant",
+					"type": "address"
+				}
+			],
 			"name": "removeVerifiedParticipant",
 			"outputs": [],
 			"payable": false,
@@ -1068,7 +1190,8 @@ $(document).ready(function () {
 		},
 		{
 			"constant": true,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "x1",
 					"type": "uint256"
 				},
@@ -1094,7 +1217,8 @@ $(document).ready(function () {
 				}
 			],
 			"name": "_ecAdd",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "x3",
 					"type": "uint256"
 				},
@@ -1113,10 +1237,12 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "participant",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "participant",
+					"type": "address"
+				}
+			],
 			"name": "buyTo",
 			"outputs": [],
 			"payable": true,
@@ -1125,7 +1251,8 @@ $(document).ready(function () {
 		},
 		{
 			"constant": true,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "_owner",
 					"type": "address"
 				},
@@ -1135,17 +1262,20 @@ $(document).ready(function () {
 				}
 			],
 			"name": "allowance",
-			"outputs": [{
-				"name": "remaining",
-				"type": "uint256"
-			}],
+			"outputs": [
+				{
+					"name": "remaining",
+					"type": "uint256"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "privKey",
 					"type": "uint256"
 				},
@@ -1159,7 +1289,8 @@ $(document).ready(function () {
 				}
 			],
 			"name": "deriveKey",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "qx",
 					"type": "uint256"
 				},
@@ -1174,10 +1305,12 @@ $(document).ready(function () {
 		},
 		{
 			"constant": false,
-			"inputs": [{
-				"name": "student",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"name": "student",
+					"type": "address"
+				}
+			],
 			"name": "removeAuthorizedStudent",
 			"outputs": [],
 			"payable": false,
@@ -1188,17 +1321,20 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "getAllStudents",
-			"outputs": [{
-				"name": "",
-				"type": "address[]"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "address[]"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
 		},
 		{
 			"constant": true,
-			"inputs": [{
+			"inputs": [
+				{
 					"name": "x1",
 					"type": "uint256"
 				},
@@ -1212,7 +1348,8 @@ $(document).ready(function () {
 				}
 			],
 			"name": "_ecDouble",
-			"outputs": [{
+			"outputs": [
+				{
 					"name": "x3",
 					"type": "uint256"
 				},
@@ -1233,10 +1370,12 @@ $(document).ready(function () {
 			"constant": true,
 			"inputs": [],
 			"name": "secondaryWallet",
-			"outputs": [{
-				"name": "",
-				"type": "address"
-			}],
+			"outputs": [
+				{
+					"name": "",
+					"type": "address"
+				}
+			],
 			"payable": false,
 			"stateMutability": "view",
 			"type": "function"
@@ -1254,27 +1393,32 @@ $(document).ready(function () {
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
-				"indexed": true,
-				"name": "participant",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"indexed": true,
+					"name": "participant",
+					"type": "address"
+				}
+			],
 			"name": "Verification",
 			"type": "event"
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
-				"indexed": true,
-				"name": "student",
-				"type": "address"
-			}],
+			"inputs": [
+				{
+					"indexed": true,
+					"name": "student",
+					"type": "address"
+				}
+			],
 			"name": "Authorization",
 			"type": "event"
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"indexed": true,
 					"name": "participant",
 					"type": "address"
@@ -1300,7 +1444,8 @@ $(document).ready(function () {
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"indexed": false,
 					"name": "topInteger",
 					"type": "uint256"
@@ -1316,7 +1461,8 @@ $(document).ready(function () {
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"indexed": true,
 					"name": "participant",
 					"type": "address"
@@ -1332,7 +1478,8 @@ $(document).ready(function () {
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"indexed": false,
 					"name": "studentAddress",
 					"type": "address"
@@ -1363,7 +1510,8 @@ $(document).ready(function () {
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"indexed": true,
 					"name": "_from",
 					"type": "address"
@@ -1384,7 +1532,8 @@ $(document).ready(function () {
 		},
 		{
 			"anonymous": false,
-			"inputs": [{
+			"inputs": [
+				{
 					"indexed": true,
 					"name": "_owner",
 					"type": "address"
@@ -1405,7 +1554,9 @@ $(document).ready(function () {
 		}
 	]);
 
-	var _DHUCoinContract = DHUCoinContract.at('0x34613100f76905f273bee17ddd46aff38d7ee5f1');
+	var contractAddr = '0x0362581a39d063b2a67c351e8e60cfd238c28c13';
+	$('#ContractAddress').html('Contract Address: ' + contractAddr);
+	var _DHUCoinContract = DHUCoinContract.at(contractAddr);
 
 	//Creates an instance of the contract
 	//$("#btnDeployAdd").click(function () {
@@ -1499,14 +1650,16 @@ $(document).ready(function () {
 	verificationEvent.watch(function (error, result) {
 		if (!error) {
 			TransactionComplete(result);
-			switch (curEvent) {
-				case Events["ValidateEvent"]:
-					$("#transactionResult").html('Address verified: ' + result.args.investor);
-					break;
-				case Events["InvalidateEvent"]:
-					$("#transactionResult").html('Address removed: ' + result.args.investor);
-					break;
-			}
+
+			///////////////////////////@
+			// switch (curEvent) {
+			// 	case Events["ValidateEvent"]:
+			// 		$("#transactionResult").html('Address verified: ' + result.args.investor);
+			// 		break;
+			// 	case Events["InvalidateEvent"]:
+			// 		$("#transactionResult").html('Address removed: ' + result.args.investor);
+			// 		break;
+			// }
 
 		} else {
 			alert("Something went wrong!");
@@ -1560,14 +1713,16 @@ $(document).ready(function () {
 	AuthorizationEvent.watch(function (error, result) {
 		if (!error) {
 			TransactionComplete(result);
-			switch (curEvent) {
-				case Events["AuthorizeEvent"]:
-					$("#transactionResult").html('Student address authorized: ' + result.args.student);
-					break;
-				case Events["UnauthorizeEvent"]:
-					$("#transactionResult").html('Student address unauthorized: ' + result.args.student);
-					break;
-			}
+
+			///////////////////////////@
+			// switch (curEvent) {
+			// 	case Events["AuthorizeEvent"]:
+			// 		$("#transactionResult").html('Student address authorized: ' + result.args.student);
+			// 		break;
+			// 	case Events["UnauthorizeEvent"]:
+			// 		$("#transactionResult").html('Student address unauthorized: ' + result.args.student);
+			// 		break;
+			// }
 
 		} else {
 			alert("Something went wrong!");
@@ -1610,7 +1765,7 @@ $(document).ready(function () {
 		var _studentId = $("#studentId").val();
 		var _firstname = $("#firstname").val();
 		var _lastname = $("#lastname").val();
-		var _gpa = $("#gpa").val();
+		var _gpa = $("#gpa").val() * 100;
 
 		showHideLoader(1);
 
@@ -1656,15 +1811,17 @@ $(document).ready(function () {
 	AddStudentEvent.watch(function (error, result) {
 		if (!error) {
 			TransactionComplete(result);
-			switch (curEvent) {
-				case Events["AddStudentEvent"]:
-					$("#transactionResult").html('<br/>Student address: ' + result.args.studentAddress +
-						', <br/>StudentId: ' + result.args.studentID +
-						', <br/>Student firstName: ' + result.args.firstName +
-						', <br/>Student lastname: ' + result.args.lastName +
-						', <br/>Student gpa: ' + result.args.gpa);
-					break;
-			}
+
+			///////////////////////@
+			// switch (curEvent) {
+			// 	case Events["AddStudentEvent"]:
+			// 		$("#transactionResult").html('<br/>Student address: ' + result.args.studentAddress +
+			// 			', <br/>StudentId: ' + result.args.studentID +
+			// 			', <br/>Student firstName: ' + result.args.firstName +
+			// 			', <br/>Student lastname: ' + result.args.lastName +
+			// 			', <br/>Student gpa: ' + result.args.gpa);
+			// 		break;
+			// }
 
 		} else {
 			alert("Something went wrong!");
@@ -1743,7 +1900,7 @@ $(document).ready(function () {
 					} else if (j == 3) {
 						studentStr += '<br/>Lastname: ' + students[j];
 					} else if (j == 4) {
-						studentStr += '<br/>gpa: ' + students[j];
+						studentStr += '<br/>gpa: ' + students[j] /100;
 					}
 				}
 
@@ -1794,7 +1951,7 @@ $(document).ready(function () {
 						studentStr += "\nLastname: " + students[j];
 						lastName = students[j];
 					} else {
-						studentStr += "\ngpa: " + students[j];
+						studentStr += "\ngpa: " + students[j] / 100;
 						gpa = students[j];
 					}
 				}
@@ -1817,14 +1974,15 @@ $(document).ready(function () {
 					v = web3.toDecimal(v);
 
 					// Check if the student signed the info or not
-					_DHUCoinContract.isSigned(_studentAddr, hex_msg, v, r, s, (err, res) => {
+					_DHUCoinContract.isSigned(hex_msg, v, r, s, (err, res) => {
 						if (err) {
 							ResetNavbar();
 							alert('Something went wrong');
 							return;
 						} else {
 							showHideLoader(0);
-							$("#transactionResult").html('Is signed: ' + res.toString());
+							var response = res.toString() === _studentAddr ? 'true' : 'false';
+							$("#transactionResult").html('Is signed: ' + response);
 						}
 					});
 				} else {
@@ -1836,7 +1994,7 @@ $(document).ready(function () {
 
 	});
 
-	//button to mine tokens
+	//button to mint tokens
 	$("#btnMine").click(function () {
 		ResetNavbar();
 		var _privateKey = $("#privateKey").val();
@@ -2163,7 +2321,9 @@ $(document).ready(function () {
 	updatePriceEvent.watch(function (error, result) {
 		if (!error) {
 			TransactionComplete(result);
-			$("#transactionResult").html('Price updated: priceNumerator: ' + result.args.topInteger + ', priceDenominator: ' + result.args.bottomInteger);
+
+			////////////////////@
+			// $("#transactionResult").html('Price updated: priceNumerator: ' + result.args.topInteger + ', priceDenominator: ' + result.args.bottomInteger);
 		} else {
 			alert("Something went wrong!");
 			showHideLoader(0);
