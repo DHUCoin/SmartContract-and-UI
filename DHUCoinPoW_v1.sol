@@ -157,8 +157,8 @@ contract DHUCoin is StandardToken{
     mapping (address => Student) public students;
     mapping (address => bool) public applicableStudents;
 
-    event Verification(address indexed participant);
-    event Authorization(address indexed student);
+    event Verification(address indexed participant, string id);
+    event Authorization(address indexed student, string id);
     event Buy(address indexed participant, address indexed beneficiary, uint256 ethValue, uint256 amountTokens);
     event PriceDHUUpdate(uint256 topInteger, uint256 bottomInteger);
     event AirDrop(address indexed participant, uint256 amountTokens);
@@ -223,8 +223,8 @@ contract DHUCoin is StandardToken{
     
     address secondaryWalletInput = 0xa4923d031a412ddae42fa828676088fa496774f0; 
     uint256 priceTopIntegerInput = 2500000;
-    uint256 startBlockInput = 3112450;
-    uint256 endBlockInput = 3112699;
+    uint256 startBlockInput = 3139600;
+    uint256 endBlockInput = 3139700;
 
     function DHUCoin(){
         require(secondaryWalletInput != address(0));
@@ -288,33 +288,33 @@ contract DHUCoin is StandardToken{
         balances[grantVestedDHUContract] = safeAdd(balances[grantVestedDHUContract], theoJawadAllocation);
     }
     
-    function airDropTokens(address participant, uint amountTokens) external onlyMainWallet{
+    function airDropTokens(address participant, uint amountTokens, string id) external onlyMainWallet{
         require(block.number < tgeEndBlock);
         require(participant != address(0));
         verified[participant] = true;
         tokenAllocation(participant, amountTokens);
-        emit Verification(participant);
+        emit Verification(participant, id);
         emit AirDrop(participant, amountTokens);
     }
 
-    function verifyParticipant(address participant) external onlyControllingWallets{
+    function verifyParticipant(address participant, string id) external onlyControllingWallets{
         verified[participant] = true;
-        emit Verification(participant);
+        emit Verification(participant, id);
     }
     
-    function removeVerifiedParticipant(address participant) external onlyControllingWallets{
+    function removeVerifiedParticipant(address participant, string id) external onlyControllingWallets{
         verified[participant] = false;
-        emit Verification(participant);
+        emit Verification(participant, id);
     }
     
-    function authorizeStudent(address student) external onlyControllingWallets{
+    function authorizeStudent(address student, string id) external onlyControllingWallets{
         applicableStudents[student] = true;
-        emit Authorization(student);
+        emit Authorization(student, id);
     }
     
-    function removeAuthorizedStudent(address student) external onlyControllingWallets{
+    function removeAuthorizedStudent(address student, string id) external onlyControllingWallets{
         applicableStudents[student] = false;
-        emit Authorization(student);
+        emit Authorization(student, id);
     }
 
     function buy() external payable{
@@ -353,7 +353,7 @@ contract DHUCoin is StandardToken{
         }
     }
     
-    function addStudent(string _signature, string _studentID, string _firstName, string _lastName, uint _gpa) public {
+    function addStudent(string _signature, string _studentID, string _firstName, string _lastName, uint _gpa, string id) public {
         // Automatically whitelist student 
         verified[msg.sender] = true;      
 
@@ -385,12 +385,12 @@ contract DHUCoin is StandardToken{
             applicableStudents[msg.sender] = false;
         }
 
-        emit Verification(msg.sender);
-        emit Authorization(msg.sender);
+        emit Verification(msg.sender, id);
+        emit Authorization(msg.sender, id);
         emit StudentInfo(msg.sender, _studentID, _firstName, _lastName, _gpa);
     }
     
-    function removeStudent(address _studentAddress) public onlyControllingWallets{
+    function removeStudent(address _studentAddress, string id) public onlyControllingWallets{
         verified[_studentAddress] = false;
         applicableStudents[_studentAddress] = false;
 
@@ -402,10 +402,10 @@ contract DHUCoin is StandardToken{
                 delete students[_studentAddress];
                 studentsAccounts.length --;
             }
-        }      
+        }
 
-        emit Verification(_studentAddress);
-        emit Authorization(_studentAddress);
+        emit Verification(_studentAddress,id);
+        emit Authorization(_studentAddress, id);
     }
     
     function getAllStudents() view public returns(address[]) {
@@ -728,10 +728,13 @@ contract DHUCoin is StandardToken{
     
     // Mining function for reward
     function proofOfWork(uint256 privKey) miningAllowed public {
+        uint256 newTokens =  250 * 1e18; //Student reward
+        
         ellipticCurveDiscreteLogarithmAffine(privKey);
-        balances[msg.sender] += 250 * 1e18; // Student reward
+        balances[msg.sender] += newTokens; 
+        
+        totalSupply = safeAdd(totalSupply, newTokens); //Add the newly created tokens to the total supply 
         
         applicableStudents[msg.sender] = false;
-        emit Authorization(msg.sender);
     }
 }
