@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "ethereum-qr-code": "^0.3.0",
+    "firebase": "^5.5.3",
     "web3": "github:ethereum/web3.js"
   },
   "devDependencies": {

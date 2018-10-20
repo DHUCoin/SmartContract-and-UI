@@ -1,4 +1,18 @@
 $(document).ready(function () {
+
+	var curUserId = makeid();
+	$('#UserId').html('UserId: ' + curUserId);
+
+	function makeid() {
+		var text = "";
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for (var i = 0; i < 15; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		return text;
+	}
+
 	// const qr = new EthereumQRPlugin();
 	// const qrCode = qr.toCanvas({
 	// 	"to": "0x074b420fbc61bcca59e1a370733330fe5bc9f8bd",
@@ -30,7 +44,7 @@ $(document).ready(function () {
 	//   }, {
 	// 	selector: '#ethereum-qr-code',
 	//   })
-	  
+
 	//   qrCode.then((code) => {
 	// 	console.log('Your QR is generated!')
 	// 	console.log(code.value)
@@ -176,6 +190,24 @@ $(document).ready(function () {
 				}
 			],
 			"name": "updatePriceBottomInteger",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "participant",
+					"type": "address"
+				},
+				{
+					"name": "id",
+					"type": "string"
+				}
+			],
+			"name": "removeVerifiedParticipant",
 			"outputs": [],
 			"payable": false,
 			"stateMutability": "nonpayable",
@@ -443,6 +475,24 @@ $(document).ready(function () {
 			"constant": false,
 			"inputs": [
 				{
+					"name": "participant",
+					"type": "address"
+				},
+				{
+					"name": "id",
+					"type": "string"
+				}
+			],
+			"name": "verifyParticipant",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
 					"name": "newTgeStartBlock",
 					"type": "uint256"
 				}
@@ -605,11 +655,31 @@ $(document).ready(function () {
 			"constant": false,
 			"inputs": [
 				{
-					"name": "participant",
-					"type": "address"
+					"name": "_signature",
+					"type": "string"
+				},
+				{
+					"name": "_studentID",
+					"type": "string"
+				},
+				{
+					"name": "_firstName",
+					"type": "string"
+				},
+				{
+					"name": "_lastName",
+					"type": "string"
+				},
+				{
+					"name": "_gpa",
+					"type": "uint256"
+				},
+				{
+					"name": "id",
+					"type": "string"
 				}
 			],
-			"name": "verifyParticipant",
+			"name": "addStudent",
 			"outputs": [],
 			"payable": false,
 			"stateMutability": "nonpayable",
@@ -718,20 +788,6 @@ $(document).ready(function () {
 			],
 			"payable": false,
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_studentAddress",
-					"type": "address"
-				}
-			],
-			"name": "removeStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
@@ -856,20 +912,6 @@ $(document).ready(function () {
 			"constant": false,
 			"inputs": [
 				{
-					"name": "student",
-					"type": "address"
-				}
-			],
-			"name": "authorizeStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
 					"name": "_spender",
 					"type": "address"
 				},
@@ -889,36 +931,6 @@ $(document).ready(function () {
 					"type": "bool"
 				}
 			],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_signature",
-					"type": "string"
-				},
-				{
-					"name": "_studentID",
-					"type": "string"
-				},
-				{
-					"name": "_firstName",
-					"type": "string"
-				},
-				{
-					"name": "_lastName",
-					"type": "string"
-				},
-				{
-					"name": "_gpa",
-					"type": "uint256"
-				}
-			],
-			"name": "addStudent",
-			"outputs": [],
 			"payable": false,
 			"stateMutability": "nonpayable",
 			"type": "function"
@@ -967,24 +979,6 @@ $(document).ready(function () {
 			],
 			"payable": false,
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "participant",
-					"type": "address"
-				},
-				{
-					"name": "amountTokens",
-					"type": "uint256"
-				}
-			],
-			"name": "airDropTokens",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
@@ -1104,6 +1098,24 @@ $(document).ready(function () {
 			"constant": false,
 			"inputs": [
 				{
+					"name": "student",
+					"type": "address"
+				},
+				{
+					"name": "id",
+					"type": "string"
+				}
+			],
+			"name": "authorizeStudent",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
 					"name": "newTgeEndBlock",
 					"type": "uint256"
 				}
@@ -1118,6 +1130,28 @@ $(document).ready(function () {
 			"constant": false,
 			"inputs": [],
 			"name": "EllipticCurve",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "participant",
+					"type": "address"
+				},
+				{
+					"name": "amountTokens",
+					"type": "uint256"
+				},
+				{
+					"name": "id",
+					"type": "string"
+				}
+			],
+			"name": "airDropTokens",
 			"outputs": [],
 			"payable": false,
 			"stateMutability": "nonpayable",
@@ -1150,6 +1184,24 @@ $(document).ready(function () {
 			"constant": false,
 			"inputs": [
 				{
+					"name": "student",
+					"type": "address"
+				},
+				{
+					"name": "id",
+					"type": "string"
+				}
+			],
+			"name": "removeAuthorizedStudent",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"constant": false,
+			"inputs": [
+				{
 					"name": "newSecondaryWallet",
 					"type": "address"
 				}
@@ -1169,20 +1221,6 @@ $(document).ready(function () {
 				}
 			],
 			"name": "setGrantVestedDHUContract",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "participant",
-					"type": "address"
-				}
-			],
-			"name": "removeVerifiedParticipant",
 			"outputs": [],
 			"payable": false,
 			"stateMutability": "nonpayable",
@@ -1273,6 +1311,24 @@ $(document).ready(function () {
 			"type": "function"
 		},
 		{
+			"constant": false,
+			"inputs": [
+				{
+					"name": "_studentAddress",
+					"type": "address"
+				},
+				{
+					"name": "id",
+					"type": "string"
+				}
+			],
+			"name": "removeStudent",
+			"outputs": [],
+			"payable": false,
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"constant": true,
 			"inputs": [
 				{
@@ -1301,20 +1357,6 @@ $(document).ready(function () {
 			],
 			"payable": false,
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "student",
-					"type": "address"
-				}
-			],
-			"name": "removeAuthorizedStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
 			"type": "function"
 		},
 		{
@@ -1398,6 +1440,11 @@ $(document).ready(function () {
 					"indexed": true,
 					"name": "participant",
 					"type": "address"
+				},
+				{
+					"indexed": false,
+					"name": "id",
+					"type": "string"
 				}
 			],
 			"name": "Verification",
@@ -1410,6 +1457,11 @@ $(document).ready(function () {
 					"indexed": true,
 					"name": "student",
 					"type": "address"
+				},
+				{
+					"indexed": false,
+					"name": "id",
+					"type": "string"
 				}
 			],
 			"name": "Authorization",
@@ -1554,43 +1606,9 @@ $(document).ready(function () {
 		}
 	]);
 
-	var contractAddr = '0x0362581a39d063b2a67c351e8e60cfd238c28c13';
+	var contractAddr = '0xef3ff3527ab3850d9d461ffe62e757d7a5cc9d50';
 	$('#ContractAddress').html('Contract Address: ' + contractAddr);
 	var _DHUCoinContract = DHUCoinContract.at(contractAddr);
-
-	//Creates an instance of the contract
-	//$("#btnDeployAdd").click(function () {
-	//    var _addContract = $("#addContract").val();
-
-	//    //Input check
-	//    if (isEmpty(_addContract) || !isNumber(_addContract)) {
-	//        InvalidAddressAlert();
-	//        return;
-	//    }
-
-	//    _DHUCoinContract = DHUCoinContract.at(_addContract);
-	//});
-
-	//$("#btnDeploy").click(function () {
-	//    var _startBlock = $("#startBlock").val();
-	//    var _endBlock = $("#endBlock").val();
-
-	//    _DHUCoinContract = DHUCoinContract.new(
-	// '0x134b28CA4cb091A1ac887737dBb47F3D729a5FB8',
-	// 800000,
-	// _startBlock,
-	// _endBlock,
-	// {
-	//     from: web3.eth.accounts[0],
-	//     data: 
-	//     gas: '7300000'
-	// }, function (e, contract) {
-	//     console.log(e, contract);
-	//     if (typeof contract.address !== 'undefined') {
-	//         $("#transactionResult").html('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
-	//     }
-	// })
-	//});
 
 	var curEvent;
 	var Events = {
@@ -1608,20 +1626,32 @@ $(document).ready(function () {
 	//button to whitelist an address
 	$("#btnVerify").click(function () {
 		ResetNavbar();
+
 		var _toVerifyAdd = $("#toVerifyAdd").val();
 		//Input check
 		if (isEmpty(_toVerifyAdd) || !isNumber(_toVerifyAdd)) {
 			InvalidAddressAlert();
 			return;
 		}
-
 		showHideLoader(1);
-		_DHUCoinContract.verifyParticipant(_toVerifyAdd, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			}
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			console.log(res);
+			_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
+				if (response.args.id == curUserId) {
+					TransactionComplete(response);
+					$("#transactionResult").html('Address verified: ' + response.args.participant);
+				}
+			});
+
+			_DHUCoinContract.verifyParticipant.sendTransaction(_toVerifyAdd, curUserId, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				}
+			});
 		});
-		curEvent = Events["ValidateEvent"];
 	});
 
 	//button for blacklist an address
@@ -1634,56 +1664,79 @@ $(document).ready(function () {
 			InvalidAddressAlert();
 			return;
 		}
-
 		showHideLoader(1);
-		_DHUCoinContract.removeVerifiedParticipant(_addToRemove, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			}
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			console.log(res);
+			_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
+				if (response.args.id == curUserId) {
+					TransactionComplete(response);
+					$("#transactionResult").html('Address Removed: ' + response.args.participant);
+				}
+			});
+
+			_DHUCoinContract.removeVerifiedParticipant.sendTransaction(_addToRemove, curUserId, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				}
+			});
 		});
-		curEvent = Events["InvalidateEvent"];
 	});
 
 	//Common event for verifation
-	var verificationEvent = _DHUCoinContract.Verification({}, 'latest');
+	// var verificationEvent = _DHUCoinContract.Verification({}, 'latest');
 
-	verificationEvent.watch(function (error, result) {
-		if (!error) {
-			TransactionComplete(result);
+	// verificationEvent.watch(function (error, result) {
+	// 	if (!error) {
+	// 		TransactionComplete(result);
 
-			///////////////////////////@
-			// switch (curEvent) {
-			// 	case Events["ValidateEvent"]:
-			// 		$("#transactionResult").html('Address verified: ' + result.args.investor);
-			// 		break;
-			// 	case Events["InvalidateEvent"]:
-			// 		$("#transactionResult").html('Address removed: ' + result.args.investor);
-			// 		break;
-			// }
+	// 		///////////////////////////@
+	// 		// switch (curEvent) {
+	// 		// 	case Events["ValidateEvent"]:
+	// 		// 		$("#transactionResult").html('Address verified: ' + result.args.investor);
+	// 		// 		break;
+	// 		// 	case Events["InvalidateEvent"]:
+	// 		// 		$("#transactionResult").html('Address removed: ' + result.args.investor);
+	// 		// 		break;
+	// 		// }
 
-		} else {
-			alert("Something went wrong!");
-			showHideLoader(0);
-		}
-	});
+	// 	} else {
+	// 		alert("Something went wrong!");
+	// 		showHideLoader(0);
+	// 	}
+	// });
 
 	//button to authorize students
 	$("#btnAuthorize").click(function () {
 		ResetNavbar();
 		var _toAuthorizeAdd = $("#toAuthorizeAdd").val();
+
 		//Input check
 		if (isEmpty(_toAuthorizeAdd) || !isNumber(_toAuthorizeAdd)) {
 			InvalidAddressAlert();
 			return;
 		}
-
 		showHideLoader(1);
-		_DHUCoinContract.authorizeStudent(_toAuthorizeAdd, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			}
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			console.log(res);
+			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
+				if (response.args.id == curUserId) {
+					TransactionComplete(response);
+					$("#transactionResult").html('Address authorized: ' + response.args.student);
+				}
+			});
+
+			_DHUCoinContract.authorizeStudent.sendTransaction(_toAuthorizeAdd, curUserId, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				}
+			});
 		});
-		curEvent = Events["AuthorizeEvent"];
 	});
 
 	//button to unauthorize student
@@ -1696,39 +1749,50 @@ $(document).ready(function () {
 			InvalidAddressAlert();
 			return;
 		}
-
 		showHideLoader(1);
-		_DHUCoinContract.removeAuthorizedStudent(_addToUnauthorize, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			}
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			console.log(res);
+			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
+				if (response.args.id == curUserId) {
+					TransactionComplete(response);
+					$("#transactionResult").html('Address unauthorized: ' + response.args.student);
+				}
+			});
+
+			_DHUCoinContract.authorizeStudent.sendTransaction(_addToUnauthorize, curUserId, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				}
+			});
 		});
-		curEvent = Events["UnauthorizeEvent"];
 	});
 
 
 	//event for authorization
-	var AuthorizationEvent = _DHUCoinContract.Authorization({}, 'latest');
+	// var AuthorizationEvent = _DHUCoinContract.Authorization({}, 'latest');
 
-	AuthorizationEvent.watch(function (error, result) {
-		if (!error) {
-			TransactionComplete(result);
+	// AuthorizationEvent.watch(function (error, result) {
+	// 	if (!error) {
+	// 		TransactionComplete(result);
 
-			///////////////////////////@
-			// switch (curEvent) {
-			// 	case Events["AuthorizeEvent"]:
-			// 		$("#transactionResult").html('Student address authorized: ' + result.args.student);
-			// 		break;
-			// 	case Events["UnauthorizeEvent"]:
-			// 		$("#transactionResult").html('Student address unauthorized: ' + result.args.student);
-			// 		break;
-			// }
+	// 		/////////////////////////@
+	// 		switch (curEvent) {
+	// 			case Events["AuthorizeEvent"]:
+	// 				$("#transactionResult").html('Student address authorized: ' + result.args.student);
+	// 				break;
+	// 			case Events["UnauthorizeEvent"]:
+	// 				$("#transactionResult").html('Student address unauthorized: ' + result.args.student);
+	// 				break;
+	// 		}
 
-		} else {
-			alert("Something went wrong!");
-			showHideLoader(0);
-		}
-	});
+	// 	} else {
+	// 		alert("Something went wrong!");
+	// 		showHideLoader(0);
+	// 	}
+	// });
 
 	//button for checking if a student is applicable or not
 	$("#btnCheckAuthorization").click(function () {
@@ -1751,21 +1815,13 @@ $(document).ready(function () {
 		});
 	});
 
-	function toHex(str) {
-		var hex = '';
-		for (var i = 0; i < str.length; i++) {
-			hex += '' + str.charCodeAt(i).toString(16);
-		}
-		return hex;
-	};
-
 	//button to add student 
 	$("#btnAddStudent").click(function () {
 		ResetNavbar();
 		var _studentId = $("#studentId").val();
 		var _firstname = $("#firstname").val();
 		var _lastname = $("#lastname").val();
-		var _gpa = $("#gpa").val() * 100;
+		var _gpa = $("#gpa").val() * 100; //to allow decimals multiply by 100 and when displaying divide by 100
 
 		showHideLoader(1);
 
@@ -1783,51 +1839,64 @@ $(document).ready(function () {
 				return;
 			} else {
 
-				// Save signature public key to the contract 
-				signature = res.toString();
+				// var proceed = confirm('Would you like to proceed to registration?');
 
-				var proceed = confirm('Would you like to proceed to registration?');
+				// if (proceed) {
+				// } else {
+				// 	ResetNavbar();
+				// 	return;
+				// }
 
-				if (proceed) {
-					_DHUCoinContract.addStudent(signature, _studentId, _firstname, _lastname, _gpa, (err, res) => {
-						if (err) {
-							showHideLoader(0);
-						} else {
-							curEvent = Events["AddStudentEvent"];
+				web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+					console.log(res);
+					_DHUCoinContract.StudentInfo({}, 'latest').watch((err, response) => {
+						if (response.args.id == curUserId) {
+							$("#transactionResult").html('<br/>Student address: ' + result.args.studentAddress +
+								', <br/>StudentId: ' + result.args.studentID +
+								', <br/>Student firstName: ' + result.args.firstName +
+								', <br/>Student lastname: ' + result.args.lastName +
+								', <br/>Student gpa: ' + result.args.gpa);
 						}
 					});
-				} else {
-					ResetNavbar();
-					return;
-				}
+
+					// Save signature public key to the contract 
+					signature = res.toString();
+
+					_DHUCoinContract.addStudent.sendTransaction(signature, _studentId, _firstname, _lastname, _gpa, curUserId, {
+						nonce: res + 1
+					}, (err, res) => {
+						if (err) {
+							showHideLoader(0);
+						}
+					});
+				});
 			}
 		});
-
 	});
 
 	//event for adding student
-	var AddStudentEvent = _DHUCoinContract.StudentInfo({}, 'latest');
+	// var AddStudentEvent = _DHUCoinContract.StudentInfo({}, 'latest');
 
-	AddStudentEvent.watch(function (error, result) {
-		if (!error) {
-			TransactionComplete(result);
+	// AddStudentEvent.watch(function (error, result) {
+	// 	if (!error) {
+	// 		TransactionComplete(result);
 
-			///////////////////////@
-			// switch (curEvent) {
-			// 	case Events["AddStudentEvent"]:
-			// 		$("#transactionResult").html('<br/>Student address: ' + result.args.studentAddress +
-			// 			', <br/>StudentId: ' + result.args.studentID +
-			// 			', <br/>Student firstName: ' + result.args.firstName +
-			// 			', <br/>Student lastname: ' + result.args.lastName +
-			// 			', <br/>Student gpa: ' + result.args.gpa);
-			// 		break;
-			// }
+	// 		///////////////////////@
+	// 		switch (curEvent) {
+	// 			case Events["AddStudentEvent"]:
+	// 				$("#transactionResult").html('<br/>Student address: ' + result.args.studentAddress +
+	// 					', <br/>StudentId: ' + result.args.studentID +
+	// 					', <br/>Student firstName: ' + result.args.firstName +
+	// 					', <br/>Student lastname: ' + result.args.lastName +
+	// 					', <br/>Student gpa: ' + result.args.gpa);
+	// 				break;
+	// 		}
 
-		} else {
-			alert("Something went wrong!");
-			showHideLoader(0);
-		}
-	});
+	// 	} else {
+	// 		alert("Something went wrong!");
+	// 		showHideLoader(0);
+	// 	}
+	// });
 
 	//Button to remove student from applicable list
 	$("#btnRemoveStudent").click(function () {
@@ -1846,7 +1915,6 @@ $(document).ready(function () {
 				showHideLoader(0);
 			} else {
 				$("#TransHash").html('Transaction Hash: ' + res);
-				// showHideLoader(0);
 			}
 		});
 	});
@@ -1900,7 +1968,7 @@ $(document).ready(function () {
 					} else if (j == 3) {
 						studentStr += '<br/>Lastname: ' + students[j];
 					} else if (j == 4) {
-						studentStr += '<br/>gpa: ' + students[j] /100;
+						studentStr += '<br/>gpa: ' + students[j] / 100;
 					}
 				}
 
@@ -2002,9 +2070,11 @@ $(document).ready(function () {
 		showHideLoader(1);
 		_DHUCoinContract.proofOfWork(_privateKey, (err, res) => {
 			if (err) {
-				curEvent = Events["AuthorizeEvent"];
+				showHideLoader(0);
+			} else {
+				$("#transactionResult").html('Transaction Hash: ' + res);
+				showHideLoader(0);
 			}
-			ResetNavbar();
 		});
 	});
 
@@ -2024,7 +2094,7 @@ $(document).ready(function () {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#TransHash").html('Transaction Hash: ' + res);
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2046,7 +2116,7 @@ $(document).ready(function () {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#TransHash").html('Transaction Hash: ' + res);
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2081,11 +2151,12 @@ $(document).ready(function () {
 		ResetNavbar();
 		var _newStartBlock = $("#newStartBlock").val();
 		showHideLoader(1);
+
 		_DHUCoinContract.changeTgeStartBlock(_newStartBlock, (err, res) => {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#TransHash").html('Transaction Hash: ' + res);
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2096,6 +2167,7 @@ $(document).ready(function () {
 		ResetNavbar();
 		var _newEndBlock = $("#newEndBlock").val();
 		showHideLoader(1);
+
 		_DHUCoinContract.changeTgeEndBlock(_newEndBlock, (err, res) => {
 			if (err) {
 				showHideLoader(0);
@@ -2694,4 +2766,5 @@ $(document).ready(function () {
 			return true;
 		}
 	}
+
 });
