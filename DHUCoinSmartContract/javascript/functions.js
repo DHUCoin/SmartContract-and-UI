@@ -1555,6 +1555,11 @@ $(document).ready(function () {
 					"indexed": false,
 					"name": "gpa",
 					"type": "uint256"
+				},
+				{
+					"indexed": false,
+					"name": "id",
+					"type": "string"
 				}
 			],
 			"name": "StudentInfo",
@@ -1606,7 +1611,7 @@ $(document).ready(function () {
 		}
 	]);
 
-	var contractAddr = '0x2bd1b40fbebe7c0dadaabc44fdad2a500ec25da7';
+	var contractAddr = '0x5ad99b84b5015acee06da7a383817a8b056a1ec2';
 	$('#ContractAddress').html('Contract Address: ' + contractAddr);
 	var _DHUCoinContract = DHUCoinContract.at(contractAddr);
 
