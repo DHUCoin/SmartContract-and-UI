@@ -1606,7 +1606,7 @@ $(document).ready(function () {
 		}
 	]);
 
-	var contractAddr = '0xef3ff3527ab3850d9d461ffe62e757d7a5cc9d50';
+	var contractAddr = '0x2bd1b40fbebe7c0dadaabc44fdad2a500ec25da7';
 	$('#ContractAddress').html('Contract Address: ' + contractAddr);
 	var _DHUCoinContract = DHUCoinContract.at(contractAddr);
 
