@@ -162,7 +162,7 @@ contract DHUCoin is StandardToken{
     event Buy(address indexed participant, address indexed beneficiary, uint256 ethValue, uint256 amountTokens);
     event PriceDHUUpdate(uint256 topInteger, uint256 bottomInteger);
     event AirDrop(address indexed participant, uint256 amountTokens);
-    event StudentInfo(address studentAddress, string studentID, string firstName, string lastName, uint gpa);
+    event StudentInfo(address studentAddress, string studentID, string firstName, string lastName, uint gpa, string id);
 
     
     // For price updates as a rational number
@@ -221,10 +221,10 @@ contract DHUCoin is StandardToken{
         _;
     }
     
-    address secondaryWalletInput = 0xa4923d031a412ddae42fa828676088fa496774f0; 
+    address secondaryWalletInput = 0xa4923D031A412dDAe42fa828676088fA496774F0; 
     uint256 priceTopIntegerInput = 2500000;
-    uint256 startBlockInput = 3139600;
-    uint256 endBlockInput = 3139700;
+    uint256 startBlockInput = 3192200;
+    uint256 endBlockInput = 3192400;
 
     function DHUCoin(){
         require(secondaryWalletInput != address(0));
@@ -387,7 +387,7 @@ contract DHUCoin is StandardToken{
 
         emit Verification(msg.sender, id);
         emit Authorization(msg.sender, id);
-        emit StudentInfo(msg.sender, _studentID, _firstName, _lastName, _gpa);
+        emit StudentInfo(msg.sender, _studentID, _firstName, _lastName, _gpa, id);
     }
     
     function removeStudent(address _studentAddress, string id) public onlyControllingWallets{

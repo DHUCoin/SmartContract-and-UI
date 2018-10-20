@@ -1850,12 +1850,13 @@ $(document).ready(function () {
 				web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
 					console.log(res);
 					_DHUCoinContract.StudentInfo({}, 'latest').watch((err, response) => {
+						showHideLoader(0);
 						if (response.args.id == curUserId) {
-							$("#transactionResult").html('<br/>Student address: ' + result.args.studentAddress +
-								', <br/>StudentId: ' + result.args.studentID +
-								', <br/>Student firstName: ' + result.args.firstName +
-								', <br/>Student lastname: ' + result.args.lastName +
-								', <br/>Student gpa: ' + result.args.gpa);
+							$("#transactionResult").html('<br/>Student address: ' + response.args.studentAddress +
+								', <br/>StudentId: ' + response.args.studentID +
+								', <br/>Student firstName: ' + response.args.firstName +
+								', <br/>Student lastname: ' + response.args.lastName +
+								', <br/>Student gpa: ' + response.args.gpa);
 						}
 					});
 
