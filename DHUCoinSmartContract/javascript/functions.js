@@ -2172,7 +2172,7 @@ $(document).ready(function () {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#TransHash").html('Transaction Hash: ' + res);
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2210,7 +2210,7 @@ $(document).ready(function () {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#TransHash").html('Transaction Hash: ' + res);
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2222,6 +2222,9 @@ $(document).ready(function () {
 		showHideLoader(1);
 		_DHUCoinContract.liquidate((err, res) => {
 			if (err) {
+				showHideLoader(0);
+			} else {
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2275,6 +2278,9 @@ $(document).ready(function () {
 		showHideLoader(1);
 		_DHUCoinContract.requestLiquidation(_tokensToLiquidate, (err, res) => {
 			if (err) {
+				showHideLoader(0);
+			} else {
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2357,7 +2363,7 @@ $(document).ready(function () {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#TransHash").html('Transaction Hash: ' + res);
+				$("#transactionResult").html('Transaction Hash: ' + res);
 				showHideLoader(0);
 			}
 		});
@@ -2371,6 +2377,9 @@ $(document).ready(function () {
 		_DHUCoinContract.updatePriceDHU(_updatePriceTop, (err, res) => {
 			if (err) {
 				showHideLoader(0);
+			} else {
+				$("#transactionResult").html('Transaction Hash: ' + res);
+				showHideLoader(0);
 			}
 		});
 	});
@@ -2383,24 +2392,27 @@ $(document).ready(function () {
 		_DHUCoinContract.updatePriceBottomInteger(_updatePriceBtm, (err, res) => {
 			if (err) {
 				showHideLoader(0);
+			} else {
+				$("#transactionResult").html('Transaction Hash: ' + res);
+				showHideLoader(0);
 			}
 		});
 	});
 
 	//Common event for getting updated price
-	var updatePriceEvent = _DHUCoinContract.PriceDHUUpdate({}, 'latest');
+	// var updatePriceEvent = _DHUCoinContract.PriceDHUUpdate({}, 'latest');
 
-	updatePriceEvent.watch(function (error, result) {
-		if (!error) {
-			TransactionComplete(result);
+	// updatePriceEvent.watch(function (error, result) {
+	// 	if (!error) {
+	// 		TransactionComplete(result);
 
-			////////////////////@
-			// $("#transactionResult").html('Price updated: priceNumerator: ' + result.args.topInteger + ', priceDenominator: ' + result.args.bottomInteger);
-		} else {
-			alert("Something went wrong!");
-			showHideLoader(0);
-		}
-	});
+	// 		//////////////////@
+	// 		$("#transactionResult").html('Price updated: priceNumerator: ' + result.args.topInteger + ', priceDenominator: ' + result.args.bottomInteger);
+	// 	} else {
+	// 		alert("Something went wrong!");
+	// 		showHideLoader(0);
+	// 	}
+	// });
 
 	//button for checking if verified or not
 	$("#btnCheckVer").click(function () {
