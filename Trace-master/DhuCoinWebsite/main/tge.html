@@ -23,6 +23,7 @@
   <script src="../javascript/dhuCoinABI.js" type="text/javascript"></script>
   <script src="../javascript/functions.js" type="text/javascript"></script>
   <script src="../javascript/display_functions.js" type="text/javascript"></script>
+  <script src="../javascript/getinfoFunctions.js" type="text/javascript"></script>
 </head>
 
 <body class="">
@@ -161,23 +162,25 @@
       </nav>
       <!-- End Navbar -->
       <div class="content">
-        <div class="container-fluid">  
+        <div class="container-fluid">
           <div class="row">
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                  <div class="card card-stats">
-                    <div class="card-header card-header-success card-header-icon">
-                      <div class="card-icon">
-                        <i class="material-icons">access_alarm</i>
-                      </div>
-                      <p class="card-category">TGEの実行期間</p>
-                      <h3 class="card-title"></h3>
-                    </div>
-                    <div class="card-footer">
-                      <div class="stats">
-                      </div>
-                    </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">access_alarm</i>
+                  </div>
+                  <p class="card-category">TGEの実行期間</p>
+                  <h3 class="card-title">
+                    <small id="blockPeriod"></small>
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
                   </div>
                 </div>
+              </div>
+            </div>
             <div class="col-md-8" style="flex:none; max-width:none">
               <div class="card">
                 <div class="card-header card-header-primary">
@@ -228,7 +231,7 @@
         </div>
       </div>
       <footer class="footer">
-          <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none"/>
+        <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none" />
         <div class="container-fluid">
 
           <div class="copyright float-right">
@@ -257,6 +260,11 @@
   <script src="../assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
+  <script>
+    $(document).ready(function () {
+      getBlockInfo();
+    });
+  </script>
 </body>
 
 </html>
