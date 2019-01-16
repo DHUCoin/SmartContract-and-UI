@@ -1,54 +1,8 @@
 $(document).ready(function () {
 
+	//Used to differentiate output from the contract for each user
 	var curUserId = makeid();
-	$('#UserId').html('UserId: ' + curUserId);
-
-	function makeid() {
-		var text = "";
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-		for (var i = 0; i < 15; i++)
-			text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-		return text;
-	}
-
-	// const qr = new EthereumQRPlugin();
-	// const qrCode = qr.toCanvas({
-	// 	"to": "0x074b420fbc61bcca59e1a370733330fe5bc9f8bd",
-	// 	"from": "0xda261f1d3b1ee75a3423525757442781d4df50d9",
-	// 	"value": 1,
-	// 	"gas": 100000,
-	// 	"mode": "contract_function",
-	// 	"functionSignature": {
-	// 	  "name": "transfer",
-	// 	  "payable": false,
-	// 	  "name": "symbol",
-	// 		"outputs": [
-	// 			{
-	// 			"name": "",
-	// 			"type": "string"
-	// 		}
-	// 	]
-	// 	},
-	// 	"argsDefaults": [
-	// 	  {
-	// 		"name": "to",
-	// 		"value": "0xtokensrecipient"
-	// 	  },
-	// 	  {
-	// 		"name": "value",
-	// 		"value": 1000000000000000000
-	// 	  }
-	// 	]
-	//   }, {
-	// 	selector: '#ethereum-qr-code',
-	//   })
-
-	//   qrCode.then((code) => {
-	// 	console.log('Your QR is generated!')
-	// 	console.log(code.value)
-	//   });
+	// $('#UserId').html('UserId: ' + curUserId);
 
 	//Initiating web3 provider
 	if (typeof web3 !== 'undefined') {
@@ -60,1573 +14,17 @@ $(document).ready(function () {
 	//Set the default account (Makes the executer in MetaMask as default)
 	web3.eth.defaultAccount = web3.eth.accounts[0];
 
-	//ABI for contract
-	var DHUCoinContract = web3.eth.contract([
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "z2",
-					"type": "uint256"
-				}
-			],
-			"name": "_jAdd",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "name",
-			"outputs": [
-				{
-					"name": "",
-					"type": "string"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_spender",
-					"type": "address"
-				},
-				{
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "approve",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "verified",
-			"outputs": [
-				{
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "totalSupply",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "grantVestedDHUContract",
-			"outputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "newBottomInteger",
-					"type": "uint256"
-				}
-			],
-			"name": "updatePriceBottomInteger",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "participant",
-					"type": "address"
-				},
-				{
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "removeVerifiedParticipant",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "studentsNumber",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "z2",
-					"type": "uint256"
-				}
-			],
-			"name": "_jSub",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "mainWallet",
-			"outputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_from",
-					"type": "address"
-				},
-				{
-					"name": "_to",
-					"type": "address"
-				},
-				{
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "transferFrom",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "applicableStudents",
-			"outputs": [
-				{
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "tgeStartBlock",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "decimals",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "previousUpdateTime",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "_address",
-					"type": "address"
-				}
-			],
-			"name": "getOneStudent",
-			"outputs": [
-				{
-					"name": "",
-					"type": "string"
-				},
-				{
-					"name": "",
-					"type": "string"
-				},
-				{
-					"name": "",
-					"type": "string"
-				},
-				{
-					"name": "",
-					"type": "string"
-				},
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "newMainWallet",
-					"type": "address"
-				}
-			],
-			"name": "changeMainWallet",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "hash",
-					"type": "bytes32"
-				},
-				{
-					"name": "v",
-					"type": "uint8"
-				},
-				{
-					"name": "r",
-					"type": "bytes32"
-				},
-				{
-					"name": "s",
-					"type": "bytes32"
-				}
-			],
-			"name": "isSigned",
-			"outputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				}
-			],
-			"name": "ellipticCurveDoublingAffine",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "participant",
-					"type": "address"
-				},
-				{
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "verifyParticipant",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "newTgeStartBlock",
-					"type": "uint256"
-				}
-			],
-			"name": "changeTgeStartBlock",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "k",
-					"type": "uint256"
-				},
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				}
-			],
-			"name": "ellipticCurveMultiplicationAffine",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "z2",
-					"type": "uint256"
-				}
-			],
-			"name": "_jMul",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"name": "studentsAccounts",
-			"outputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "privKey",
-					"type": "uint256"
-				}
-			],
-			"name": "proofOfWork",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "privKey",
-					"type": "uint256"
-				}
-			],
-			"name": "ellipticCurveDiscreteLogarithmAffine",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "z2",
-					"type": "uint256"
-				}
-			],
-			"name": "_jDiv",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_signature",
-					"type": "string"
-				},
-				{
-					"name": "_studentID",
-					"type": "string"
-				},
-				{
-					"name": "_firstName",
-					"type": "string"
-				},
-				{
-					"name": "_lastName",
-					"type": "string"
-				},
-				{
-					"name": "_gpa",
-					"type": "uint256"
-				},
-				{
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "addStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "y2",
-					"type": "uint256"
-				}
-			],
-			"name": "ellipticCurveAdditionAffine",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				}
-			],
-			"name": "onCurveChecker",
-			"outputs": [
-				{
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "newTopInteger",
-					"type": "uint256"
-				}
-			],
-			"name": "updatePriceDHU",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "_owner",
-					"type": "address"
-				}
-			],
-			"name": "balanceOf",
-			"outputs": [
-				{
-					"name": "balance",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "priceUpdateWaitingTime",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "setTrading",
-			"outputs": [
-				{
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "privKey",
-					"type": "uint256"
-				}
-			],
-			"name": "publicKey",
-			"outputs": [
-				{
-					"name": "qx",
-					"type": "uint256"
-				},
-				{
-					"name": "qy",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [],
-			"name": "enableTrading",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "minInvestment",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x",
-					"type": "uint256"
-				}
-			],
-			"name": "_inverse",
-			"outputs": [
-				{
-					"name": "invA",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "d",
-					"type": "uint256"
-				},
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				}
-			],
-			"name": "_ecMul",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_spender",
-					"type": "address"
-				},
-				{
-					"name": "_oldValue",
-					"type": "uint256"
-				},
-				{
-					"name": "_newValue",
-					"type": "uint256"
-				}
-			],
-			"name": "changeApproval",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "symbol",
-			"outputs": [
-				{
-					"name": "",
-					"type": "string"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "currentPrice",
-			"outputs": [
-				{
-					"name": "topInteger",
-					"type": "uint256"
-				},
-				{
-					"name": "bottomInteger",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "tgeEndBlock",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "students",
-			"outputs": [
-				{
-					"name": "signature",
-					"type": "string"
-				},
-				{
-					"name": "studentID",
-					"type": "string"
-				},
-				{
-					"name": "firstName",
-					"type": "string"
-				},
-				{
-					"name": "lastName",
-					"type": "string"
-				},
-				{
-					"name": "gpa",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [],
-			"name": "buy",
-			"outputs": [],
-			"payable": true,
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [],
-			"name": "haltTGE",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [],
-			"name": "unhaltTGE",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_to",
-					"type": "address"
-				},
-				{
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "transfer",
-			"outputs": [
-				{
-					"name": "success",
-					"type": "bool"
-				}
-			],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "newPriceUpdateWaitingTime",
-					"type": "uint256"
-				}
-			],
-			"name": "changePriceUpdateWaitingTime",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "tgeBottomIntegerPrice",
-			"outputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "student",
-					"type": "address"
-				},
-				{
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "authorizeStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "newTgeEndBlock",
-					"type": "uint256"
-				}
-			],
-			"name": "changeTgeEndBlock",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [],
-			"name": "EllipticCurve",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "participant",
-					"type": "address"
-				},
-				{
-					"name": "amountTokens",
-					"type": "uint256"
-				},
-				{
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "airDropTokens",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"name": "prices",
-			"outputs": [
-				{
-					"name": "topInteger",
-					"type": "uint256"
-				},
-				{
-					"name": "bottomInteger",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "student",
-					"type": "address"
-				},
-				{
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "removeAuthorizedStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "newSecondaryWallet",
-					"type": "address"
-				}
-			],
-			"name": "changeSecondaryWallet",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "grantVestedDHUContractInput",
-					"type": "address"
-				}
-			],
-			"name": "setGrantVestedDHUContract",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				},
-				{
-					"name": "x2",
-					"type": "uint256"
-				},
-				{
-					"name": "y2",
-					"type": "uint256"
-				},
-				{
-					"name": "z2",
-					"type": "uint256"
-				}
-			],
-			"name": "_ecAdd",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "participant",
-					"type": "address"
-				}
-			],
-			"name": "buyTo",
-			"outputs": [],
-			"payable": true,
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "_owner",
-					"type": "address"
-				},
-				{
-					"name": "_spender",
-					"type": "address"
-				}
-			],
-			"name": "allowance",
-			"outputs": [
-				{
-					"name": "remaining",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": false,
-			"inputs": [
-				{
-					"name": "_studentAddress",
-					"type": "address"
-				},
-				{
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "removeStudent",
-			"outputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "privKey",
-					"type": "uint256"
-				},
-				{
-					"name": "pubX",
-					"type": "uint256"
-				},
-				{
-					"name": "pubY",
-					"type": "uint256"
-				}
-			],
-			"name": "deriveKey",
-			"outputs": [
-				{
-					"name": "qx",
-					"type": "uint256"
-				},
-				{
-					"name": "qy",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "getAllStudents",
-			"outputs": [
-				{
-					"name": "",
-					"type": "address[]"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [
-				{
-					"name": "x1",
-					"type": "uint256"
-				},
-				{
-					"name": "y1",
-					"type": "uint256"
-				},
-				{
-					"name": "z1",
-					"type": "uint256"
-				}
-			],
-			"name": "_ecDouble",
-			"outputs": [
-				{
-					"name": "x3",
-					"type": "uint256"
-				},
-				{
-					"name": "y3",
-					"type": "uint256"
-				},
-				{
-					"name": "z3",
-					"type": "uint256"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"constant": true,
-			"inputs": [],
-			"name": "secondaryWallet",
-			"outputs": [
-				{
-					"name": "",
-					"type": "address"
-				}
-			],
-			"payable": false,
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"payable": false,
-			"stateMutability": "nonpayable",
-			"type": "constructor"
-		},
-		{
-			"payable": true,
-			"stateMutability": "payable",
-			"type": "fallback"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "participant",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "Verification",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "student",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "Authorization",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "participant",
-					"type": "address"
-				},
-				{
-					"indexed": true,
-					"name": "beneficiary",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "ethValue",
-					"type": "uint256"
-				},
-				{
-					"indexed": false,
-					"name": "amountTokens",
-					"type": "uint256"
-				}
-			],
-			"name": "Buy",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"name": "topInteger",
-					"type": "uint256"
-				},
-				{
-					"indexed": false,
-					"name": "bottomInteger",
-					"type": "uint256"
-				}
-			],
-			"name": "PriceDHUUpdate",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "participant",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "amountTokens",
-					"type": "uint256"
-				}
-			],
-			"name": "AirDrop",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"name": "studentAddress",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "studentID",
-					"type": "string"
-				},
-				{
-					"indexed": false,
-					"name": "firstName",
-					"type": "string"
-				},
-				{
-					"indexed": false,
-					"name": "lastName",
-					"type": "string"
-				},
-				{
-					"indexed": false,
-					"name": "gpa",
-					"type": "uint256"
-				},
-				{
-					"indexed": false,
-					"name": "id",
-					"type": "string"
-				}
-			],
-			"name": "StudentInfo",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "_from",
-					"type": "address"
-				},
-				{
-					"indexed": true,
-					"name": "_to",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "Transfer",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"name": "_owner",
-					"type": "address"
-				},
-				{
-					"indexed": true,
-					"name": "_spender",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"name": "_value",
-					"type": "uint256"
-				}
-			],
-			"name": "Approval",
-			"type": "event"
-		}
-	]);
+	//from external js
+	var DHUCoinContract = getContractABI();
 
+	//set contract address
 	var contractAddr = '0x5ad99b84b5015acee06da7a383817a8b056a1ec2';
-	$('#ContractAddress').html('Contract Address: ' + contractAddr);
+	// $('#ContractAddress').html('Contract Address: ' + contractAddr);
+
+	//get the contract at the address
 	var _DHUCoinContract = DHUCoinContract.at(contractAddr);
 
-	var curEvent;
-	var Events = {
-		"ValidateEvent": 1,
-		"InvalidateEvent": 2,
-		"StartBlockChangeEvent": 3,
-		"EndBlockChangeEvent": 4,
-		"MainWalletChangeEvent": 5,
-		"SecondaryWalletChangeEvent": 6,
-		"AuthorizeEvent": 7,
-		"UnauthorizeEvent": 8,
-		"AddStudentEvent": 9
-	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//button to whitelist an address
 	$("#btnVerify").click(function () {
@@ -1641,7 +39,6 @@ $(document).ready(function () {
 		showHideLoader(1);
 
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			console.log(res);
 			_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
 				if (response.args.id == curUserId) {
 					TransactionComplete(response);
@@ -1672,7 +69,6 @@ $(document).ready(function () {
 		showHideLoader(1);
 
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			console.log(res);
 			_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
 				if (response.args.id == curUserId) {
 					TransactionComplete(response);
@@ -1690,28 +86,28 @@ $(document).ready(function () {
 		});
 	});
 
-	//Common event for verifation
-	// var verificationEvent = _DHUCoinContract.Verification({}, 'latest');
+	//button for checking if verified or not
+	$("#btnCheckVer").click(function () {
+		ResetNavbar();
+		var _addToChk = $("#addToChk").val();
+		//Input check
+		if (isEmpty(_addToChk) || !isNumber(_addToChk)) {
+			InvalidAddressAlert();
+			return;
+		}
+		showHideLoader(1);
 
-	// verificationEvent.watch(function (error, result) {
-	// 	if (!error) {
-	// 		TransactionComplete(result);
+		_DHUCoinContract.verified(_addToChk, (err, res) => {
+			if (err) {
+				showHideLoader(0);
+			} else {
+				ResetNavbar();
+				$("#transactionResult").html('Verified: ' + res);
+			}
+		});
+	});
 
-	// 		///////////////////////////@
-	// 		// switch (curEvent) {
-	// 		// 	case Events["ValidateEvent"]:
-	// 		// 		$("#transactionResult").html('Address verified: ' + result.args.investor);
-	// 		// 		break;
-	// 		// 	case Events["InvalidateEvent"]:
-	// 		// 		$("#transactionResult").html('Address removed: ' + result.args.investor);
-	// 		// 		break;
-	// 		// }
-
-	// 	} else {
-	// 		alert("Something went wrong!");
-	// 		showHideLoader(0);
-	// 	}
-	// });
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//button to authorize students
 	$("#btnAuthorize").click(function () {
@@ -1726,7 +122,6 @@ $(document).ready(function () {
 		showHideLoader(1);
 
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			console.log(res);
 			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
 				if (response.args.id == curUserId) {
 					TransactionComplete(response);
@@ -1757,7 +152,6 @@ $(document).ready(function () {
 		showHideLoader(1);
 
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			console.log(res);
 			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
 				if (response.args.id == curUserId) {
 					TransactionComplete(response);
@@ -1774,30 +168,6 @@ $(document).ready(function () {
 			});
 		});
 	});
-
-
-	//event for authorization
-	// var AuthorizationEvent = _DHUCoinContract.Authorization({}, 'latest');
-
-	// AuthorizationEvent.watch(function (error, result) {
-	// 	if (!error) {
-	// 		TransactionComplete(result);
-
-	// 		/////////////////////////@
-	// 		switch (curEvent) {
-	// 			case Events["AuthorizeEvent"]:
-	// 				$("#transactionResult").html('Student address authorized: ' + result.args.student);
-	// 				break;
-	// 			case Events["UnauthorizeEvent"]:
-	// 				$("#transactionResult").html('Student address unauthorized: ' + result.args.student);
-	// 				break;
-	// 		}
-
-	// 	} else {
-	// 		alert("Something went wrong!");
-	// 		showHideLoader(0);
-	// 	}
-	// });
 
 	//button for checking if a student is applicable or not
 	$("#btnCheckAuthorization").click(function () {
@@ -1835,7 +205,6 @@ $(document).ready(function () {
 		// Sign student info
 		var addr = web3.eth.accounts[0];
 		var hex_msg = web3.sha3(studentInfo);
-		// var hex_msg = '0x' + toHex(studentInfo);
 
 		web3.personal.sign(hex_msg, addr, function (err, res) {
 			if (err) {
@@ -1843,17 +212,7 @@ $(document).ready(function () {
 				showHideLoader(0);
 				return;
 			} else {
-
-				// var proceed = confirm('Would you like to proceed to registration?');
-
-				// if (proceed) {
-				// } else {
-				// 	ResetNavbar();
-				// 	return;
-				// }
-
 				web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-					console.log(res);
 					_DHUCoinContract.StudentInfo({}, 'latest').watch((err, response) => {
 						showHideLoader(0);
 						if (response.args.id == curUserId) {
@@ -1880,30 +239,6 @@ $(document).ready(function () {
 		});
 	});
 
-	//event for adding student
-	// var AddStudentEvent = _DHUCoinContract.StudentInfo({}, 'latest');
-
-	// AddStudentEvent.watch(function (error, result) {
-	// 	if (!error) {
-	// 		TransactionComplete(result);
-
-	// 		///////////////////////@
-	// 		switch (curEvent) {
-	// 			case Events["AddStudentEvent"]:
-	// 				$("#transactionResult").html('<br/>Student address: ' + result.args.studentAddress +
-	// 					', <br/>StudentId: ' + result.args.studentID +
-	// 					', <br/>Student firstName: ' + result.args.firstName +
-	// 					', <br/>Student lastname: ' + result.args.lastName +
-	// 					', <br/>Student gpa: ' + result.args.gpa);
-	// 				break;
-	// 		}
-
-	// 	} else {
-	// 		alert("Something went wrong!");
-	// 		showHideLoader(0);
-	// 	}
-	// });
-
 	//Button to remove student from applicable list
 	$("#btnRemoveStudent").click(function () {
 		ResetNavbar();
@@ -1916,12 +251,22 @@ $(document).ready(function () {
 		}
 
 		showHideLoader(1);
-		_DHUCoinContract.removeStudent(_addtoRemoveAuth, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				$("#TransHash").html('Transaction Hash: ' + res);
-			}
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
+				if (response.args.id == curUserId) {
+					TransactionComplete(response);
+					$("#transactionResult").html('Student removed: ' + response.args.student);
+				}
+			});
+
+			_DHUCoinContract.removeStudent.sendTransaction(_addtoRemoveAuth, curUserId, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				}
+			});
 		});
 	});
 
@@ -2056,7 +401,7 @@ $(document).ready(function () {
 						} else {
 							showHideLoader(0);
 							var response = res.toString() === _studentAddr ? 'true' : 'false';
-							$("#transactionResult").html('Is signed: ' + response);
+							$("#transactionResult").html('Student info is signed: ' + response);
 						}
 					});
 				} else {
@@ -2065,24 +410,120 @@ $(document).ready(function () {
 				}
 			}
 		});
-
 	});
 
-	//button to mint tokens
-	$("#btnMine").click(function () {
-		ResetNavbar();
-		var _privateKey = $("#privateKey").val();
+	//////////////////////////////////////////////////////////////////////////////////
 
+	//button for setting grant vested contract
+	$("#btnSetVestedContract").click(function () {
+		ResetNavbar();
+		var _vestedContractAdd = $("#vestedContractAdd").val();
+		//Input check
+		if (isEmpty(_vestedContractAdd) || !isNumber(_vestedContractAdd)) {
+			InvalidAddressAlert();
+			return;
+		}
 		showHideLoader(1);
-		_DHUCoinContract.proofOfWork(_privateKey, (err, res) => {
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			_DHUCoinContract.setGrantVestedDHUContract.sendTransaction(_vestedContractAdd, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				} else {
+					$("#transactionResult").html('Transaction Hash: ' + res);
+					showHideLoader(0);
+				}
+			});
+		});
+	});
+
+	//Button for checking granted vesting contract address
+	$("#btnChkGVCA").click(function () {
+		ResetNavbar();
+		showHideLoader(1);
+		_DHUCoinContract.grantVestedDHUContract((err, res) => {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
+				ResetNavbar();
+				$("#transactionResult").html('Grant vested DHU contract address: ' + res);
 			}
 		});
 	});
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	//Button to update tge start block
+	$("#btnNewStartBlock").click(function () {
+		ResetNavbar();
+		var _newStartBlock = $("#newStartBlock").val();
+		showHideLoader(1);
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			_DHUCoinContract.changeTgeStartBlock.sendTransaction(_newStartBlock, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				} else {
+					$("#transactionResult").html('Transaction Hash: ' + res);
+					showHideLoader(0);
+				}
+			});
+		});
+	});
+
+	//Button for checking tge start block
+	$("#btnCheckSBlk").click(function () {
+		ResetNavbar();
+		showHideLoader(1);
+		_DHUCoinContract.tgeStartBlock((err, res) => {
+			if (err) {
+				showHideLoader(0);
+			} else {
+				ResetNavbar();
+				$("#transactionResult").html('Crowd sale starts at block No. ' + res);
+			}
+		});
+	});
+
+	//Button to update tge End block
+	$("#btnNewEndBlock").click(function () {
+		ResetNavbar();
+		var _newEndBlock = $("#newEndBlock").val();
+		showHideLoader(1);
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			_DHUCoinContract.changeTgeEndBlock.sendTransaction(_newEndBlock, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				} else {
+					$("#transactionResult").html('Transaction Hash: ' + res);
+					showHideLoader(0);
+				}
+			});
+		});
+	});
+
+	//Button for checking tge end block
+	$("#btnCheckEBlk").click(function () {
+		ResetNavbar();
+		showHideLoader(1);
+		_DHUCoinContract.tgeEndBlock((err, res) => {
+			if (err) {
+				showHideLoader(0);
+			} else {
+				ResetNavbar();
+				$("#transactionResult").html('Crowd sale ends at block No. ' + res);
+			}
+		});
+	});
+
+	////////////////////////////////////////////////////////////////////////////////
 
 	//Button to update main wallet
 	$("#btnNewMW").click(function () {
@@ -2094,14 +535,32 @@ $(document).ready(function () {
 			InvalidAddressAlert();
 			return;
 		}
-
 		showHideLoader(1);
-		_DHUCoinContract.changeMainWallet(_addMW, (err, res) => {
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			_DHUCoinContract.changeMainWallet.sendTransaction(_addMW, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				} else {
+					$("#transactionResult").html('Transaction Hash: ' + res);
+					showHideLoader(0);
+				}
+			});
+		});
+	});
+
+	//Button for checking main wallet
+	$("#btnChkMainWallet").click(function () {
+		ResetNavbar();
+		showHideLoader(1);
+		_DHUCoinContract.mainWallet((err, res) => {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
+				ResetNavbar();
+				$("#transactionResult").html('Main wallet: ' + res);
 			}
 		});
 	});
@@ -2116,264 +575,37 @@ $(document).ready(function () {
 			InvalidAddressAlert();
 			return;
 		}
-
 		showHideLoader(1);
-		_DHUCoinContract.changeSecondaryWallet(_addSW, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
-			}
+
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			_DHUCoinContract.changeSecondaryWallet.sendTransaction(_addSW, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				} else {
+					$("#transactionResult").html('Transaction Hash: ' + res);
+					showHideLoader(0);
+				}
+			});
 		});
 	});
 
-	//Event for checking start/end block
-	//var WalletChangeEvent = _DHUCoinContract.WalletChanged({}, 'latest');
-
-	//WalletChangeEvent.watch(function (error, result) {
-	//    if (!error) {
-	//        TransactionComplete(result);
-
-	//        switch (curEvent) {
-	//            case Events["MainWalletChangeEvent"]:
-	//                $("#transactionResult").html('New Main Wallet: ' + result.args.newAddress);
-	//                break;
-	//            case Events["SecondaryWalletChangeEvent"]:
-	//                $("#transactionResult").html('New Secondary Wallet: ' + result.args.newAddress);
-	//                break;
-	//            default:
-	//                alert("Something went wrong!");
-	//        }
-
-	//    } else {
-	//        alert("Something went wrong!");
-	//        showHideLoader(0);
-	//    }
-	//});
-
-	//Button to update tge start block
-	$("#btnNewStartBlock").click(function () {
-		ResetNavbar();
-		var _newStartBlock = $("#newStartBlock").val();
-		showHideLoader(1);
-
-		_DHUCoinContract.changeTgeStartBlock(_newStartBlock, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
-			}
-		});
-	});
-
-	//Button to update tge End block
-	$("#btnNewEndBlock").click(function () {
-		ResetNavbar();
-		var _newEndBlock = $("#newEndBlock").val();
-		showHideLoader(1);
-
-		_DHUCoinContract.changeTgeEndBlock(_newEndBlock, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
-			}
-		});
-	});
-
-	//Event for checking start/end block
-	//var ICOBlockChangeEvent = _DHUCoinContract.ICOBlockChanged({}, 'latest');
-
-	//ICOBlockChangeEvent.watch(function (error, result) {
-	//    if (!error) {
-	//        TransactionComplete(result);
-
-	//        switch (curEvent) {
-	//            case Events["StartBlockChangeEvent"]:
-	//                $("#transactionResult").html('New ICO start block: ' + result.args.block);
-	//                break;
-	//            case Events["EndBlockChangeEvent"]:
-	//                $("#transactionResult").html('New ICO end block: ' + result.args.block);
-	//                break;
-	//            default:
-	//                alert("Something went wrong!");
-	//        }
-
-	//    } else {
-	//        alert("Something went wrong!");
-	//        showHideLoader(0);
-	//    }
-	//});
-
-	//Button to enable trading
-	$("#btnEnableTrading").click(function () {
+	//Button for checking secondary wallet
+	$("#btnChkSecWallet").click(function () {
 		ResetNavbar();
 		showHideLoader(1);
-		_DHUCoinContract.enableTrading((err, res) => {
+		_DHUCoinContract.secondaryWallet((err, res) => {
 			if (err) {
 				showHideLoader(0);
 			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
+				ResetNavbar();
+				$("#transactionResult").html('Secondary wallet: ' + res);
 			}
 		});
 	});
 
-	//Button to liquidate
-	$("#btnLiquidate").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.liquidate((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
-			}
-		});
-	});
-
-	//Event for liquidation
-	//var LiquidateEvent = _DHUCoinContract.Liquidations({}, 'latest');
-
-	//LiquidateEvent.watch(function (error, result) {
-	//    if (!error) {
-	//        TransactionComplete(result);
-	//        $("#transactionResult").html('Investor: ' + result.args.investor + ', Amount of tokens: ' + result.args.amountTokens + ', Amount of Ether: ' + result.args.etherAmount);
-	//    } else {
-	//        alert("Something went wrong!");
-	//        showHideLoader(0);
-	//    }
-	//});
-
-	//button to halt ICO
-	//$("#btnHaltICO").click(function () {
-	//    ResetNavbar();
-	//    showHideLoader(1);
-	//    _DHUCoinContract.haltICO((err, res) => {
-	//        if (err) {
-	//            showHideLoader(0);
-	//        } else {
-	//            $("#TransHash").html('Transaction Hash: ' + res);
-	//            showHideLoader(0);
-	//        }
-	//    });
-	//});
-
-	//button to unhalt ICO
-	//$("#btnUnhaltICO").click(function () {
-	//    ResetNavbar();
-	//    showHideLoader(1);
-	//    _DHUCoinContract.unhaltICO((err, res) => {
-	//        if (err) {
-	//            showHideLoader(0);
-	//        } else {
-	//            $("#TransHash").html('Transaction Hash: ' + res);
-	//            showHideLoader(0);
-	//        }
-	//    });
-	//});
-
-	//Button to Request liquidation
-	$("#btnRequestLiquidation").click(function () {
-		ResetNavbar();
-		var _tokensToLiquidate = $("#tokensToLiquidate").val();
-		showHideLoader(1);
-		_DHUCoinContract.requestLiquidation(_tokensToLiquidate, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
-			}
-		});
-	});
-
-	//Event for liquidation request
-	//var RequestLiquidateEvent = _DHUCoinContract.LiquidationCall({}, 'latest');
-
-	//RequestLiquidateEvent.watch(function (error, result) {
-	//    if (!error) {
-	//        TransactionComplete(result);
-	//        $("#transactionResult").html('Investor: ' + result.args.investor + ', Amount of tokens: ' + result.args.amountTokens);
-	//    } else {
-	//        alert("Something went wrong!");
-	//        showHideLoader(0);
-	//    }
-	//});
-
-
-	//Button to add liquidity
-	//$("#btnAddLiquidity").click(function () {
-	//    ResetNavbar();
-	//    showHideLoader(1);
-	//    _DHUCoinContract.addLiquidity((err, res) => {
-	//        if (err) {
-	//            showHideLoader(0);
-	//        }
-	//    });
-	//});
-
-	//Event for adding liquidity
-	//var Addliquidity = _DHUCoinContract.AddLiquidity({}, 'latest');
-
-	//Addliquidity.watch(function (error, result) {
-	//    if (!error) {
-	//        TransactionComplete(result);
-	//        $("#transactionResult").html('Amount of ether: ' + result.args.etherAmount);
-	//    } else {
-	//        alert("Something went wrong!");
-	//        showHideLoader(0);
-	//    }
-	//});
-
-	//Button to remove liquidity
-	//$("#btnRemoveLiquidity").click(function () {
-	//    ResetNavbar();
-	//    var _tokensToRemoveLiq = $("#tokensToRemoveLiq").val();
-	//    showHideLoader(1);
-	//    _DHUCoinContract.removeLiquidity(_tokensToRemoveLiq, (err, res) => {
-	//        if (err) {
-	//            showHideLoader(0);
-	//        }
-	//    });
-	//});
-
-	//Event for removing liquidity
-	//var RemoveLiquidityEvent = _DHUCoinContract.RemoveLiquidity({}, 'latest');
-
-	//RemoveLiquidityEvent.watch(function (error, result) {
-	//    if (!error) {
-	//        TransactionComplete(result);
-	//        $("#transactionResult").html('Amount of ether: ' + result.args.etherAmount);
-	//    } else {
-	//        alert("Something went wrong!");
-	//        showHideLoader(0);
-	//    }
-	//});
-
-	//button for setting grant vested contract
-	$("#btnSetVestedContract").click(function () {
-		ResetNavbar();
-		var _vestedContractAdd = $("#vestedContractAdd").val();
-		//Input check
-		if (isEmpty(_vestedContractAdd) || !isNumber(_vestedContractAdd)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-		_DHUCoinContract.setGrantVestedDHUContract(_vestedContractAdd, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
-			}
-		});
-	});
+	/////////////////////////////////////////////////////////////////////////////
 
 	//button to update top price integer
 	$("#btnUpdatePrice").click(function () {
@@ -2405,41 +637,37 @@ $(document).ready(function () {
 		});
 	});
 
-	//Common event for getting updated price
-	// var updatePriceEvent = _DHUCoinContract.PriceDHUUpdate({}, 'latest');
-
-	// updatePriceEvent.watch(function (error, result) {
-	// 	if (!error) {
-	// 		TransactionComplete(result);
-
-	// 		//////////////////@
-	// 		$("#transactionResult").html('Price updated: priceNumerator: ' + result.args.topInteger + ', priceDenominator: ' + result.args.bottomInteger);
-	// 	} else {
-	// 		alert("Something went wrong!");
-	// 		showHideLoader(0);
-	// 	}
-	// });
-
-	//button for checking if verified or not
-	$("#btnCheckVer").click(function () {
+	//Button for checking current price
+	$("#btnChkCurPrice").click(function () {
 		ResetNavbar();
-		var _addToChk = $("#addToChk").val();
-		//Input check
-		if (isEmpty(_addToChk) || !isNumber(_addToChk)) {
-			InvalidAddressAlert();
-			return;
-		}
 		showHideLoader(1);
-
-		_DHUCoinContract.verified(_addToChk, (err, res) => {
+		_DHUCoinContract.currentPrice((err, res) => {
 			if (err) {
 				showHideLoader(0);
 			} else {
 				ResetNavbar();
-				$("#transactionResult").html('Verified: ' + res);
+				$("#transactionResult").html('Top Integer: ' + res[0] + ', Bottom Integer: ' + res[1]);
 			}
 		});
 	});
+
+	//////////////////////////////////////////////////////////////////////////////
+
+	//Button for checking price update waiting time
+	$("#btnChkPriceUp").click(function () {
+		ResetNavbar();
+		showHideLoader(1);
+		_DHUCoinContract.priceUpdateWaitingTime((err, res) => {
+			if (err) {
+				showHideLoader(0);
+			} else {
+				ResetNavbar();
+				$("#transactionResult").html('Price update wait time: ' + res + ' sec' + ' (' + res / 60 / 60 + ' hr/hrs)');
+			}
+		});
+	});
+
+	///////////////////////////////////////////////////////////////////////////////////
 
 	//button for checking total supply
 	$("#btnCheckSup").click(function () {
@@ -2483,55 +711,6 @@ $(document).ready(function () {
 		});
 	});
 
-	//Button for checking tge start block
-	$("#btnCheckSBlk").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.tgeStartBlock((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Crowd sale starts at block No. ' + res);
-			}
-		});
-	});
-
-	//Button for checking tge end block
-	$("#btnCheckEBlk").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.tgeEndBlock((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Crowd sale ends at block No. ' + res);
-			}
-		});
-	});
-
-	//Button for checking balance of people
-	$("#btnCheckBal").click(function () {
-		ResetNavbar();
-		var _addToChkBal = $("#addToChkBal").val();
-		//Input check
-		if (isEmpty(_addToChkBal) || !isNumber(_addToChkBal)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		_DHUCoinContract.balanceOf(_addToChkBal, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Balance: ' + res / Math.pow(10, 18) + ' DHU');
-			}
-		});
-	});
-
 	//Button to check liquidation
 	$("#btnCheckLiq").click(function () {
 		ResetNavbar();
@@ -2546,20 +725,6 @@ $(document).ready(function () {
 			}
 		});
 	});
-
-	//Button for checking Max supply
-	//$("#btnMaxSupply").click(function () {
-	//    ResetNavbar();
-	//    showHideLoader(1);
-	//    _DHUCoinContract.maxSupply((err, res) => {
-	//        if (err) {
-	//            showHideLoader(0);
-	//        } else {
-	//            ResetNavbar();
-	//            $("#transactionResult").html('Max Supply: ' + res / Math.pow(10, 18) + ' DHU');
-	//        }
-	//    });
-	//});
 
 	//Button for checking set trading status 
 	$("#btnSetTrading").click(function () {
@@ -2595,78 +760,6 @@ $(document).ready(function () {
 			}
 		});
 	});
-
-	//Button for checking secondary wallet
-	$("#btnChkSecWallet").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.secondaryWallet((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Secondary wallet: ' + res);
-			}
-		});
-	});
-
-	//Button for checking main wallet
-	$("#btnChkMainWallet").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.mainWallet((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Main wallet: ' + res);
-			}
-		});
-	});
-
-	//Button for checking granted vesting contract address
-	$("#btnChkGVCA").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.grantVestedDHUContract((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Grant vested DHU contract address: ' + res);
-			}
-		});
-	});
-
-	//Button for checking price update waiting time
-	$("#btnChkPriceUp").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.priceUpdateWaitingTime((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Price update wait time: ' + res + ' sec' + ' (' + res / 60 / 60 + ' hr/hrs)');
-			}
-		});
-	});
-
-	//button for checking DHU price
-	//$("#btnChkDHUPri").click(function () {
-	//    ResetNavbar();
-	//    var _valDHUPrice = $("#valDHUPrice").val();
-	//    showHideLoader(1);
-
-	//    _DHUCoinContract.prices(_valDHUPrice, (err, res) => {
-	//        if (err) {
-	//            showHideLoader(0);
-	//        } else {
-	//            ResetNavbar();
-	//            $("#transactionResult").html('Top Integer: ' + res[0] + ', Bottom Integer: ' + res[1]);
-	//        }
-	//    });
-	//});
 
 	//Button for checking min investment value
 	$("#btnChkMinInv").click(function () {
@@ -2710,20 +803,6 @@ $(document).ready(function () {
 		});
 	});
 
-	//Button for checking current price
-	$("#btnChkCurPrice").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.currentPrice((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Top Integer: ' + res[0] + ', Bottom Integer: ' + res[1]);
-			}
-		});
-	});
-
 	//button for changing price update wait time
 	$("#btnChngPriUpdTime").click(function () {
 		ResetNavbar();
@@ -2739,6 +818,30 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	////////////////////////////////////////////////////////////////////////////
+
+	//button to mint tokens
+	$("#btnMine").click(function () {
+		ResetNavbar();
+		var _privateKey = $("#privateKey").val();
+
+		showHideLoader(1);
+		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+			_DHUCoinContract.proofOfWork.sendTransaction(_privateKey, {
+				nonce: res + 1
+			}, (err, res) => {
+				if (err) {
+					showHideLoader(0);
+				} else {
+					$("#transactionResult").html('Transaction Hash: ' + res);
+					showHideLoader(0);
+				}
+			});
+		});
+	});
+
+	//////////////////////////////////////////////////////////////////////////////
 
 	//Clear navbar
 	function ResetNavbar() {
@@ -2785,4 +888,283 @@ $(document).ready(function () {
 		}
 	}
 
+	//make a random user id on each login (using as session id)
+	function makeid() {
+		var text = "";
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for (var i = 0; i < 15; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		return text;
+	}
+
 });
+
+////////////////////////////NOT USED CODE//////////////////////////////
+
+//Button to enable trading
+// $("#btnEnableTrading").click(function () {
+// 	ResetNavbar();
+// 	showHideLoader(1);
+// 	_DHUCoinContract.enableTrading((err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			$("#transactionResult").html('Transaction Hash: ' + res);
+// 			showHideLoader(0);
+// 		}
+// 	});
+// });
+
+//Button to liquidate
+// $("#btnLiquidate").click(function () {
+// 	ResetNavbar();
+// 	showHideLoader(1);
+// 	_DHUCoinContract.liquidate((err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			$("#transactionResult").html('Transaction Hash: ' + res);
+// 			showHideLoader(0);
+// 		}
+// 	});
+// });
+
+//Button to Request liquidation
+// $("#btnRequestLiquidation").click(function () {
+// 	ResetNavbar();
+// 	var _tokensToLiquidate = $("#tokensToLiquidate").val();
+// 	showHideLoader(1);
+// 	_DHUCoinContract.requestLiquidation(_tokensToLiquidate, (err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			$("#transactionResult").html('Transaction Hash: ' + res);
+// 			showHideLoader(0);
+// 		}
+// 	});
+// });
+
+//Button for checking balance of people
+// $("#btnCheckBal").click(function () {
+// 	ResetNavbar();
+// 	var _addToChkBal = $("#addToChkBal").val();
+// 	//Input check
+// 	if (isEmpty(_addToChkBal) || !isNumber(_addToChkBal)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	_DHUCoinContract.balanceOf(_addToChkBal, (err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			ResetNavbar();
+// 			$("#transactionResult").html('Balance: ' + res / Math.pow(10, 18) + ' DHU');
+// 		}
+// 	});
+// });
+
+//button for checking DHU price
+//$("#btnChkDHUPri").click(function () {
+//    ResetNavbar();
+//    var _valDHUPrice = $("#valDHUPrice").val();
+//    showHideLoader(1);
+
+//    _DHUCoinContract.prices(_valDHUPrice, (err, res) => {
+//        if (err) {
+//            showHideLoader(0);
+//        } else {
+//            ResetNavbar();
+//            $("#transactionResult").html('Top Integer: ' + res[0] + ', Bottom Integer: ' + res[1]);
+//        }
+//    });
+//});
+
+//button for checking DHU price
+//$("#btnChkDHUPri").click(function () {
+//    ResetNavbar();
+//    var _valDHUPrice = $("#valDHUPrice").val();
+//    showHideLoader(1);
+
+//    _DHUCoinContract.prices(_valDHUPrice, (err, res) => {
+//        if (err) {
+//            showHideLoader(0);
+//        } else {
+//            ResetNavbar();
+//            $("#transactionResult").html('Top Integer: ' + res[0] + ', Bottom Integer: ' + res[1]);
+//        }
+//    });
+//});
+
+//Button for checking Max supply
+//$("#btnMaxSupply").click(function () {
+//    ResetNavbar();
+//    showHideLoader(1);
+//    _DHUCoinContract.maxSupply((err, res) => {
+//        if (err) {
+//            showHideLoader(0);
+//        } else {
+//            ResetNavbar();
+//            $("#transactionResult").html('Max Supply: ' + res / Math.pow(10, 18) + ' DHU');
+//        }
+//    });
+//});
+
+//Event for liquidation
+//var LiquidateEvent = _DHUCoinContract.Liquidations({}, 'latest');
+
+//LiquidateEvent.watch(function (error, result) {
+//    if (!error) {
+//        TransactionComplete(result);
+//        $("#transactionResult").html('Investor: ' + result.args.investor + ', Amount of tokens: ' + result.args.amountTokens + ', Amount of Ether: ' + result.args.etherAmount);
+//    } else {
+//        alert("Something went wrong!");
+//        showHideLoader(0);
+//    }
+//});
+
+//button to halt ICO
+//$("#btnHaltICO").click(function () {
+//    ResetNavbar();
+//    showHideLoader(1);
+//    _DHUCoinContract.haltICO((err, res) => {
+//        if (err) {
+//            showHideLoader(0);
+//        } else {
+//            $("#TransHash").html('Transaction Hash: ' + res);
+//            showHideLoader(0);
+//        }
+//    });
+//});
+
+//button to unhalt ICO
+//$("#btnUnhaltICO").click(function () {
+//    ResetNavbar();
+//    showHideLoader(1);
+//    _DHUCoinContract.unhaltICO((err, res) => {
+//        if (err) {
+//            showHideLoader(0);
+//        } else {
+//            $("#TransHash").html('Transaction Hash: ' + res);
+//            showHideLoader(0);
+//        }
+//    });
+//});
+
+//Event for liquidation request
+//var RequestLiquidateEvent = _DHUCoinContract.LiquidationCall({}, 'latest');
+
+//RequestLiquidateEvent.watch(function (error, result) {
+//    if (!error) {
+//        TransactionComplete(result);
+//        $("#transactionResult").html('Investor: ' + result.args.investor + ', Amount of tokens: ' + result.args.amountTokens);
+//    } else {
+//        alert("Something went wrong!");
+//        showHideLoader(0);
+//    }
+//});
+
+
+//Button to add liquidity
+//$("#btnAddLiquidity").click(function () {
+//    ResetNavbar();
+//    showHideLoader(1);
+//    _DHUCoinContract.addLiquidity((err, res) => {
+//        if (err) {
+//            showHideLoader(0);
+//        }
+//    });
+//});
+
+//Event for adding liquidity
+//var Addliquidity = _DHUCoinContract.AddLiquidity({}, 'latest');
+
+//Addliquidity.watch(function (error, result) {
+//    if (!error) {
+//        TransactionComplete(result);
+//        $("#transactionResult").html('Amount of ether: ' + result.args.etherAmount);
+//    } else {
+//        alert("Something went wrong!");
+//        showHideLoader(0);
+//    }
+//});
+
+//Button to remove liquidity
+//$("#btnRemoveLiquidity").click(function () {
+//    ResetNavbar();
+//    var _tokensToRemoveLiq = $("#tokensToRemoveLiq").val();
+//    showHideLoader(1);
+//    _DHUCoinContract.removeLiquidity(_tokensToRemoveLiq, (err, res) => {
+//        if (err) {
+//            showHideLoader(0);
+//        }
+//    });
+//});
+
+//Event for removing liquidity
+//var RemoveLiquidityEvent = _DHUCoinContract.RemoveLiquidity({}, 'latest');
+
+//RemoveLiquidityEvent.watch(function (error, result) {
+//    if (!error) {
+//        TransactionComplete(result);
+//        $("#transactionResult").html('Amount of ether: ' + result.args.etherAmount);
+//    } else {
+//        alert("Something went wrong!");
+//        showHideLoader(0);
+//    }
+//});
+
+//Common event for getting updated price
+// var updatePriceEvent = _DHUCoinContract.PriceDHUUpdate({}, 'latest');
+
+// updatePriceEvent.watch(function (error, result) {
+// 	if (!error) {
+// 		TransactionComplete(result);
+
+// 		//////////////////@
+// 		$("#transactionResult").html('Price updated: priceNumerator: ' + result.args.topInteger + ', priceDenominator: ' + result.args.bottomInteger);
+// 	} else {
+// 		alert("Something went wrong!");
+// 		showHideLoader(0);
+// 	}
+// });
+
+// const qr = new EthereumQRPlugin();
+// const qrCode = qr.toCanvas({
+// 	"to": "0x074b420fbc61bcca59e1a370733330fe5bc9f8bd",
+// 	"from": "0xda261f1d3b1ee75a3423525757442781d4df50d9",
+// 	"value": 1,
+// 	"gas": 100000,
+// 	"mode": "contract_function",
+// 	"functionSignature": {
+// 	  "name": "transfer",
+// 	  "payable": false,
+// 	  "name": "symbol",
+// 		"outputs": [
+// 			{
+// 			"name": "",
+// 			"type": "string"
+// 		}
+// 	]
+// 	},
+// 	"argsDefaults": [
+// 	  {
+// 		"name": "to",
+// 		"value": "0xtokensrecipient"
+// 	  },
+// 	  {
+// 		"name": "value",
+// 		"value": 1000000000000000000
+// 	  }
+// 	]
+//   }, {
+// 	selector: '#ethereum-qr-code',
+//   })
+
+//   qrCode.then((code) => {
+// 	console.log('Your QR is generated!')
+// 	console.log(code.value)
+//   });
