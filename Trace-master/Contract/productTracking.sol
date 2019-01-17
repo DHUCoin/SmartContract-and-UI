@@ -1,198 +1,202 @@
 pragma solidity ^ 0.4 .7;
 
+import "github.com/Arachnid/solidity-stringutils/strings.sol";
+
 contract owned {
 
-    address public owner;
+    address public admin;
 
     function owned() public {
-        owner = msg.sender;
+        admin = msg.sender;
     }
 
     modifier onlyOwner {
-        if (msg.sender != owner) throw;
+        if (msg.sender != admin) throw;
         _;
     }
 
     function transferOwnership(address newOwner) public onlyOwner {
-        owner = newOwner;
+        admin = newOwner;
     }
 }
 
 contract Database is owned {
 
     // addresses of the Products referenced in this database
-    address[] public products;
+    address[] public students;
 
-    // sturuct to hold the products owned by a handler and the handler info 
-    struct HandlerProducts {
-        // Addresses of products owned by Handler
-        address[] _ownedProducts;
-        // Name of the owner
-        string _handlerName;
-        // Information about the owner
-        string _additionalHandlerInfo;
+    // sturuct to hold the students owned by a handler and the handler info 
+    struct SeminarStudents {
+        // Addresses of students owned by Handler
+        address[] _studentsInSeminar;
+        // seminar name
+        string _seminarName;
+        // Name of the seminar
+        string _seminarTeacher;
+        // Information about the seminar
+        string _additionalSeminarInfo;
     }
 
-    // Addresses  of all the handlers
-    address[] public handlers;
+    // Addresses  of all the seminars
+    address[] public seminars;
 
-    // Relates a handler address to the handler products and handler info
-    mapping(address => HandlerProducts) productByHandlers;
-    
-    // Map verified addresses
-    mapping (address => bool) public verified;
-    
-    modifier onlyVerified{
-        require(verified[msg.sender]);
-        _;
-    }
+    // Relates a handler address to the handler students and handler info
+    mapping(address => SeminarStudents) studentsInSeminars;
 
     function Database() public {}
 
     function () public {
         // If anyone wants to send Ether to this contract, the transaction gets rejected
         throw;
-    }
-    
-    function verifyHandler(address handler) external onlyOwner{
-        verified[handler] = true;
-    }
-    
-    function removeVerifiedHandler(address handler) external onlyOwner{
-        verified[handler] = false;
-    }
+    }    
 
     /* Function to add a product reference
      productAddress address of the product */
-    function storeProductReference(address _productAddress, address _handler, string _handlerName, string _handlerInfo) public {
-        products.push(_productAddress);
+    function storeStudentReference(address _studentAddress, address _seminar, string _seminarName, string _seminarTeacher, string _seminarInfo) public {
+        students.push(_studentAddress);
 
-        if (handlers.length == 0) {
-            handlers.push(_handler);
-            addProductForHandler(_handler, _handlerName, _handlerInfo, _productAddress);
+        if (seminars.length == 0) {
+            seminars.push(_seminar);
+            addStudentToSeminar(_seminar, _seminarName, _seminarTeacher, _seminarInfo, _studentAddress);
         } else {
-            if (!isHandlerPresent(_handler)) {
-                handlers.push(_handler);
-                addProductForHandler(_handler, _handlerName, _handlerInfo, _productAddress);
+            if (!isSeminarPresent(_seminar)) {
+                seminars.push(_seminar);
+                addStudentToSeminar(_seminar, _seminarName, _seminarTeacher, _seminarInfo, _studentAddress);
             } else {
-                addProductForHandler(_handler, _handlerName, _handlerInfo, _productAddress);
+                addStudentToSeminar(_seminar, _seminarName, _seminarTeacher, _seminarInfo, _studentAddress);
             }
         }
     }
 
     /* Function to check if the handler already
      exists in the database or not*/
-    function isHandlerPresent(address handlerAddr) view private returns(bool) {
-        for (uint i = 0; i < handlers.length; i++) {
-            if (handlers[i] == handlerAddr) {
+    function isSeminarPresent(address seminarAddress) view private returns(bool) {
+        for (uint i = 0; i < seminars.length; i++) {
+            if (seminars[i] == seminarAddress) {
                 return true;
             }
         }
     }
 
     /* Function to add a product and the product information */
-    function addProductForHandler(address _handlerAddr, string _handlerName, string _handlerInfo, address _productAddr) private {
-        productByHandlers[_handlerAddr]._ownedProducts.push(_productAddr);
-        productByHandlers[_handlerAddr]._handlerName = _handlerName;
-        productByHandlers[_handlerAddr]._additionalHandlerInfo = _handlerInfo;
+    function addStudentToSeminar(address _seminarAddress, string _seminarName, string _seminarTeacher, string _seminarInfo, address _studentAddress) private {
+        studentsInSeminars[_seminarAddress]._studentsInSeminar.push(_studentAddress);
+        studentsInSeminars[_seminarAddress]._seminarName = _seminarName;
+        studentsInSeminars[_seminarAddress]._seminarTeacher = _seminarTeacher;
+        studentsInSeminars[_seminarAddress]._additionalSeminarInfo = _seminarInfo;
     }
 
-    /* Function to list all the products present
+    /* Function to list all the students present
      in the database*/
-    function getAllProducts() view public returns(address[]) {
-        return products;
+    function getAllStudents() view public returns(address[]) {
+        return students;
     }
     
-    function getAllHandlers() view public returns(address[]) {
-        return handlers;
+    function getAllSeminars() view public returns(address[]) {
+        return seminars;
     }
 
-    /* Function to list all the products owened 
+    /* Function to list all the students owened 
        by a handler present in the database*/
-    function getHandler(address _address) view public returns(string, string, address[]) {
-        return (productByHandlers[_address]._handlerName, productByHandlers[_address]._additionalHandlerInfo, productByHandlers[_address]._ownedProducts);
+    function getSeminar(address _address) view public returns(string, string, string, address[]) {
+        return (studentsInSeminars[_address]._seminarName, studentsInSeminars[_address]._seminarTeacher, studentsInSeminars[_address]._additionalSeminarInfo, studentsInSeminars[_address]._studentsInSeminar);
     }
 }
 
 
-contract Product {
-    // Reference to its database contract.
-    address public DATABASE_CONTRACT;
+contract Student {
+   using strings for *;
+   struct StudentStruct{
+        // Reference to its database contract.
+        address DATABASE_CONTRACT;
+        // indicates the studentName of a product.
+        string studentName;
+        // Student number
+        string studentId;
+        // GPA
+        uint gpa;
+        // Additional information about the Student, generally as a JSON object
+        string additionalInformation;
+        // Refence to its seminar
+        address seminar;
+        // Handler's studentName
+        string seminarName;
+        // Handler's studentName
+        string seminarTeacher;
+        // Handler's info
+        string seminarInfo;
+    }
+
+    // holds the students info
+    StudentStruct public student;
+
     // Reference to its product category.
-    address public PRODUCT_CATEGORY;
-    // Refence to its owner
-    address public owner;
-    // Handler's name
-    string public ownerName;
-    // Handler's info
-    string public ownerInfo;
+    address public Admin;
 
-
-    // This struct represents an action realized by a handler on the product.
-    struct Action {
-        // description of the action.
-        string description;
-        // address of the product's owner
-        address owner;
-        // Instant of time when the Action is done.
-        uint timestamp;
-        // Block when the Action is done.
-        uint blockNumber;
-    }
-
-    // if the Product is consumed the transaction can't be done.
-    modifier notConsumed {
-        if (isConsumed)
-            throw;
-        _;
-    }
-
-    // addresses of the products which are built by this Product.
+    // addresses of the students which are built by this Student.
     address[] public childProducts;
 
-    // indicates if a product has been consumed or not.
-    bool public isConsumed;
+    // This struct represents an action realized by a handler on the product.
+    struct StudentHistory {
+        // description of the action.
+        string description;
+        // address of the product's seminar
+        address seminar;
+        // Instant of time when the StudentHistory is done.
+        uint timestamp;
+        // Block when the StudentHistory is done.
+        uint blockNumber;
+        //old gpa
+        uint oldGpa;
+    }
 
-    // indicates the name of a product.
-    string public name;
-
-    // Additional information about the Product, generally as a JSON object
-    string public additionalInformation;
-
-    // all the actions which have been applied to the Product.
-    Action[] public actions;
+    // all the actions which have been applied to the Student.
+    StudentHistory[] public actions;
 
     /////////////////
     // Constructor //
     /////////////////
 
-    /* _name The name of the Product
-       _additionalInformation Additional information about the Product
-       _ownerProducts Addresses of the owner of the Product.
+    /* _studentName The studentName of the Student
+       _additionalInformation Additional information about the Student
+       _ownerProducts Addresses of the seminar of the Student.
        _DATABASE_CONTRACT Reference to its database contract
-       _PRODUCT_CATEGORY Reference to its product factory */
-    function Product(string _name, string _additionalInformation, address _DATABASE_CONTRACT,
-        address _PRODUCT_CATEGORY, string _handlerName, string _handlerInfo) public {
-        name = _name;
-        isConsumed = false;
-        additionalInformation = _additionalInformation;
+       _Admin Reference to its product factory */
+    function Student(string _studentInfo, address _seminarAddress, address _DATABASE_CONTRACT, uint _gpa) public {
 
-        DATABASE_CONTRACT = _DATABASE_CONTRACT;
-        PRODUCT_CATEGORY = _PRODUCT_CATEGORY;
-        owner = msg.sender;
-        ownerName = _handlerName;
-        ownerInfo = _handlerInfo;
+        var s = _studentInfo.toSlice();
+        var delim = ".".toSlice();
+        var studentInfoSliced = new string[](s.count(delim) + 1);
+        for(uint i = 0; i < studentInfoSliced.length; i++) {
+            studentInfoSliced[i] = s.split(delim).toString();
+        }
 
-        Action memory creation;
-        creation.description = "Product creation";
-        creation.owner = msg.sender;
+        StudentStruct memory newStudent;
+        newStudent.studentId = studentInfoSliced[0];
+        newStudent.studentName = studentInfoSliced[1];
+        newStudent.additionalInformation = studentInfoSliced[2];
+        newStudent.seminarName = studentInfoSliced[3];
+        newStudent.seminarTeacher = studentInfoSliced[4];
+        newStudent.seminarInfo = studentInfoSliced[5];
+        newStudent.seminar = _seminarAddress;
+        newStudent.DATABASE_CONTRACT = _DATABASE_CONTRACT;
+        newStudent.gpa = _gpa;
+
+        student = newStudent;
+
+        Admin = msg.sender;
+
+        StudentHistory memory creation;
+        creation.description = "Student creation";
+        creation.seminar = _seminarAddress;
         creation.timestamp = now;
         creation.blockNumber = block.number;
+        creation.oldGpa = _gpa;
 
         actions.push(creation);
 
-        Database database = Database(DATABASE_CONTRACT);
-        database.storeProductReference(this, owner, _handlerName, _handlerInfo);
+        Database database = Database(_DATABASE_CONTRACT);
+        database.storeStudentReference(this, _seminarAddress, studentInfoSliced[3], studentInfoSliced[4], studentInfoSliced[5]);
     }
 
     function () public {
@@ -200,17 +204,17 @@ contract Product {
         throw;
     }
 
-    /* Function to add an Action to the product.
-       _description The description of the Action.
-       _newProductNames In case that this Action creates more products from
-              this Product, the names of the new products should be provided here.
-       _newProductsAdditionalInformation In case that this Action creates more products from
-              this Product, the additional information of the new products should be provided here.
+    /* Function to add an StudentHistory to the product.
+       _description The description of the StudentHistory.
+       _newProductNames In case that this StudentHistory creates more students from
+              this Student, the names of the new students should be provided here.
+       _newProductsAdditionalInformation In case that this StudentHistory creates more students from
+              this Student, the additional information of the new students should be provided here.
        _consumed True if the product becomes consumed after the action. */
-    //   function addAction(bytes32 description, bytes32[] newProductsNames, bytes32[] newProductsAdditionalInformation, bool _consumed) notConsumed {
+    //   function addAction(bytes32 description, bytes32[] newProductsNames, bytes32[] newProductsAdditionalInformation, bool _consumed) {
     //     if (newProductsNames.length != newProductsAdditionalInformation.length) throw;
 
-    //     Action memory action;
+    //     StudentHistory memory action;
     //     action.handler = msg.sender;
     //     action.description = description;
     //     action.timestamp = now;
@@ -218,74 +222,68 @@ contract Product {
 
     //     actions.push(action);
 
-    //     ProductFactory productFactory = ProductFactory(PRODUCT_CATEGORY);
+    //     Seminar productFactory = Seminar(Admin);
 
     //     for (uint i = 0; i < newProductsNames.length; ++i) {
     //       address[] memory ownerProducts = new address[](1);
     //       ownerProducts[0] = this;
-    //       productFactory.createProduct(newProductsNames[i], newProductsAdditionalInformation[i], ownerProducts, DATABASE_CONTRACT);
+    //       productFactory.createStudent(newProductsNames[i], newProductsAdditionalInformation[i], ownerProducts, DATABASE_CONTRACT);
     //     }
 
     //     isConsumed = _consumed;
     //   }
 
-    /* Function to merge some products to build a new one.
-       otherProducts addresses of the other products to be merged.
+    /* Function to merge some students to build a new one.
+       otherProducts addresses of the other students to be merged.
        newProductsName Name of the new product resulting of the merge.
        newProductAdditionalInformation Additional information of the new product resulting of the merge.*/
-    //   function merge(address[] otherProducts, bytes32 newProductName, bytes32 newProductAdditionalInformation) notConsumed {
-    //     ProductFactory productFactory = ProductFactory(PRODUCT_CATEGORY);
-    //     address newProduct = productFactory.createProduct(newProductName, newProductAdditionalInformation, otherProducts, DATABASE_CONTRACT);
+    //   function merge(address[] otherProducts, bytes32 newProductName, bytes32 newProductAdditionalInformation) {
+    //     Seminar productFactory = Seminar(Admin)
+    //     address newProduct = productFactory.createStudent(newProductName, newProductAdditionalInformation, otherProducts, DATABASE_CONTRACT);
 
     //     this.collaborateInMerge(newProduct);
     //     for (uint i = 0; i < otherProducts.length; ++i) {
-    //       Product prod = Product(otherProducts[i]);
+    //       Student prod = Student(otherProducts[i]);
     //       prod.collaborateInMerge(newProduct);
     //     }
     //   }
 
-    /* Function to collaborate in a merge with some products to build a new one.
+    /* Function to collaborate in a merge with some students to build a new one.
        newProductsAddress Address of the new product resulting of the merge. */
-    function collaborateInMerge(address newProductAddress) public notConsumed {
-        childProducts.push(newProductAddress);
+    function collaborateInMerge(address newStudentAddress, uint gpa) public {
+        childProducts.push(newStudentAddress);
 
-        Action memory action;
-        action.owner = this;
+        StudentHistory memory action;
+        action.seminar = this;
         action.description = "Collaborate in merge";
         action.timestamp = now;
         action.blockNumber = block.number;
+        action.oldGpa = gpa;
 
         actions.push(action);
-
-        this.consume();
-    }
-
-    /* Function to consume the Product */
-    function consume() public notConsumed {
-        isConsumed = true;
     }
 }
 
 
-contract ProductFactory {
+contract Seminar {
 
     /////////////////
     // Constructor //
     /////////////////
 
-    function ProductFactory() public {}
+    function Seminar() public {}
 
     function () public {
         // If anyone wants to send Ether to this contract, the transaction gets rejected
         throw;
     }
 
-    /* Function to create a Product
-       _name The name of the Product
-       _additionalInformation Additional information about the Product
-       _ownerProducts Addresses of the owner of the Product.
+    /* Function to create a Student
+       _studentName The studentName of the Student
+       _additionalInformation Additional information about the Student
+       _ownerProducts Addresses of the seminar of the Student.
        _DATABASE_CONTRACT Reference to its database contract */
-    function createProduct(string _name, string _additionalInformation, address DATABASE_CONTRACT, string _handlerName, string _handlerInfo) public returns(address) {
-        return new Product(_name, _additionalInformation, DATABASE_CONTRACT, this, _handlerName, _handlerInfo);
+    function createStudent(string _studentInfo, address DATABASE_CONTRACT, uint _gpa) public returns(address) {
+        return new Student(_studentInfo, this, DATABASE_CONTRACT, _gpa);
     }
 }
