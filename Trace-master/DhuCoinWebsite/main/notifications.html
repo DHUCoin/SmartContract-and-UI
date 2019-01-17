@@ -196,11 +196,15 @@
                 <div class="card-header card-header-primary">
                   <h4 class="card-title">担当者の詳細</h4>
                   <div class="col-md-8" style="float: left">
-                    <input type="text" class="form-control" placeholder="担当者検索" id="ownerToSearch" style="color:white">
+                    <div class="input-group no-border">
+                      <input type="text" class="form-control" placeholder="担当者検索" id="ownerToSearch" style="color:white">
+                      <button class="btn btn-white btn-round btn-just-icon" id="btnSearchOwner" value="検索">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                      </button>
+                    </div>
                   </div>
-                  <div class="pull-right">
-                    <input type="button" class="btn btn-primary pull-right" id="btnSearchOwner" value="検索" />
-                  </div>
+
                 </div>
                 <div class="card-body">
                   <form>
@@ -238,7 +242,7 @@
       </div>
       <input type="button" style="display:none" class="btn btn-primary pull-right" id="reloadHandlers" value="再読込" />
       <footer class="footer">
-        
+
         <div class="container-fluid">
 
           <div class="copyright float-right">

@@ -85,7 +85,7 @@
 			if (err) {} else {
 				_DHUCoinContract.secondaryWallet((err, res2) => {
 					if (err) {} else {
-						$("#adminWallets").html('メインウオレット: ' + res1 + '\r\nセカンダリウオレット: ' + res2);
+						$("#adminWallets").html('メインウオレット: ' + res1 + '<br/>' +'セカンダリウオレット: ' + res2);
 					}
 				});
 			}

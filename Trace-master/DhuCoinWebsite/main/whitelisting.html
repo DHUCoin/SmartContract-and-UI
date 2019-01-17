@@ -172,14 +172,14 @@
                 <div class="card-body">
                   <form>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-8">
                         <div class="form-group">
                           <label class="bmd-label-floating">学生のアドレス</label>
                           <input type="text" class="form-control" id="toVerifyAdd">
                         </div>
                       </div>
                     </div>
-                    
+
                     <input type="button" class="btn btn-primary pull-right" id="btnVerify" value="ホワイトリストする" />
                     <div class="clearfix"></div>
                   </form>
@@ -197,14 +197,14 @@
                 <div class="card-body">
                   <form>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-8">
                         <div class="form-group">
                           <label class="bmd-label-floating">学生のアドレス</label>
                           <input type="text" class="form-control" id="addToRemove">
                         </div>
                       </div>
                     </div>
-                    
+
                     <input type="button" class="btn btn-primary pull-right" id="btnRemoveAdd" value="ブラックリストする" />
                     <div class="clearfix"></div>
                   </form>
@@ -217,20 +217,27 @@
               <div class="card">
                 <div class="card-header card-header-primary">
                   <h4 class="card-title">学生の確認</h4>
-                  <p class="card-category">確認したい学生のアドレス</p>
+                  <div class="col-md-8">
+                    <div class="form-group">
+                      <div class="input-group no-border">
+                        <input type="text" class="form-control" placeholder="学生のアドレス" id="addToChk" style="color:white">
+                        <button type="button" class="btn btn-white btn-round btn-just-icon" id="btnCheckVer" value="学生の確認">
+                          <i class="material-icons">search</i>
+                          <div class="ripple-container"></div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="card-body">
                   <form>
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">学生のアドレス</label>
-                          <input type="text" class="form-control" id="addToChk">
+                          <label id="isStudentVerified" style="color :black"></label>
                         </div>
                       </div>
                     </div>
-                    
-                    <input type="button" class="btn btn-primary pull-right" id="btnCheckVer" value="学生の確認" />
                     <div class="clearfix"></div>
                   </form>
                 </div>
@@ -240,7 +247,7 @@
         </div>
       </div>
       <footer class="footer">
-          <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none"/>
+        <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none" />
         <div class="container-fluid">
 
           <div class="copyright float-right">

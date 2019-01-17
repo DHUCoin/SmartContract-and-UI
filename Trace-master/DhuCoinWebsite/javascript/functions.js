@@ -102,7 +102,7 @@ $(document).ready(function () {
 				showHideLoader(0);
 			} else {
 				ResetNavbar();
-				$("#transactionResult").html('Verified: ' + res);
+				$("#isStudentVerified").html(res.toString() === 'true' ? '承認済' : '未承認');
 			}
 		});
 	});
