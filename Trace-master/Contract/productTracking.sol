@@ -1,4 +1,4 @@
-pragma solidity ^ 0.4 .7;
+pragma solidity ^ 0.4.7;
 
 import "github.com/Arachnid/solidity-stringutils/strings.sol";
 
@@ -105,8 +105,19 @@ contract Database is owned {
 
 
 contract Student {
+
+    function () public {
+        // If anyone wants to send Ether to this contract, the transaction gets rejected
+        throw;
+    }
+
    using strings for *;
-   struct StudentStruct{
+
+   struct StudentInfoStruct{
+       // description of the action.
+        string description;
+       // admin that adds a student's action
+        address actionAdmin;
         // Reference to its database contract.
         address DATABASE_CONTRACT;
         // indicates the studentName of a product.
@@ -114,44 +125,17 @@ contract Student {
         // Student number
         string studentId;
         // GPA
-        uint gpa;
-        // Additional information about the Student, generally as a JSON object
-        string additionalInformation;
+        string gpa;
         // Refence to its seminar
-        address seminar;
-        // Handler's studentName
-        string seminarName;
-        // Handler's studentName
-        string seminarTeacher;
-        // Handler's info
-        string seminarInfo;
-    }
-
-    // holds the students info
-    StudentStruct public student;
-
-    // Reference to its product category.
-    address public Admin;
-
-    // addresses of the students which are built by this Student.
-    address[] public childProducts;
-
-    // This struct represents an action realized by a handler on the product.
-    struct StudentHistory {
-        // description of the action.
-        string description;
-        // address of the product's seminar
-        address seminar;
+        address seminarAddress;
         // Instant of time when the StudentHistory is done.
         uint timestamp;
         // Block when the StudentHistory is done.
         uint blockNumber;
-        //old gpa
-        uint oldGpa;
     }
 
-    // all the actions which have been applied to the Student.
-    StudentHistory[] public actions;
+    // holds the students info
+    StudentInfoStruct[] public studentInfo;
 
     /////////////////
     // Constructor //
@@ -162,7 +146,16 @@ contract Student {
        _ownerProducts Addresses of the seminar of the Student.
        _DATABASE_CONTRACT Reference to its database contract
        _Admin Reference to its product factory */
-    function Student(string _studentInfo, address _seminarAddress, address _DATABASE_CONTRACT, uint _gpa) public {
+    function Student(string _studentInfo, address seminarAddr, address databaseAddr) public {
+
+        InsertStudentInfo(_studentInfo, seminarAddr, databaseAddr);
+
+        Database database = Database(databaseAddr);
+        database.storeStudentReference(this, seminarAddr, "", "", "");
+    }
+
+    // Insert or update student info
+    function InsertStudentInfo(string _studentInfo, address seminarAddr, address databaseAddr){
 
         var s = _studentInfo.toSlice();
         var delim = ".".toSlice();
@@ -171,38 +164,25 @@ contract Student {
             studentInfoSliced[i] = s.split(delim).toString();
         }
 
-        StudentStruct memory newStudent;
-        newStudent.studentId = studentInfoSliced[0];
-        newStudent.studentName = studentInfoSliced[1];
-        newStudent.additionalInformation = studentInfoSliced[2];
-        newStudent.seminarName = studentInfoSliced[3];
-        newStudent.seminarTeacher = studentInfoSliced[4];
-        newStudent.seminarInfo = studentInfoSliced[5];
-        newStudent.seminar = _seminarAddress;
-        newStudent.DATABASE_CONTRACT = _DATABASE_CONTRACT;
-        newStudent.gpa = _gpa;
+        // input must have four parameters
+        if(studentInfoSliced.length != 4)throw;
 
-        student = newStudent;
+        // make a new student object
+        StudentInfoStruct memory newStudentInfo;
 
-        Admin = msg.sender;
+        newStudentInfo.description = studentInfoSliced[0]; //description
+        newStudentInfo.actionAdmin = msg.sender;
+        newStudentInfo.DATABASE_CONTRACT = databaseAddr; // database address
+        newStudentInfo.studentName = studentInfoSliced[1]; // student name
+        newStudentInfo.studentId = studentInfoSliced[2]; //student id
+        newStudentInfo.gpa = studentInfoSliced[3]; // student gpa
+        newStudentInfo.seminarAddress = seminarAddr; // seminar address
+        newStudentInfo.timestamp = now; 
+        newStudentInfo.blockNumber = block.number;
 
-        StudentHistory memory creation;
-        creation.description = "Student creation";
-        creation.seminar = _seminarAddress;
-        creation.timestamp = now;
-        creation.blockNumber = block.number;
-        creation.oldGpa = _gpa;
-
-        actions.push(creation);
-
-        Database database = Database(_DATABASE_CONTRACT);
-        database.storeStudentReference(this, _seminarAddress, studentInfoSliced[3], studentInfoSliced[4], studentInfoSliced[5]);
+        studentInfo.push(newStudentInfo);
     }
 
-    function () public {
-        // If anyone wants to send Ether to this contract, the transaction gets rejected
-        throw;
-    }
 
     /* Function to add an StudentHistory to the product.
        _description The description of the StudentHistory.
@@ -211,57 +191,12 @@ contract Student {
        _newProductsAdditionalInformation In case that this StudentHistory creates more students from
               this Student, the additional information of the new students should be provided here.
        _consumed True if the product becomes consumed after the action. */
-    //   function addAction(bytes32 description, bytes32[] newProductsNames, bytes32[] newProductsAdditionalInformation, bool _consumed) {
-    //     if (newProductsNames.length != newProductsAdditionalInformation.length) throw;
+      function updateStudentInfo(string newStudentInfo, address seminarAddr, address databaseAddr) {
 
-    //     StudentHistory memory action;
-    //     action.handler = msg.sender;
-    //     action.description = description;
-    //     action.timestamp = now;
-    //     action.blockNumber = block.number;
-
-    //     actions.push(action);
-
-    //     Seminar productFactory = Seminar(Admin);
-
-    //     for (uint i = 0; i < newProductsNames.length; ++i) {
-    //       address[] memory ownerProducts = new address[](1);
-    //       ownerProducts[0] = this;
-    //       productFactory.createStudent(newProductsNames[i], newProductsAdditionalInformation[i], ownerProducts, DATABASE_CONTRACT);
-    //     }
-
-    //     isConsumed = _consumed;
-    //   }
-
-    /* Function to merge some students to build a new one.
-       otherProducts addresses of the other students to be merged.
-       newProductsName Name of the new product resulting of the merge.
-       newProductAdditionalInformation Additional information of the new product resulting of the merge.*/
-    //   function merge(address[] otherProducts, bytes32 newProductName, bytes32 newProductAdditionalInformation) {
-    //     Seminar productFactory = Seminar(Admin)
-    //     address newProduct = productFactory.createStudent(newProductName, newProductAdditionalInformation, otherProducts, DATABASE_CONTRACT);
-
-    //     this.collaborateInMerge(newProduct);
-    //     for (uint i = 0; i < otherProducts.length; ++i) {
-    //       Student prod = Student(otherProducts[i]);
-    //       prod.collaborateInMerge(newProduct);
-    //     }
-    //   }
-
-    /* Function to collaborate in a merge with some students to build a new one.
-       newProductsAddress Address of the new product resulting of the merge. */
-    function collaborateInMerge(address newStudentAddress, uint gpa) public {
-        childProducts.push(newStudentAddress);
-
-        StudentHistory memory action;
-        action.seminar = this;
-        action.description = "Collaborate in merge";
-        action.timestamp = now;
-        action.blockNumber = block.number;
-        action.oldGpa = gpa;
-
-        actions.push(action);
-    }
+        // throw if no student info is present prior to updating the student info
+        if(studentInfo.length < 1)throw;
+        InsertStudentInfo(newStudentInfo, seminarAddr, databaseAddr);
+      }
 }
 
 
@@ -276,14 +211,5 @@ contract Seminar {
     function () public {
         // If anyone wants to send Ether to this contract, the transaction gets rejected
         throw;
-    }
-
-    /* Function to create a Student
-       _studentName The studentName of the Student
-       _additionalInformation Additional information about the Student
-       _ownerProducts Addresses of the seminar of the Student.
-       _DATABASE_CONTRACT Reference to its database contract */
-    function createStudent(string _studentInfo, address DATABASE_CONTRACT, uint _gpa) public returns(address) {
-        return new Student(_studentInfo, this, DATABASE_CONTRACT, _gpa);
     }
 }

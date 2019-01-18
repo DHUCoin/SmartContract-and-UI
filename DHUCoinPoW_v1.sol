@@ -1,5 +1,7 @@
 pragma solidity ^0.4.21;
 
+import "github.com/Arachnid/solidity-stringutils/strings.sol";
+
 contract SafeMath{
 
   // Math operations with safety checks that throw on error
@@ -118,11 +120,6 @@ contract DHUCoin is StandardToken{
     
     // Reachable if max amount raised
     //uint256 public maxSupply = 100000000e18;
-    
-    // TGE starting and ending blocks, can by changed as needed
-    uint256 public tgeStartBlock;
-    // tgeEndBlock = tgeStartBlock + n blocks
-    uint256 public tgeEndBlock;
 
     // Set the wallets with different levels of authority
     address public mainWallet;
@@ -143,18 +140,10 @@ contract DHUCoin is StandardToken{
     
     // Halt the crowdsale should any suspicious behavior of a third-party be identified
     // Tokens will be locked for trading until they are listed on exchanges
-    bool public haltTGE = false;
     bool public setTrading = false;
-    
-    // Count the number of registered students
-    address[] public studentsAccounts;
 
     // Map previousUpdateTime to the next price
     mapping (uint256 => PriceDHU) public prices;
-    // Map verified addresses
-    mapping (address => bool) public verified;
-    // Map all students
-    mapping (address => Student) public students;
     mapping (address => bool) public applicableStudents;
 
     event Verification(address indexed participant, string id);
@@ -172,22 +161,17 @@ contract DHUCoin is StandardToken{
     }
     
     // For students' info
-    struct Student{
-        string signature;
-        string studentID;
-        string firstName;
-        string lastName;
-        uint gpa;
-    }
+    // struct Student{
+    //     string signature;
+    //     string studentID;
+    //     string firstName;
+    //     string lastName;
+    //     uint gpa;
+    // }
     
     // GrantVestedDHUContract and mainWallet can transfer to allow team allocations
     modifier isSetTrading{
         require(setTrading || msg.sender == mainWallet || msg.sender == grantVestedDHUContract);
-        _;
-    }
-
-    modifier onlyVerified{
-        require(verified[msg.sender]);
         _;
     }
 
@@ -216,36 +200,25 @@ contract DHUCoin is StandardToken{
     }
     
     modifier miningAllowed{
-        require(block.number > tgeEndBlock);
         require(applicableStudents[msg.sender]);
         _;
     }
     
     address secondaryWalletInput = 0xa4923D031A412dDAe42fa828676088fA496774F0; 
     uint256 priceTopIntegerInput = 2500000;
-    uint256 startBlockInput = 3192200;
-    uint256 endBlockInput = 3192400;
 
     function DHUCoin(){
         require(secondaryWalletInput != address(0));
-        require(endBlockInput > startBlockInput);
         require(priceTopIntegerInput > 0);
         mainWallet = msg.sender;
         secondaryWallet = secondaryWalletInput;
-        verified[mainWallet] = true;
-        verified[secondaryWallet] = true;
         // priceTopIntegerInput = 2,500,000 for 1 ETH = 2500 DHU at 1 ETH = ３万円
         currentPrice = PriceDHU(priceTopIntegerInput, 1000);
-        tgeStartBlock = startBlockInput;
-        // tgeEndBlock = tgeStartBlock + n blocks
-        tgeEndBlock = endBlockInput;
-        //previousUpdateTime = now;
     }
 
     function setGrantVestedDHUContract(address grantVestedDHUContractInput) external onlyMainWallet{
         require(grantVestedDHUContractInput != address(0));
         grantVestedDHUContract = grantVestedDHUContractInput;
-        verified[grantVestedDHUContract] = true;
         grantVestedDHUSet = true;
     }
 
@@ -268,7 +241,6 @@ contract DHUCoin is StandardToken{
     }
 
     function updatePriceBottomInteger(uint256 newBottomInteger) external onlyMainWallet{
-        require(block.number > tgeEndBlock);
         require(newBottomInteger > 0);
         currentPrice.bottomInteger = newBottomInteger;
         // maps time to new Price
@@ -289,148 +261,34 @@ contract DHUCoin is StandardToken{
     }
     
     function airDropTokens(address participant, uint amountTokens, string id) external onlyMainWallet{
-        require(block.number < tgeEndBlock);
         require(participant != address(0));
-        verified[participant] = true;
         tokenAllocation(participant, amountTokens);
         emit Verification(participant, id);
         emit AirDrop(participant, amountTokens);
     }
-
-    function verifyParticipant(address participant, string id) external onlyControllingWallets{
-        verified[participant] = true;
-        emit Verification(participant, id);
-    }
     
-    function removeVerifiedParticipant(address participant, string id) external onlyControllingWallets{
-        verified[participant] = false;
-        emit Verification(participant, id);
-    }
+    // function authorizeStudent(address student, string id) external onlyControllingWallets{
+    //     applicableStudents[student] = true;
+    //     emit Authorization(student, id);
+    // }
     
-    function authorizeStudent(address student, string id) external onlyControllingWallets{
-        applicableStudents[student] = true;
-        emit Authorization(student, id);
-    }
-    
-    function removeAuthorizedStudent(address student, string id) external onlyControllingWallets{
-        applicableStudents[student] = false;
-        emit Authorization(student, id);
-    }
+    // function removeAuthorizedStudent(address student, string id) external onlyControllingWallets{
+    //     applicableStudents[student] = false;
+    //     emit Authorization(student, id);
+    // }
 
     function buy() external payable{
         buyTo(msg.sender);
     }
 
-    function buyTo(address participant) public payable onlyVerified{
-        require(!haltTGE);
+    function buyTo(address participant) public payable{
         require(participant != address(0));
         require(msg.value >= minInvestment);
-        require(block.number >= tgeStartBlock && block.number < tgeEndBlock);
-        uint256 tgeBottomInteger = tgeBottomIntegerPrice();
-        uint256 tokensToBuy = safeDiv(safeMul(msg.value, currentPrice.topInteger), tgeBottomInteger);
+        uint256 tokensToBuy = safeDiv(safeMul(msg.value, currentPrice.topInteger), currentPrice.bottomInteger);
         tokenAllocation(participant, tokensToBuy);
         // send ether to mainWallet
         mainWallet.transfer(msg.value);
         emit Buy(msg.sender, participant, msg.value, tokensToBuy);
-    }
-
-    // Bonus scheme during TGE
-    function tgeBottomIntegerPrice() public constant returns (uint256){
-        uint256 tgeDuration = safeSub(block.number, tgeStartBlock);
-        uint256 bottomInteger;
-        // tgeDuration < 115,200 blocks = 20 days
-        if (tgeDuration < 100){
-            return currentPrice.bottomInteger;
-        }
-        // tgeDuration < 230,400 blocks = 40 days
-        else if (tgeDuration < 200 ){
-            bottomInteger = safeDiv(safeMul(currentPrice.bottomInteger, 110), 1e2);
-            return bottomInteger;
-        }
-        else{
-            bottomInteger = safeDiv(safeMul(currentPrice.bottomInteger, 120), 1e2);
-            return bottomInteger;
-        }
-    }
-    
-    function addStudent(string _signature, string _studentID, string _firstName, string _lastName, uint _gpa, string id) public {
-        // Automatically whitelist student 
-        verified[msg.sender] = true;      
-
-        Student storage student = students[msg.sender];
-
-        // Delete student from struct and mapping if already present
-        for(uint i = 0; i < studentsAccounts.length; i ++){
-            if(msg.sender == studentsAccounts[i]){  
-                studentsAccounts[i] = studentsAccounts[studentsAccounts.length - 1];
-                delete studentsAccounts[i];
-                delete students[msg.sender];
-                studentsAccounts.length --;
-            }
-        }
-        
-        // Add student info
-        student.signature = _signature;
-        student.studentID = _studentID;
-        student.firstName = _firstName;
-        student.lastName = _lastName;
-        student.gpa = _gpa;
-        studentsAccounts.push(msg.sender) - 1;
-        
-        //Make student applicable for mining if the gpa is above 3
-        if (student.gpa >= 300 && student.gpa <= 400){
-            applicableStudents[msg.sender] = true;
-        }
-        else {
-            applicableStudents[msg.sender] = false;
-        }
-
-        emit Verification(msg.sender, id);
-        emit Authorization(msg.sender, id);
-        emit StudentInfo(msg.sender, _studentID, _firstName, _lastName, _gpa, id);
-    }
-    
-    function removeStudent(address _studentAddress, string id) public onlyControllingWallets{
-        verified[_studentAddress] = false;
-        applicableStudents[_studentAddress] = false;
-
-        // Delete student from struct and mapping
-        for(uint i = 0; i < studentsAccounts.length; i ++){
-            if(_studentAddress == studentsAccounts[i]){
-                studentsAccounts[i] = studentsAccounts[studentsAccounts.length - 1];
-                delete studentsAccounts[i];
-                delete students[_studentAddress];
-                studentsAccounts.length --;
-            }
-        }
-
-        emit Verification(_studentAddress,id);
-        emit Authorization(_studentAddress, id);
-    }
-    
-    function getAllStudents() view public returns(address[]) {
-        return studentsAccounts;
-    }
-    
-    function getOneStudent(address _address) view public returns (string, string, string, string, uint) {
-        return (students[_address].signature, students[_address].studentID, students[_address].firstName, students[_address].lastName, students[_address].gpa);
-    }
-    
-    function studentsNumber() view public returns (uint) {
-        return studentsAccounts.length;
-    }
-    
-    // change TGE starting date if more time needed for preparation
-    function changeTgeStartBlock(uint256 newTgeStartBlock) external onlyMainWallet{
-        require(block.number < tgeStartBlock);
-        require(block.number < newTgeStartBlock);
-        tgeStartBlock = newTgeStartBlock;
-    }
-
-    function changeTgeEndBlock(uint256 newTgeEndBlock) external onlyMainWallet{
-        require(block.number < tgeEndBlock);
-        require(block.number < newTgeEndBlock);
-        tgeEndBlock = newTgeEndBlock;
     }
     
     function changePriceUpdateWaitingTime(uint256 newPriceUpdateWaitingTime) external onlyMainWallet{
@@ -448,7 +306,6 @@ contract DHUCoin is StandardToken{
     }
 
     function enableTrading() external onlyMainWallet{
-        require(block.number > tgeEndBlock);
         setTrading = true;
     }
 
@@ -459,14 +316,6 @@ contract DHUCoin is StandardToken{
     
     function transferFrom(address _from, address _to, uint256 _value) isSetTrading returns (bool success){
         return super.transferFrom(_from, _to, _value);
-    }
-    
-    function haltTGE() external onlyMainWallet{
-        haltTGE = true;
-    }
-    
-    function unhaltTGE() external onlyMainWallet{
-        haltTGE = false;
     }
     
     // Fallback function
@@ -727,14 +576,231 @@ contract DHUCoin is StandardToken{
     }
     
     // Mining function for reward
-    function proofOfWork(uint256 privKey) miningAllowed public {
+    function proofOfWork(address privKey)  public {
         uint256 newTokens =  250 * 1e18; //Student reward
         
-        ellipticCurveDiscreteLogarithmAffine(privKey);
-        balances[msg.sender] += newTokens; 
+        Student studentContract = Student(privKey);
+        uint GPA = studentContract.getGpa();
         
-        totalSupply = safeAdd(totalSupply, newTokens); //Add the newly created tokens to the total supply 
+        if (GPA >= 300 && GPA <= 400){
+            ellipticCurveDiscreteLogarithmAffine(uint256(keccak256(privKey)));
+            balances[msg.sender] += newTokens;
+            totalSupply = safeAdd(totalSupply, newTokens); //Add the newly created tokens to the total supply 
+        }else{
+            throw;
+        }
+    }
+
+}
+
+contract owned {
+
+    address public admin;
+
+    function owned() public {
+        admin = msg.sender;
+    }
+
+    modifier onlyOwner {
+        if (msg.sender != admin) throw;
+        _;
+    }
+
+    function transferOwnership(address newOwner) public onlyOwner {
+        admin = newOwner;
+    }
+}
+
+contract Database is owned {
+
+    // addresses of the Products referenced in this database
+    address[] public students;
+
+    // sturuct to hold the students owned by a handler and the handler info 
+    struct SeminarStudents {
+        // Addresses of students owned by Handler
+        address[] _studentsInSeminar;
+        // seminar name
+        string _seminarName;
+        // Name of the seminar
+        string _seminarTeacher;
+        // Information about the seminar
+        string _additionalSeminarInfo;
+    }
+
+    // Addresses  of all the seminars
+    address[] public seminars;
+
+    // Relates a handler address to the handler students and handler info
+    mapping(address => SeminarStudents) studentsInSeminars;
+
+    function Database() public {}
+
+    function () public {
+        // If anyone wants to send Ether to this contract, the transaction gets rejected
+        throw;
+    }    
+
+    /* Function to add a product reference
+     productAddress address of the product */
+    function storeStudentReference(address _studentAddress, address _seminar, string _seminarName, string _seminarTeacher, string _seminarInfo) public {
+        students.push(_studentAddress);
+
+        if (seminars.length == 0) {
+            seminars.push(_seminar);
+            addStudentToSeminar(_seminar, _seminarName, _seminarTeacher, _seminarInfo, _studentAddress);
+        } else {
+            if (!isSeminarPresent(_seminar)) {
+                seminars.push(_seminar);
+                addStudentToSeminar(_seminar, _seminarName, _seminarTeacher, _seminarInfo, _studentAddress);
+            } else {
+                addStudentToSeminar(_seminar, _seminarName, _seminarTeacher, _seminarInfo, _studentAddress);
+            }
+        }
+    }
+
+    /* Function to check if the handler already
+     exists in the database or not*/
+    function isSeminarPresent(address seminarAddress) view private returns(bool) {
+        for (uint i = 0; i < seminars.length; i++) {
+            if (seminars[i] == seminarAddress) {
+                return true;
+            }
+        }
+    }
+
+    /* Function to add a product and the product information */
+    function addStudentToSeminar(address _seminarAddress, string _seminarName, string _seminarTeacher, string _seminarInfo, address _studentAddress) private {
+        studentsInSeminars[_seminarAddress]._studentsInSeminar.push(_studentAddress);
+        studentsInSeminars[_seminarAddress]._seminarName = _seminarName;
+        studentsInSeminars[_seminarAddress]._seminarTeacher = _seminarTeacher;
+        studentsInSeminars[_seminarAddress]._additionalSeminarInfo = _seminarInfo;
+    }
+
+    /* Function to list all the students present
+     in the database*/
+    function getAllStudents() view public returns(address[]) {
+        return students;
+    }
+    
+    function getAllSeminars() view public returns(address[]) {
+        return seminars;
+    }
+
+    /* Function to list all the students owened 
+       by a handler present in the database*/
+    function getSeminar(address _address) view public returns(string, string, string, address[]) {
+        return (studentsInSeminars[_address]._seminarName, studentsInSeminars[_address]._seminarTeacher, studentsInSeminars[_address]._additionalSeminarInfo, studentsInSeminars[_address]._studentsInSeminar);
+    }
+}
+
+
+contract Student {
+
+    function () public {
+        // If anyone wants to send Ether to this contract, the transaction gets rejected
+        throw;
+    }
+
+   using strings for *;
+   
+   uint currGpa;
+   
+   struct StudentInfoStruct{
+       // description of the action.
+        string description;
+       // admin that adds a student's action
+        address actionAdmin;
+        // Reference to its database contract.
+        address DATABASE_CONTRACT;
+        // indicates the studentName of a product.
+        string studentName;
+        // Student number
+        string studentId;
+        // GPA
+        uint gpa;
+        // Refence to its seminar
+        address seminarAddress;
+        // Instant of time when the StudentHistory is done.
+        uint timestamp;
+        // Block when the StudentHistory is done.
+        uint blockNumber;
+    }
+
+    // holds the students info
+    StudentInfoStruct[] public studentInfo;
+
+    /////////////////
+    // Constructor //
+    /////////////////
+
+    /* _studentName The studentName of the Student
+       _additionalInformation Additional information about the Student
+       _ownerProducts Addresses of the seminar of the Student.
+       _DATABASE_CONTRACT Reference to its database contract
+       _Admin Reference to its product factory */
+    function Student(string _studentInfo, address seminarAddr, address databaseAddr, uint newGpa) public {
+
+        InsertStudentInfo(_studentInfo, seminarAddr, databaseAddr, newGpa);
+
+        Database database = Database(databaseAddr);
+        database.storeStudentReference(this, seminarAddr, "", "", "");
+    }
+
+    // Insert or update student info
+    function InsertStudentInfo(string _studentInfo, address seminarAddr, address databaseAddr, uint newGpa){
+
+        var s = _studentInfo.toSlice();
+        var delim = ".".toSlice();
+        var studentInfoSliced = new string[](s.count(delim) + 1);
+        for(uint i = 0; i < studentInfoSliced.length; i++) {
+            studentInfoSliced[i] = s.split(delim).toString();
+        }
+
+        // input must have four parameters
+        if(studentInfoSliced.length != 3)throw;
+
+        // make a new student object
+        StudentInfoStruct memory newStudentInfo;
+
+        newStudentInfo.description = studentInfoSliced[0]; //description
+        newStudentInfo.actionAdmin = msg.sender;
+        newStudentInfo.DATABASE_CONTRACT = databaseAddr; // database address
+        newStudentInfo.studentName = studentInfoSliced[1]; // student name
+        newStudentInfo.studentId = studentInfoSliced[2]; //student id
+        newStudentInfo.gpa = newGpa; // student gpa
+        newStudentInfo.seminarAddress = seminarAddr; // seminar address
+        newStudentInfo.timestamp = now; 
+        newStudentInfo.blockNumber = block.number;
+
+        studentInfo.push(newStudentInfo);
         
-        applicableStudents[msg.sender] = false;
+        currGpa = newGpa;
+    }
+
+      function updateStudentInfo(string newStudentInfo, address seminarAddr, address databaseAddr, uint newGpa) {
+
+        // throw if no student info is present prior to updating the student info
+        if(studentInfo.length < 1)throw;
+        InsertStudentInfo(newStudentInfo, seminarAddr, databaseAddr, newGpa);
+      }
+      
+      function getGpa() public returns (uint){
+          return currGpa;
+      }
+}
+
+
+contract Seminar {
+
+    /////////////////
+    // Constructor //
+    /////////////////
+
+    function Seminar() public {}
+
+    function () public {
+        // If anyone wants to send Ether to this contract, the transaction gets rejected
+        throw;
     }
 }

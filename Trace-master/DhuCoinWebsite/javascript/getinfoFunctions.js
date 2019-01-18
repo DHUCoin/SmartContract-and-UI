@@ -63,7 +63,7 @@
 			if (err) {
 				$("#tokenPrice").html('N/A');
 			} else {
-				$("#tokenPrice").html('分子: ' + res[0] + ', 分母: ' + res[1]);
+				$("#tokenPrice").html(Math.round(res[0]/res[1]) + ' DHU/ETH');
 			}
 		});
 	}

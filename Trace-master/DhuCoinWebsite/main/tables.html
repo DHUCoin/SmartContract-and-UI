@@ -201,10 +201,13 @@
                 <div class="card-header card-header-primary">
                   <h4 class="card-title">学生詳細</h4>
                   <div class="col-md-8" style="float: left">
-                    <input type="text" class="form-control" placeholder="学生検索" id="productToSearch" style="color:white">
-                  </div>
-                  <div class="pull-right">
-                    <input type="button" class="btn btn-primary pull-right" id="searchProduct" value="検索" />
+                    <div class="input-group no-border">
+                      <input type="text" class="form-control" placeholder="学生検索" id="productToSearch" style="color:white">
+                      <button class="btn btn-white btn-round btn-just-icon" id="searchProduct" value="検索">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div class="card-body">
@@ -300,12 +303,13 @@
         </div>
         <footer class="footer">
           <div class="container-fluid">
-    
+
             <div class="copyright float-right">
               &copy;
               <script>
                 document.write(new Date().getFullYear())
-              </script>, made with <i class="material-icons">favorite</i> by
+              </script>, made with <i class="material-icons">favorite</i>
+              by
               <a href="" target="_blank">Theo and Jawad</a>.
             </div>
           </div>
