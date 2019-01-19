@@ -137,6 +137,20 @@ a:not([href]):not([tabindex]) {
   a:not([href]):not([tabindex]):focus {
     outline: 0; }
 
+#tab {
+  color: #ff8c00;
+  font-size: 1.063rem;
+  padding: 10px;
+  padding-right: 20px;
+}
+#tab:hover, #tab:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #ffa02e;
+  border-radius: 3px;
+  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
+}
+
 pre,
 code,
 kbd,
