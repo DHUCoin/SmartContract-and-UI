@@ -19,13 +19,12 @@
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
   <script src="../node_modules/web3/dist/web3.min.js"></script>
-  <script src="../javascript/traceabilityFunctions.js" type="text/javascript"></script>
   <script src="../javascript/dhuCoinABI.js" type="text/javascript"></script>
   <script src="../javascript/functions.js" type="text/javascript"></script>
   <script src="../javascript/display_functions.js" type="text/javascript"></script>
 </head>
 
-<body onload="document.getElementById('reloadHandlers').click()">
+<body onload="document.getElementById('reloadSeminarInfo').click()">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
       <!--
@@ -199,7 +198,7 @@
                           ゼミのアドレス
                         </th>
                       </thead>
-                      <tbody id="handlersTable">
+                      <tbody id="seminarTable">
                       </tbody>
                     </table>
                   </div>
@@ -214,8 +213,8 @@
                   <h4 class="card-title">ゼミの詳細</h4>
                   <div class="col-md-8" style="float: left">
                     <div class="input-group no-border">
-                      <input type="text" class="form-control" placeholder="ゼミ検索" id="ownerToSearch" style="color:white">
-                      <button class="btn btn-white btn-round btn-just-icon" id="btnSearchOwner" value="検索">
+                      <input type="text" class="form-control" placeholder="ゼミ検索" id="seminarToSearch" style="color:white">
+                      <button class="btn btn-white btn-round btn-just-icon" id="btnSearchSeminar" value="検索">
                         <i class="material-icons">search</i>
                         <div class="ripple-container"></div>
                       </button>
@@ -228,13 +227,13 @@
                       <div class="col-md-8">
                         <div class="form-group">
                           <label>ゼミ名</label>
-                          <input type="text" class="form-control" id="handlerName">
+                          <input type="text" class="form-control" id="seminarName">
                         </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-8">
-                        <div class="form-group" id="handlerProductsList">
+                        <div class="form-group" id="studentsInSeminarList">
                           <label>ゼミ生のリスト</label>
                           <!-- <input type="text" class="form-control" id="ProductsOwned"> -->
                         </div>
@@ -248,7 +247,7 @@
           </div>
         </div>
       </div>
-      <input type="button" style="display:none" class="btn btn-primary pull-right" id="reloadHandlers" value="再読込" />
+      <input type="button" style="display:none" class="btn btn-primary pull-right" id="reloadSeminarInfo" value="再読込" />
       <footer class="footer">
 
         <div class="container-fluid">
@@ -279,45 +278,21 @@
   <script src="../assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
+
   <script>
-    //Change address to the database address in use///////////////////////////////////////////////////////////
-    var DatabaseAddr = '0x68666f7f023e8c6b4a2ca615885d00e668af76b1';
+    /////////////////////////////////////////////////DATABASE CONTRACT///////////////////////////////////////////////
+
+    //Change address to the database address in use////////////////////////////////////////////////////////
+    var DatabaseAddr = '0x2129ccd950dee7c62e9ae87306ac6a14fd8b4632';
 
     //ABI for contract
     var DatabaseContract = web3.eth.contract([{
         "constant": true,
-        "inputs": [],
-        "name": "getAllProducts",
-        "outputs": [{
-          "name": "",
-          "type": "address[]"
-        }],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [{
-          "name": "",
-          "type": "address"
-        }],
-        "name": "verified",
-        "outputs": [{
-          "name": "",
-          "type": "bool"
-        }],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
         "inputs": [{
           "name": "",
           "type": "uint256"
         }],
-        "name": "handlers",
+        "name": "students",
         "outputs": [{
           "name": "",
           "type": "address"
@@ -329,89 +304,30 @@
       {
         "constant": false,
         "inputs": [{
-            "name": "_productAddress",
+            "name": "_studentAddress",
             "type": "address"
           },
           {
-            "name": "_handler",
+            "name": "_seminar",
             "type": "address"
           },
           {
-            "name": "_handlerName",
+            "name": "_seminarName",
             "type": "string"
           },
           {
-            "name": "_handlerInfo",
+            "name": "_seminarTeacher",
+            "type": "string"
+          },
+          {
+            "name": "_seminarInfo",
             "type": "string"
           }
         ],
-        "name": "storeProductReference",
+        "name": "storeStudentReference",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [{
-          "name": "handler",
-          "type": "address"
-        }],
-        "name": "removeVerifiedHandler",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [{
-          "name": "",
-          "type": "uint256"
-        }],
-        "name": "products",
-        "outputs": [{
-          "name": "",
-          "type": "address"
-        }],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "owner",
-        "outputs": [{
-          "name": "",
-          "type": "address"
-        }],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [{
-          "name": "handler",
-          "type": "address"
-        }],
-        "name": "verifyHandler",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getAllHandlers",
-        "outputs": [{
-          "name": "",
-          "type": "address[]"
-        }],
-        "payable": false,
-        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -420,8 +336,12 @@
           "name": "_address",
           "type": "address"
         }],
-        "name": "getHandler",
+        "name": "getSeminar",
         "outputs": [{
+            "name": "",
+            "type": "string"
+          },
+          {
             "name": "",
             "type": "string"
           },
@@ -439,6 +359,45 @@
         "type": "function"
       },
       {
+        "constant": true,
+        "inputs": [],
+        "name": "getAllSeminars",
+        "outputs": [{
+          "name": "",
+          "type": "address[]"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [{
+          "name": "",
+          "type": "uint256"
+        }],
+        "name": "seminars",
+        "outputs": [{
+          "name": "",
+          "type": "address"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getAllStudents",
+        "outputs": [{
+          "name": "",
+          "type": "address[]"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
         "constant": false,
         "inputs": [{
           "name": "newOwner",
@@ -448,6 +407,18 @@
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "admin",
+        "outputs": [{
+          "name": "",
+          "type": "address"
+        }],
+        "payable": false,
+        "stateMutability": "view",
         "type": "function"
       },
       {
@@ -465,11 +436,11 @@
 
     var _DatabaseContract = DatabaseContract.at(DatabaseAddr);
 
-    function getIndividualhandler(handlerAddress) {
+    function getIndividualseminar(seminarAddress) {
       Showloader();
-      _DatabaseContract.getHandler(handlerAddress, (err, res) => {
+      _DatabaseContract.getSeminar(seminarAddress, (err, res) => {
         if (err) {} else {
-          loadHandlerInfo(res);
+          loadSeminarInfo(res);
           if (res[0] === "") {
             alert("オーナーが見つかりませんでした。");
           }
@@ -478,19 +449,18 @@
       });
     }
 
-    function loadHandlerInfo(handler) {
-      document.getElementById('handlerName').value = handler[0];
-      document.getElementById('HandlerInfo').value = handler[1];
+    function loadSeminarInfo(seminar) {
+      document.getElementById('seminarName').value = seminar[0];
 
-      var productsOwned = handler[2];
-      var div = document.getElementById('handlerProductsList');
+      var studentsInSeminar = seminar[3];
+      var div = document.getElementById('studentsInSeminarList');
       removeTextInputs(div.children);
 
-      for (i = 0; i < productsOwned.length; i++) {
+      for (i = 0; i < studentsInSeminar.length; i++) {
         var input = document.createElement("input");
         input.type = "text";
         input.className = "form-control";
-        input.value = productsOwned[i];
+        input.value = studentsInSeminar[i];
         div.appendChild(input);
       }
     }
@@ -509,12 +479,58 @@
       }
     }
 
-    $('#btnSearchOwner').click(function () {
-      var _ownerToSearch = $('#ownerToSearch').val();
-      if (_ownerToSearch.length > 0) {
-        getIndividualhandler(_ownerToSearch);
+    $('#btnSearchSeminar').click(function () {
+      var _seminarToSearch = $('#seminarToSearch').val();
+      if (_seminarToSearch.length > 0) {
+        getIndividualseminar(_seminarToSearch);
       }
     });
+
+    //Reload the seminars list table
+    $("#reloadSeminarInfo").click(function () {
+      getSeminarData();
+    });
+
+    //Get all the seminars list from the database contract
+    function getSeminarData() {
+      _DatabaseContract.getAllSeminars((err, res) => {
+        if (err) {
+          console.log(res);
+        } else {
+          loadSeminarDataData(res);
+        }
+      });
+    }
+
+    //populate the seminars table
+    function loadSeminarDataData(seminars) {
+      for (i = 0; i < seminars.length; i++) {
+        populateSeminarTable((i + 1).toString(), seminars[i]);
+      }
+    }
+
+    function populateSeminarTable(number, seminar) {
+      tabBody = document.getElementById("seminarTable");
+      row = document.createElement("tr");
+
+      //first cell
+      cell1 = document.createElement("td");
+      textnode1 = document.createTextNode(number);
+      cell1.appendChild(textnode1);
+
+      //second cell
+      cell2 = document.createElement("td");
+      var link = document.createElement("a");
+      link.className = "hoverLink";
+      link.setAttribute('onclick', 'getIndividualseminar(this.innerHTML);');
+      textnode2 = document.createTextNode(seminar);
+      link.appendChild(textnode2);
+      cell2.appendChild(link);
+
+      row.appendChild(cell1);
+      row.appendChild(cell2);
+      tabBody.appendChild(row);
+    }
 
     function Showloader() {
       $("#loadingImg").show();

@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
 	//Used to differentiate output from the contract for each user
 	var curUserId = makeid();
 	// $('#UserId').html('UserId: ' + curUserId);
@@ -15,445 +14,15 @@ $(document).ready(function () {
 	web3.eth.defaultAccount = web3.eth.accounts[0];
 
 	//from external js
-	var DHUCoinContract = getContractABI();
+	var DHUCoinContract = getDHUCoinABI();
 
 	//set contract address
-	var contractAddr = '0x5ad99b84b5015acee06da7a383817a8b056a1ec2';
+	var contractAddr = '0x14e5ce493b7b94d7316551e084380f20afa1c1b4';
 	// $('#ContractAddress').html('Contract Address: ' + contractAddr);
 
 	//get the contract at the address
 	var _DHUCoinContract = DHUCoinContract.at(contractAddr);
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//button to whitelist an address
-	$("#btnVerify").click(function () {
-		ResetNavbar();
-
-		var _toVerifyAdd = $("#toVerifyAdd").val();
-		//Input check
-		if (isEmpty(_toVerifyAdd) || !isNumber(_toVerifyAdd)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
-				if (response.args.id == curUserId) {
-					TransactionComplete(response);
-					$("#transactionResult").html('Address verified: ' + response.args.participant);
-				}
-			});
-
-			_DHUCoinContract.verifyParticipant.sendTransaction(_toVerifyAdd, curUserId, {
-				nonce: res + 1
-			}, (err, res) => {
-				if (err) {
-					showHideLoader(0);
-				}
-			});
-		});
-	});
-
-	//button for blacklist an address
-	$("#btnRemoveAdd").click(function () {
-		ResetNavbar();
-		var _addToRemove = $("#addToRemove").val();
-
-		//Input check
-		if (isEmpty(_addToRemove) || !isNumber(_addToRemove)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
-				if (response.args.id == curUserId) {
-					TransactionComplete(response);
-					$("#transactionResult").html('Address Removed: ' + response.args.participant);
-				}
-			});
-
-			_DHUCoinContract.removeVerifiedParticipant.sendTransaction(_addToRemove, curUserId, {
-				nonce: res + 1
-			}, (err, res) => {
-				if (err) {
-					showHideLoader(0);
-				}
-			});
-		});
-	});
-
-	//button for checking if verified or not
-	$("#btnCheckVer").click(function () {
-		ResetNavbar();
-		var _addToChk = $("#addToChk").val();
-		//Input check
-		if (isEmpty(_addToChk) || !isNumber(_addToChk)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		_DHUCoinContract.verified(_addToChk, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#isStudentVerified").html(res.toString() === 'true' ? '承認済' : '未承認');
-			}
-		});
-	});
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//button to authorize students
-	$("#btnAuthorize").click(function () {
-		ResetNavbar();
-		var _toAuthorizeAdd = $("#toAuthorizeAdd").val();
-
-		//Input check
-		if (isEmpty(_toAuthorizeAdd) || !isNumber(_toAuthorizeAdd)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
-				if (response.args.id == curUserId) {
-					TransactionComplete(response);
-					$("#transactionResult").html('Address authorized: ' + response.args.student);
-				}
-			});
-
-			_DHUCoinContract.authorizeStudent.sendTransaction(_toAuthorizeAdd, curUserId, {
-				nonce: res + 1
-			}, (err, res) => {
-				if (err) {
-					showHideLoader(0);
-				}
-			});
-		});
-	});
-
-	//button to unauthorize student
-	$("#btnUnauthorize").click(function () {
-		ResetNavbar();
-		var _addToUnauthorize = $("#addToUnauthorize").val();
-
-		//Input check
-		if (isEmpty(_addToUnauthorize) || !isNumber(_addToUnauthorize)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
-				if (response.args.id == curUserId) {
-					TransactionComplete(response);
-					$("#transactionResult").html('Address unauthorized: ' + response.args.student);
-				}
-			});
-
-			_DHUCoinContract.authorizeStudent.sendTransaction(_addToUnauthorize, curUserId, {
-				nonce: res + 1
-			}, (err, res) => {
-				if (err) {
-					showHideLoader(0);
-				}
-			});
-		});
-	});
-
-	//button for checking if a student is applicable or not
-	$("#btnCheckAuthorization").click(function () {
-		ResetNavbar();
-		var _addToChkAuth = $("#addToChkAuth").val();
-		//Input check
-		if (isEmpty(_addToChkAuth) || !isNumber(_addToChkAuth)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		_DHUCoinContract.applicableStudents(_addToChkAuth, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Applicable Student: ' + res);
-			}
-		});
-	});
-
-	//button to add student 
-	$("#btnAddStudent").click(function () {
-		ResetNavbar();
-		var _studentId = $("#studentId").val();
-		var _firstname = $("#firstname").val();
-		var _lastname = $("#lastname").val();
-		var _gpa = $("#gpa").val() * 100; //to allow decimals multiply by 100 and when displaying divide by 100
-
-		showHideLoader(1);
-
-		var studentInfo = _studentId + '\n' + _firstname + '\n' + _lastname + '\n' + _gpa;
-
-		// Sign student info
-		var addr = web3.eth.accounts[0];
-		var hex_msg = web3.sha3(studentInfo);
-
-		web3.personal.sign(hex_msg, addr, function (err, res) {
-			if (err) {
-				alert('Could not sign information provided. Please try again.');
-				showHideLoader(0);
-				return;
-			} else {
-				web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-					_DHUCoinContract.StudentInfo({}, 'latest').watch((err, response) => {
-						showHideLoader(0);
-						if (response.args.id == curUserId) {
-							$("#transactionResult").html('<br/>Student address: ' + response.args.studentAddress +
-								', <br/>StudentId: ' + response.args.studentID +
-								', <br/>Student firstName: ' + response.args.firstName +
-								', <br/>Student lastname: ' + response.args.lastName +
-								', <br/>Student gpa: ' + response.args.gpa);
-						}
-					});
-
-					// Save signature public key to the contract 
-					signature = res.toString();
-
-					_DHUCoinContract.addStudent.sendTransaction(signature, _studentId, _firstname, _lastname, _gpa, curUserId, {
-						nonce: res + 1
-					}, (err, res) => {
-						if (err) {
-							showHideLoader(0);
-						}
-					});
-				});
-			}
-		});
-	});
-
-	//Button to remove student from applicable list
-	$("#btnRemoveStudent").click(function () {
-		ResetNavbar();
-		var _addtoRemoveAuth = $("#addtoRemoveAuth").val();
-
-		//Input check
-		if (isEmpty(_addtoRemoveAuth) || !isNumber(_addtoRemoveAuth)) {
-			InvalidAddressAlert();
-			return;
-		}
-
-		showHideLoader(1);
-
-		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
-				if (response.args.id == curUserId) {
-					TransactionComplete(response);
-					$("#transactionResult").html('Student removed: ' + response.args.student);
-				}
-			});
-
-			_DHUCoinContract.removeStudent.sendTransaction(_addtoRemoveAuth, curUserId, {
-				nonce: res + 1
-			}, (err, res) => {
-				if (err) {
-					showHideLoader(0);
-				}
-			});
-		});
-	});
-
-	//button for getting all students
-	$("#btnGetAllStudents").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.getAllStudents((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				var students = res.toString().split(',');
-				var studentStr = "";
-
-				for (i = 0; i < students.length; i++) {
-					studentStr += '<br/>Student ' + (i + 1).toString() + ': ' + students[i];
-				}
-
-				$("#transactionResult").html('Total No. of students: ' + students.length + studentStr);
-			}
-		});
-	});
-
-	//button for getting one students
-	$("#btnGetOneStudent").click(function () {
-		ResetNavbar();
-		var _addOneStudent = $("#addOneStudent").val();
-
-		//Input check
-		if (isEmpty(_addOneStudent) || !isNumber(_addOneStudent)) {
-			InvalidAddressAlert();
-			return;
-		}
-
-		showHideLoader(1);
-		_DHUCoinContract.getOneStudent(_addOneStudent, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				var students = res.toString().split(',');
-				var studentStr = "";
-
-				for (j = 0; j < students.length; j++) {
-					if (j == 1) {
-						studentStr += '<br/>Student ID: ' + students[j];
-					} else if (j == 2) {
-						studentStr += '<br/>Firstname: ' + students[j];
-					} else if (j == 3) {
-						studentStr += '<br/>Lastname: ' + students[j];
-					} else if (j == 4) {
-						studentStr += '<br/>gpa: ' + students[j] / 100;
-					}
-				}
-
-				$("#transactionResult").html('Student Info: ' + studentStr);
-			}
-		});
-	});
-
-	// Check if student info is signed or not button
-	$("#btnCheckIfSigned").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		var _studentAddr = $("#checkIfSigned").val();
-
-		//Input check
-		if (isEmpty(_studentAddr) || !isNumber(_studentAddr)) {
-			InvalidAddressAlert();
-			ResetNavbar();
-			return;
-		}
-
-		// Get student info from the contract 
-		_DHUCoinContract.getOneStudent(_studentAddr, (err, res) => {
-			if (err) {
-				showHideLoader(0);
-				alert('Something went wrong');
-			} else {
-				var students = res.toString().split(',');
-				var studentStr = "";
-
-				var signature = '';
-				var studentId = '';
-				var firstName = '';
-				var lastName = '';
-				var gpa = '';
-
-				for (j = 0; j < students.length; j++) {
-					if (j == 0) {
-						studentStr += "\nStudent signature: " + students[j];
-						signature = students[j];
-					} else if (j == 1) {
-						studentStr += "\nStudent ID: " + students[j];
-						studentId = students[j];
-					} else if (j == 2) {
-						studentStr += "\nFirstname: " + students[j];
-						firstName = students[j];
-					} else if (j == 3) {
-						studentStr += "\nLastname: " + students[j];
-						lastName = students[j];
-					} else {
-						studentStr += "\ngpa: " + students[j] / 100;
-						gpa = students[j];
-					}
-				}
-
-				if (signature === '') {
-					ResetNavbar();
-					alert('No such student');
-					return;
-				}
-
-				var proceed = confirm("Proceed with the following information? \nStudent Info: " + studentStr);
-				if (proceed) {
-
-					var studentInfo = studentId + '\n' + firstName + '\n' + lastName + '\n' + gpa;
-					var hex_msg = web3.sha3(studentInfo);
-
-					var r = signature.slice(0, 66);
-					var s = '0x' + signature.slice(66, 130);
-					var v = '0x' + signature.slice(130, 132);
-					v = web3.toDecimal(v);
-
-					// Check if the student signed the info or not
-					_DHUCoinContract.isSigned(hex_msg, v, r, s, (err, res) => {
-						if (err) {
-							ResetNavbar();
-							alert('Something went wrong');
-							return;
-						} else {
-							showHideLoader(0);
-							var response = res.toString() === _studentAddr ? 'true' : 'false';
-							$("#transactionResult").html('Student info is signed: ' + response);
-						}
-					});
-				} else {
-					ResetNavbar();
-					return;
-				}
-			}
-		});
-	});
-
-	//////////////////////////////////////////////////////////////////////////////////
-
-	//button for setting grant vested contract
-	$("#btnSetVestedContract").click(function () {
-		ResetNavbar();
-		var _vestedContractAdd = $("#vestedContractAdd").val();
-		//Input check
-		if (isEmpty(_vestedContractAdd) || !isNumber(_vestedContractAdd)) {
-			InvalidAddressAlert();
-			return;
-		}
-		showHideLoader(1);
-
-		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
-			_DHUCoinContract.setGrantVestedDHUContract.sendTransaction(_vestedContractAdd, {
-				nonce: res + 1
-			}, (err, res) => {
-				if (err) {
-					showHideLoader(0);
-				} else {
-					$("#transactionResult").html('Transaction Hash: ' + res);
-					showHideLoader(0);
-				}
-			});
-		});
-	});
-
-	//Button for checking granted vesting contract address
-	$("#btnChkGVCA").click(function () {
-		ResetNavbar();
-		showHideLoader(1);
-		_DHUCoinContract.grantVestedDHUContract((err, res) => {
-			if (err) {
-				showHideLoader(0);
-			} else {
-				ResetNavbar();
-				$("#transactionResult").html('Grant vested DHU contract address: ' + res);
-			}
-		});
-	});
-
-	///////////////////////////////////////////////////////////////////////////////////
 
 	//Button to update tge start block
 	$("#btnNewStartBlock").click(function () {
@@ -1168,3 +737,434 @@ $(document).ready(function () {
 // 	console.log('Your QR is generated!')
 // 	console.log(code.value)
 //   });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// //button to authorize students
+// $("#btnAuthorize").click(function () {
+// 	ResetNavbar();
+// 	var _toAuthorizeAdd = $("#toAuthorizeAdd").val();
+
+// 	//Input check
+// 	if (isEmpty(_toAuthorizeAdd) || !isNumber(_toAuthorizeAdd)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+// 		_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
+// 			if (response.args.id == curUserId) {
+// 				TransactionComplete(response);
+// 				$("#transactionResult").html('Address authorized: ' + response.args.student);
+// 			}
+// 		});
+
+// 		_DHUCoinContract.authorizeStudent.sendTransaction(_toAuthorizeAdd, curUserId, {
+// 			nonce: res + 1
+// 		}, (err, res) => {
+// 			if (err) {
+// 				showHideLoader(0);
+// 			}
+// 		});
+// 	});
+// });
+
+// //button to unauthorize student
+// $("#btnUnauthorize").click(function () {
+// 	ResetNavbar();
+// 	var _addToUnauthorize = $("#addToUnauthorize").val();
+
+// 	//Input check
+// 	if (isEmpty(_addToUnauthorize) || !isNumber(_addToUnauthorize)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+// 		_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
+// 			if (response.args.id == curUserId) {
+// 				TransactionComplete(response);
+// 				$("#transactionResult").html('Address unauthorized: ' + response.args.student);
+// 			}
+// 		});
+
+// 		_DHUCoinContract.authorizeStudent.sendTransaction(_addToUnauthorize, curUserId, {
+// 			nonce: res + 1
+// 		}, (err, res) => {
+// 			if (err) {
+// 				showHideLoader(0);
+// 			}
+// 		});
+// 	});
+// });
+
+// //button for checking if a student is applicable or not
+// $("#btnCheckAuthorization").click(function () {
+// 	ResetNavbar();
+// 	var _addToChkAuth = $("#addToChkAuth").val();
+// 	//Input check
+// 	if (isEmpty(_addToChkAuth) || !isNumber(_addToChkAuth)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	_DHUCoinContract.applicableStudents(_addToChkAuth, (err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			ResetNavbar();
+// 			$("#transactionResult").html('Applicable Student: ' + res);
+// 		}
+// 	});
+// });
+
+// //button to add student 
+// $("#btnAddStudent").click(function () {
+// 	ResetNavbar();
+// 	var _studentId = $("#studentId").val();
+// 	var _firstname = $("#firstname").val();
+// 	var _lastname = $("#lastname").val();
+// 	var _gpa = $("#gpa").val() * 100; //to allow decimals multiply by 100 and when displaying divide by 100
+
+// 	showHideLoader(1);
+
+// 	var studentInfo = _studentId + '\n' + _firstname + '\n' + _lastname + '\n' + _gpa;
+
+// 	// Sign student info
+// 	var addr = web3.eth.accounts[0];
+// 	var hex_msg = web3.sha3(studentInfo);
+
+// 	web3.personal.sign(hex_msg, addr, function (err, res) {
+// 		if (err) {
+// 			alert('Could not sign information provided. Please try again.');
+// 			showHideLoader(0);
+// 			return;
+// 		} else {
+// 			web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+// 				_DHUCoinContract.StudentInfo({}, 'latest').watch((err, response) => {
+// 					showHideLoader(0);
+// 					if (response.args.id == curUserId) {
+// 						$("#transactionResult").html('<br/>Student address: ' + response.args.studentAddress +
+// 							', <br/>StudentId: ' + response.args.studentID +
+// 							', <br/>Student firstName: ' + response.args.firstName +
+// 							', <br/>Student lastname: ' + response.args.lastName +
+// 							', <br/>Student gpa: ' + response.args.gpa);
+// 					}
+// 				});
+
+// 				// Save signature public key to the contract 
+// 				signature = res.toString();
+
+// 				_DHUCoinContract.addStudent.sendTransaction(signature, _studentId, _firstname, _lastname, _gpa, curUserId, {
+// 					nonce: res + 1
+// 				}, (err, res) => {
+// 					if (err) {
+// 						showHideLoader(0);
+// 					}
+// 				});
+// 			});
+// 		}
+// 	});
+// });
+
+// //Button to remove student from applicable list
+// $("#btnRemoveStudent").click(function () {
+// 	ResetNavbar();
+// 	var _addtoRemoveAuth = $("#addtoRemoveAuth").val();
+
+// 	//Input check
+// 	if (isEmpty(_addtoRemoveAuth) || !isNumber(_addtoRemoveAuth)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+
+// 	showHideLoader(1);
+
+// 	web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+// 		_DHUCoinContract.Authorization({}, 'latest').watch((err, response) => {
+// 			if (response.args.id == curUserId) {
+// 				TransactionComplete(response);
+// 				$("#transactionResult").html('Student removed: ' + response.args.student);
+// 			}
+// 		});
+
+// 		_DHUCoinContract.removeStudent.sendTransaction(_addtoRemoveAuth, curUserId, {
+// 			nonce: res + 1
+// 		}, (err, res) => {
+// 			if (err) {
+// 				showHideLoader(0);
+// 			}
+// 		});
+// 	});
+// });
+
+// //button for getting all students
+// $("#btnGetAllStudents").click(function () {
+// 	ResetNavbar();
+// 	showHideLoader(1);
+// 	_DHUCoinContract.getAllStudents((err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			ResetNavbar();
+// 			var students = res.toString().split(',');
+// 			var studentStr = "";
+
+// 			for (i = 0; i < students.length; i++) {
+// 				studentStr += '<br/>Student ' + (i + 1).toString() + ': ' + students[i];
+// 			}
+
+// 			$("#transactionResult").html('Total No. of students: ' + students.length + studentStr);
+// 		}
+// 	});
+// });
+
+// //button for getting one students
+// $("#btnGetOneStudent").click(function () {
+// 	ResetNavbar();
+// 	var _addOneStudent = $("#addOneStudent").val();
+
+// 	//Input check
+// 	if (isEmpty(_addOneStudent) || !isNumber(_addOneStudent)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+
+// 	showHideLoader(1);
+// 	_DHUCoinContract.getOneStudent(_addOneStudent, (err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			ResetNavbar();
+// 			var students = res.toString().split(',');
+// 			var studentStr = "";
+
+// 			for (j = 0; j < students.length; j++) {
+// 				if (j == 1) {
+// 					studentStr += '<br/>Student ID: ' + students[j];
+// 				} else if (j == 2) {
+// 					studentStr += '<br/>Firstname: ' + students[j];
+// 				} else if (j == 3) {
+// 					studentStr += '<br/>Lastname: ' + students[j];
+// 				} else if (j == 4) {
+// 					studentStr += '<br/>gpa: ' + students[j] / 100;
+// 				}
+// 			}
+
+// 			$("#transactionResult").html('Student Info: ' + studentStr);
+// 		}
+// 	});
+// });
+
+// // Check if student info is signed or not button
+// $("#btnCheckIfSigned").click(function () {
+// 	ResetNavbar();
+// 	showHideLoader(1);
+// 	var _studentAddr = $("#checkIfSigned").val();
+
+// 	//Input check
+// 	if (isEmpty(_studentAddr) || !isNumber(_studentAddr)) {
+// 		InvalidAddressAlert();
+// 		ResetNavbar();
+// 		return;
+// 	}
+
+// 	// Get student info from the contract 
+// 	_DHUCoinContract.getOneStudent(_studentAddr, (err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 			alert('Something went wrong');
+// 		} else {
+// 			var students = res.toString().split(',');
+// 			var studentStr = "";
+
+// 			var signature = '';
+// 			var studentId = '';
+// 			var firstName = '';
+// 			var lastName = '';
+// 			var gpa = '';
+
+// 			for (j = 0; j < students.length; j++) {
+// 				if (j == 0) {
+// 					studentStr += "\nStudent signature: " + students[j];
+// 					signature = students[j];
+// 				} else if (j == 1) {
+// 					studentStr += "\nStudent ID: " + students[j];
+// 					studentId = students[j];
+// 				} else if (j == 2) {
+// 					studentStr += "\nFirstname: " + students[j];
+// 					firstName = students[j];
+// 				} else if (j == 3) {
+// 					studentStr += "\nLastname: " + students[j];
+// 					lastName = students[j];
+// 				} else {
+// 					studentStr += "\ngpa: " + students[j] / 100;
+// 					gpa = students[j];
+// 				}
+// 			}
+
+// 			if (signature === '') {
+// 				ResetNavbar();
+// 				alert('No such student');
+// 				return;
+// 			}
+
+// 			var proceed = confirm("Proceed with the following information? \nStudent Info: " + studentStr);
+// 			if (proceed) {
+
+// 				var studentInfo = studentId + '\n' + firstName + '\n' + lastName + '\n' + gpa;
+// 				var hex_msg = web3.sha3(studentInfo);
+
+// 				var r = signature.slice(0, 66);
+// 				var s = '0x' + signature.slice(66, 130);
+// 				var v = '0x' + signature.slice(130, 132);
+// 				v = web3.toDecimal(v);
+
+// 				// Check if the student signed the info or not
+// 				_DHUCoinContract.isSigned(hex_msg, v, r, s, (err, res) => {
+// 					if (err) {
+// 						ResetNavbar();
+// 						alert('Something went wrong');
+// 						return;
+// 					} else {
+// 						showHideLoader(0);
+// 						var response = res.toString() === _studentAddr ? 'true' : 'false';
+// 						$("#transactionResult").html('Student info is signed: ' + response);
+// 					}
+// 				});
+// 			} else {
+// 				ResetNavbar();
+// 				return;
+// 			}
+// 		}
+// 	});
+// });
+
+//////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+// //button to whitelist an address
+// $("#btnVerify").click(function () {
+// 	ResetNavbar();
+
+// 	var _toVerifyAdd = $("#toVerifyAdd").val();
+// 	//Input check
+// 	if (isEmpty(_toVerifyAdd) || !isNumber(_toVerifyAdd)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+// 		_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
+// 			if (response.args.id == curUserId) {
+// 				TransactionComplete(response);
+// 				$("#transactionResult").html('Address verified: ' + response.args.participant);
+// 			}
+// 		});
+
+// 		_DHUCoinContract.verifyParticipant.sendTransaction(_toVerifyAdd, curUserId, {
+// 			nonce: res + 1
+// 		}, (err, res) => {
+// 			if (err) {
+// 				showHideLoader(0);
+// 			}
+// 		});
+// 	});
+// });
+
+// //button for blacklist an address
+// $("#btnRemoveAdd").click(function () {
+// 	ResetNavbar();
+// 	var _addToRemove = $("#addToRemove").val();
+
+// 	//Input check
+// 	if (isEmpty(_addToRemove) || !isNumber(_addToRemove)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+// 		_DHUCoinContract.Verification({}, 'latest').watch((err, response) => {
+// 			if (response.args.id == curUserId) {
+// 				TransactionComplete(response);
+// 				$("#transactionResult").html('Address Removed: ' + response.args.participant);
+// 			}
+// 		});
+
+// 		_DHUCoinContract.removeVerifiedParticipant.sendTransaction(_addToRemove, curUserId, {
+// 			nonce: res + 1
+// 		}, (err, res) => {
+// 			if (err) {
+// 				showHideLoader(0);
+// 			}
+// 		});
+// 	});
+// });
+
+// //button for checking if verified or not
+// $("#btnCheckVer").click(function () {
+// 	ResetNavbar();
+// 	var _addToChk = $("#addToChk").val();
+// 	//Input check
+// 	if (isEmpty(_addToChk) || !isNumber(_addToChk)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	_DHUCoinContract.verified(_addToChk, (err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			ResetNavbar();
+// 			$("#isStudentVerified").html(res.toString() === 'true' ? '承認済' : '未承認');
+// 		}
+// 	});
+// });
+
+// //button for setting grant vested contract
+// $("#btnSetVestedContract").click(function () {
+// 	ResetNavbar();
+// 	var _vestedContractAdd = $("#vestedContractAdd").val();
+// 	//Input check
+// 	if (isEmpty(_vestedContractAdd) || !isNumber(_vestedContractAdd)) {
+// 		InvalidAddressAlert();
+// 		return;
+// 	}
+// 	showHideLoader(1);
+
+// 	web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
+// 		_DHUCoinContract.setGrantVestedDHUContract.sendTransaction(_vestedContractAdd, {
+// 			nonce: res + 1
+// 		}, (err, res) => {
+// 			if (err) {
+// 				showHideLoader(0);
+// 			} else {
+// 				$("#transactionResult").html('Transaction Hash: ' + res);
+// 				showHideLoader(0);
+// 			}
+// 		});
+// 	});
+// });
+
+// //Button for checking granted vesting contract address
+// $("#btnChkGVCA").click(function () {
+// 	ResetNavbar();
+// 	showHideLoader(1);
+// 	_DHUCoinContract.grantVestedDHUContract((err, res) => {
+// 		if (err) {
+// 			showHideLoader(0);
+// 		} else {
+// 			ResetNavbar();
+// 			$("#transactionResult").html('Grant vested DHU contract address: ' + res);
+// 		}
+// 	});
+// });
+
+// ///////////////////////////////////////////////////////////////////////////////////
