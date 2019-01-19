@@ -643,7 +643,9 @@ contract Database is owned {
     /* Function to add a product reference
      productAddress address of the product */
     function storeStudentReference(address _studentAddress, address _seminar, string _seminarName, string _seminarTeacher, string _seminarInfo) public {
+        if (_studentAddress != 0x0){
         students.push(_studentAddress);
+        }
 
         if (seminars.length == 0) {
             seminars.push(_seminar);
@@ -670,7 +672,9 @@ contract Database is owned {
 
     /* Function to add a product and the product information */
     function addStudentToSeminar(address _seminarAddress, string _seminarName, string _seminarTeacher, string _seminarInfo, address _studentAddress) private {
-        studentsInSeminars[_seminarAddress]._studentsInSeminar.push(_studentAddress);
+        if (_studentAddress != 0x0){
+            studentsInSeminars[_seminarAddress]._studentsInSeminar.push(_studentAddress);
+        }
         studentsInSeminars[_seminarAddress]._seminarName = _seminarName;
         studentsInSeminars[_seminarAddress]._seminarTeacher = _seminarTeacher;
         studentsInSeminars[_seminarAddress]._additionalSeminarInfo = _seminarInfo;
@@ -718,6 +722,8 @@ contract Student {
         string studentId;
         // GPA
         uint gpa;
+        // seminar name
+        string seminarName;
         // Refence to its seminar
         address seminarAddress;
         // Instant of time when the StudentHistory is done.
@@ -740,14 +746,14 @@ contract Student {
        _Admin Reference to its product factory */
     function Student(string _studentInfo, address seminarAddr, address databaseAddr, uint newGpa) public {
 
-        InsertStudentInfo(_studentInfo, seminarAddr, databaseAddr, newGpa);
+        var seminarName = InsertStudentInfo(_studentInfo, seminarAddr, databaseAddr, newGpa);
 
         Database database = Database(databaseAddr);
-        database.storeStudentReference(this, seminarAddr, "", "", "");
+        database.storeStudentReference(this, seminarAddr, seminarName, "", "");
     }
 
     // Insert or update student info
-    function InsertStudentInfo(string _studentInfo, address seminarAddr, address databaseAddr, uint newGpa){
+    function InsertStudentInfo(string _studentInfo, address seminarAddr, address databaseAddr, uint newGpa) public returns (string){
 
         var s = _studentInfo.toSlice();
         var delim = ".".toSlice();
@@ -757,7 +763,7 @@ contract Student {
         }
 
         // input must have four parameters
-        if(studentInfoSliced.length != 3)throw;
+        if(studentInfoSliced.length != 4)throw;
 
         // make a new student object
         StudentInfoStruct memory newStudentInfo;
@@ -767,6 +773,7 @@ contract Student {
         newStudentInfo.DATABASE_CONTRACT = databaseAddr; // database address
         newStudentInfo.studentName = studentInfoSliced[1]; // student name
         newStudentInfo.studentId = studentInfoSliced[2]; //student id
+        newStudentInfo.seminarName = studentInfoSliced[3]; // seminar name
         newStudentInfo.gpa = newGpa; // student gpa
         newStudentInfo.seminarAddress = seminarAddr; // seminar address
         newStudentInfo.timestamp = now; 
@@ -779,6 +786,8 @@ contract Student {
         }else{
             false;
         }
+        
+        return studentInfoSliced[3];
     }
 
       function updateStudentInfo(string newStudentInfo, address seminarAddr, address databaseAddr, uint newGpa) {
@@ -804,7 +813,11 @@ contract Seminar {
     // Constructor //
     /////////////////
 
-    function Seminar() public {}
+    function Seminar(address databaseAddr, string name) public {
+        
+        Database database_contract = Database(databaseAddr);
+        database_contract.storeStudentReference(0x0, this, name, "", "");
+    }
 
     function () public {
         // If anyone wants to send Ether to this contract, the transaction gets rejected
