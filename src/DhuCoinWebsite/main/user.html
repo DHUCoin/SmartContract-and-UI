@@ -102,7 +102,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">学生の登録</a>
+            <a class="navbar-brand" href="#pablo">学生の管理</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -166,66 +166,6 @@
             <div class="col-md-8" style="flex:none; max-width:none">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">ゼミの登録</h4>
-                  <p class="card-category">ゼミカテゴリを入力して下さい</p>
-                </div>
-                <div class="card-body">
-                  <form>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">ゼミ名</label>
-                          <input type="text" class="form-control" id="productCatName">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">詳細</label>
-                          <input type="email" class="form-control" id="info">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">担当者</label>
-                          <input type="text" class="form-control" id="ownerName">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">シラバス</label>
-                          <input type="text" class="form-control" id="ownerInfo">
-                        </div>
-                      </div>
-                    </div>
-                    <input type="button" class="btn btn-primary pull-right" id="createProductCat" value="ゼミを追加する" />
-                    <div class="clearfix"></div>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!-- <div class="col-md-4">
-              <div class="card card-profile">
-                <div class="card-avatar">
-                  <a href="#pablo">
-                    <img class="img" src="../assets/img/faces/theo.jpg" />
-                  </a>
-                </div>
-                <div class="card-body">
-                  <h6 class="card-category text-gray">MS. Student</h6>
-                  <h4 class="card-title">Theo Gauthier</h4>
-                  <p class="card-description">
-                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-                  </p>
-                </div>
-              </div>
-            </div> -->
-          </div>
-          <div class="row">
-            <div class="col-md-8" style="flex:none; max-width:none">
-              <div class="card">
-                <div class="card-header card-header-primary">
                   <h4 class="card-title">学生を追加する</h4>
                   <p class="card-category">学生情報を入力して下さい</p>
                 </div>
@@ -238,6 +178,18 @@
                       </div>
                     </div>
                     <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">学籍番号</label>
+                        <input type="email" class="form-control" id="productInfo">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">学生のGPA</label>
+                        <input type="text" class="form-control" id="productName">
+                      </div>
+                    </div>
+                    <div class="col-md-8">
                       <div class="form-group">
                         <label class="bmd-label-floating">詳細</label>
                         <input type="email" class="form-control" id="productInfo">
@@ -253,16 +205,10 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">担当者</label>
-                        <input type="text" class="form-control" id="productOwnerName">
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label class="bmd-label-floating">担当者情報</label>
-                        <input type="text" class="form-control" id="productOwnerInfo">
+                        <label class="bmd-label-floating">データベースのアドレス</label>
+                        <input type="text" class="form-control" id="productCategory">
                       </div>
                     </div>
                   </div>
