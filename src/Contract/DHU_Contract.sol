@@ -784,7 +784,7 @@ contract Student {
         if (newGpa >= 300 && newGpa <= 400){
             canMine = true;
         }else{
-            false;
+            canMine = false;
         }
         
         return studentInfoSliced[3];
@@ -801,8 +801,12 @@ contract Student {
           canMine = status;
       }
       
-      function getMiningStatus()public returns (bool){
+      function getMiningStatus()public view returns (bool){
           return canMine;
+      }
+      
+      function getStudentHistoryCount()public view returns (uint){
+          return studentInfo.length;
       }
 }
 

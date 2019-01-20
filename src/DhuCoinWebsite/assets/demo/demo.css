@@ -22,6 +22,14 @@
   width: 260px;
 }
 
+.selectBox{
+  width:140px;
+  height:25px;
+  border:1px solid #ccc;
+  outline:none;
+  border-radius: 5px;
+}
+
 .customFooter {
   position:fixed;
   bottom:0;

@@ -24,7 +24,7 @@
   <script src="../javascript/display_functions.js" type="text/javascript"></script>
 </head>
 
-<body onload="document.getElementById('reloadSeminarInfo').click()">
+<body onload="document.getElementById('reloadSeminarInfo').click(); loadDatabaseAddr()">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
       <!--
@@ -152,35 +152,35 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-8" style="flex:none; max-width:none">
-                  <div class="card">
-                    <div class="card-header card-header-primary">
-                      <h4 class="card-title">ゼミを追加する</h4>
-                      <p class="card-category">ゼミ情報を入力して下さい</p>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <div class="form-group">
-                            <label class="bmd-label-floating">ゼミ名</label>
-                            <input type="email" class="form-control" id="productInfo">
-                          </div>
-                        </div>
+          <div class="row">
+            <div class="col-md-8" style="flex:none; max-width:none">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">ゼミを追加する</h4>
+                  <p class="card-category">ゼミ情報を入力して下さい</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">ゼミ名</label>
+                        <input type="email" class="form-control" id="seminarName">
                       </div>
-                      <div class="row">
-                        <div class="col-md-8">
-                          <div class="form-group">
-                            <label class="bmd-label-floating">ゼミのアドレス</label>
-                            <input type="text" class="form-control" id="productCategory">
-                          </div>
-                        </div>
-                      </div>
-                      <input type="button" class="btn btn-primary pull-right" id="createProduct" value="ゼミを追加する" />
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">データベースアドレス</label>
+                        <input type="text" class="form-control" id="dataBaseAddr">
+                      </div>
+                    </div>
+                  </div>
+                  <input type="button" class="btn btn-primary pull-right" id="createSeminar" value="ゼミを追加する" />
                 </div>
               </div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -227,7 +227,7 @@
                       <div class="col-md-8">
                         <div class="form-group">
                           <label>ゼミ名</label>
-                          <input type="text" class="form-control" id="seminarName">
+                          <input type="text" class="form-control" id="seminarDetailName">
                         </div>
                       </div>
                     </div>
@@ -283,7 +283,7 @@
     /////////////////////////////////////////////////DATABASE CONTRACT///////////////////////////////////////////////
 
     //Change address to the database address in use////////////////////////////////////////////////////////
-    var DatabaseAddr = '0x2129ccd950dee7c62e9ae87306ac6a14fd8b4632';
+    var DatabaseAddr = '0x4d2e56d8ff8589a624b61398ef3a37a5293c0df4';
 
     //ABI for contract
     var DatabaseContract = web3.eth.contract([{
@@ -436,6 +436,63 @@
 
     var _DatabaseContract = DatabaseContract.at(DatabaseAddr);
 
+    ///////////////////////////////////////////////////////Seminar Contract///////////////////////////////////////////
+
+    //ABI for contract
+    var seminarContract = web3.eth.contract([{
+        "inputs": [{
+            "name": "databaseAddr",
+            "type": "address"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "fallback"
+      }
+    ]);
+
+    $('#createSeminar').click(function () {
+      var _dataBaseAddr = $('#dataBaseAddr').val();
+      var _seminarName = $('#seminarName').val();
+
+      if (isEmpty(_dataBaseAddr) || !isNumber(_dataBaseAddr)) {
+        InvalidAddressAlert();
+        return;
+      }
+
+      var seminar = seminarContract.new(
+        _dataBaseAddr,
+        _seminarName, {
+          from: web3.eth.accounts[0],
+          data: getSeminarCantractData(),
+          gas: '4700000'
+        },
+        function (e, contract) {
+          if(contract){
+            alert('ゼミを追加しました。\n反映されるまで少々時間がかかることがございます。')
+          }
+          console.log(e, contract);
+          if (typeof contract.address !== 'undefined') {
+            console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
+          }
+        })
+    });
+
+    function getSeminarCantractData() {
+      var data =
+        '0x608060405234801561001057600080fd5b506040516101fb3803806101fb833981018060405281019080805190602001909291908051820192919050505060008290508073ffffffffffffffffffffffffffffffffffffffff16633b0d0233600030856040518463ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808473ffffffffffffffffffffffffffffffffffffffff1681526020018373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001806020018060200180602001848103845285818151815260200191508051906020019080838360005b83811015610123578082015181840152602081019050610108565b50505050905090810190601f1680156101505780820380516001836020036101000a031916815260200191505b508481038352600081526020016020018481038252600081526020016020019650505050505050600060405180830381600087803b15801561019157600080fd5b505af11580156101a5573d6000803e3d6000fd5b505050505050506041806101ba6000396000f3006080604052348015600f57600080fd5b50600080fd00a165627a7a723058202905e9ed355314c6e9c96ce1c508b79c39e83c9cd6e314c182533519ecf9425f0029';
+      return data;
+    }
+
     function getIndividualseminar(seminarAddress) {
       Showloader();
       _DatabaseContract.getSeminar(seminarAddress, (err, res) => {
@@ -450,7 +507,7 @@
     }
 
     function loadSeminarInfo(seminar) {
-      document.getElementById('seminarName').value = seminar[0];
+      document.getElementById('seminarDetailName').value = seminar[0];
 
       var studentsInSeminar = seminar[3];
       var div = document.getElementById('studentsInSeminarList');
@@ -530,6 +587,31 @@
       row.appendChild(cell1);
       row.appendChild(cell2);
       tabBody.appendChild(row);
+    }
+
+    function loadDatabaseAddr() {
+      var element = $('#dataBaseAddr');
+      element.focus();
+      element.val(DatabaseAddr);
+    }
+
+    //Check if input is a number (address)
+    function isNumber(str) {
+      if (isNaN(str)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    //Alert if no address is found
+    function InvalidAddressAlert() {
+      alert('Please enter a valid address');
+    }
+
+    //Empty string check
+    function isEmpty(str) {
+      return (!str || 0 === str.length);
     }
 
     function Showloader() {
