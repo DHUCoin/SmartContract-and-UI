@@ -7,11 +7,9 @@ if (typeof web3 !== 'undefined') {
 
 //gets the abi for contract
 function getDHUCoinABI() {
-    var contract = web3.eth.contract([
-        {
+    var contract = web3.eth.contract([{
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -29,8 +27,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "_jAdd",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -47,20 +44,17 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "name",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "string"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "string"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "_spender",
                     "type": "address"
                 },
@@ -70,12 +64,10 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "approve",
-            "outputs": [
-                {
-                    "name": "success",
-                    "type": "bool"
-                }
-            ],
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
             "payable": false,
             "stateMutability": "nonpayable",
             "type": "function"
@@ -84,12 +76,10 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "totalSupply",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
@@ -98,24 +88,20 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "grantVestedDHUContract",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "address"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "newBottomInteger",
-                    "type": "uint256"
-                }
-            ],
+            "inputs": [{
+                "name": "newBottomInteger",
+                "type": "uint256"
+            }],
             "name": "updatePriceBottomInteger",
             "outputs": [],
             "payable": false,
@@ -124,8 +110,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -143,8 +128,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "_jSub",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -161,20 +145,17 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "mainWallet",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "address"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "_from",
                     "type": "address"
                 },
@@ -188,31 +169,25 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "transferFrom",
-            "outputs": [
-                {
-                    "name": "success",
-                    "type": "bool"
-                }
-            ],
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
             "payable": false,
             "stateMutability": "nonpayable",
             "type": "function"
         },
         {
             "constant": true,
-            "inputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                }
-            ],
+            "inputs": [{
+                "name": "",
+                "type": "address"
+            }],
             "name": "applicableStudents",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
@@ -221,12 +196,10 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "decimals",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
@@ -235,24 +208,20 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "previousUpdateTime",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "newMainWallet",
-                    "type": "address"
-                }
-            ],
+            "inputs": [{
+                "name": "newMainWallet",
+                "type": "address"
+            }],
             "name": "changeMainWallet",
             "outputs": [],
             "payable": false,
@@ -261,8 +230,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "hash",
                     "type": "bytes32"
                 },
@@ -280,20 +248,17 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "isSigned",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "address"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -303,8 +268,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "ellipticCurveDoublingAffine",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -319,8 +283,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "k",
                     "type": "uint256"
                 },
@@ -334,8 +297,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "ellipticCurveMultiplicationAffine",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -350,8 +312,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -369,8 +330,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "_jMul",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -385,12 +345,10 @@ function getDHUCoinABI() {
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "privKey",
-                    "type": "uint256"
-                }
-            ],
+            "inputs": [{
+                "name": "privKey",
+                "type": "uint256"
+            }],
             "name": "ellipticCurveDiscreteLogarithmAffine",
             "outputs": [],
             "payable": false,
@@ -399,8 +357,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -418,8 +375,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "_jDiv",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -434,8 +390,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -453,8 +408,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "ellipticCurveAdditionAffine",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -469,8 +423,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -480,24 +433,20 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "onCurveChecker",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "newTopInteger",
-                    "type": "uint256"
-                }
-            ],
+            "inputs": [{
+                "name": "newTopInteger",
+                "type": "uint256"
+            }],
             "name": "updatePriceDHU",
             "outputs": [],
             "payable": false,
@@ -506,19 +455,15 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
-                    "name": "_owner",
-                    "type": "address"
-                }
-            ],
+            "inputs": [{
+                "name": "_owner",
+                "type": "address"
+            }],
             "name": "balanceOf",
-            "outputs": [
-                {
-                    "name": "balance",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "balance",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
@@ -527,12 +472,10 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "priceUpdateWaitingTime",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
@@ -541,27 +484,22 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "setTrading",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "bool"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": true,
-            "inputs": [
-                {
-                    "name": "privKey",
-                    "type": "uint256"
-                }
-            ],
+            "inputs": [{
+                "name": "privKey",
+                "type": "uint256"
+            }],
             "name": "publicKey",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "qx",
                     "type": "uint256"
                 },
@@ -587,39 +525,32 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "minInvestment",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": true,
-            "inputs": [
-                {
-                    "name": "x",
-                    "type": "uint256"
-                }
-            ],
+            "inputs": [{
+                "name": "x",
+                "type": "uint256"
+            }],
             "name": "_inverse",
-            "outputs": [
-                {
-                    "name": "invA",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "invA",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "d",
                     "type": "uint256"
                 },
@@ -637,8 +568,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "_ecMul",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -657,8 +587,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "_spender",
                     "type": "address"
                 },
@@ -672,12 +601,10 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "changeApproval",
-            "outputs": [
-                {
-                    "name": "success",
-                    "type": "bool"
-                }
-            ],
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
             "payable": false,
             "stateMutability": "nonpayable",
             "type": "function"
@@ -686,12 +613,10 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "symbol",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "string"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "string"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
@@ -700,8 +625,7 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "currentPrice",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "topInteger",
                     "type": "uint256"
                 },
@@ -725,8 +649,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "_to",
                     "type": "address"
                 },
@@ -736,24 +659,20 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "transfer",
-            "outputs": [
-                {
-                    "name": "success",
-                    "type": "bool"
-                }
-            ],
+            "outputs": [{
+                "name": "success",
+                "type": "bool"
+            }],
             "payable": false,
             "stateMutability": "nonpayable",
             "type": "function"
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "newPriceUpdateWaitingTime",
-                    "type": "uint256"
-                }
-            ],
+            "inputs": [{
+                "name": "newPriceUpdateWaitingTime",
+                "type": "uint256"
+            }],
             "name": "changePriceUpdateWaitingTime",
             "outputs": [],
             "payable": false,
@@ -771,8 +690,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "participant",
                     "type": "address"
                 },
@@ -793,15 +711,12 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
+            "inputs": [{
+                "name": "",
+                "type": "uint256"
+            }],
             "name": "prices",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "topInteger",
                     "type": "uint256"
                 },
@@ -816,12 +731,10 @@ function getDHUCoinABI() {
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "newSecondaryWallet",
-                    "type": "address"
-                }
-            ],
+            "inputs": [{
+                "name": "newSecondaryWallet",
+                "type": "address"
+            }],
             "name": "changeSecondaryWallet",
             "outputs": [],
             "payable": false,
@@ -830,8 +743,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -857,8 +769,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "_ecAdd",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -877,12 +788,10 @@ function getDHUCoinABI() {
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "participant",
-                    "type": "address"
-                }
-            ],
+            "inputs": [{
+                "name": "participant",
+                "type": "address"
+            }],
             "name": "buyTo",
             "outputs": [],
             "payable": true,
@@ -891,8 +800,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "_owner",
                     "type": "address"
                 },
@@ -902,20 +810,17 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "allowance",
-            "outputs": [
-                {
-                    "name": "remaining",
-                    "type": "uint256"
-                }
-            ],
+            "outputs": [{
+                "name": "remaining",
+                "type": "uint256"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "privKey",
                     "type": "uint256"
                 },
@@ -929,8 +834,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "deriveKey",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "qx",
                     "type": "uint256"
                 },
@@ -945,8 +849,7 @@ function getDHUCoinABI() {
         },
         {
             "constant": true,
-            "inputs": [
-                {
+            "inputs": [{
                     "name": "x1",
                     "type": "uint256"
                 },
@@ -960,8 +863,7 @@ function getDHUCoinABI() {
                 }
             ],
             "name": "_ecDouble",
-            "outputs": [
-                {
+            "outputs": [{
                     "name": "x3",
                     "type": "uint256"
                 },
@@ -982,24 +884,20 @@ function getDHUCoinABI() {
             "constant": true,
             "inputs": [],
             "name": "secondaryWallet",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "address"
-                }
-            ],
+            "outputs": [{
+                "name": "",
+                "type": "address"
+            }],
             "payable": false,
             "stateMutability": "view",
             "type": "function"
         },
         {
             "constant": false,
-            "inputs": [
-                {
-                    "name": "privKey",
-                    "type": "address"
-                }
-            ],
+            "inputs": [{
+                "name": "privKey",
+                "type": "address"
+            }],
             "name": "proofOfWork",
             "outputs": [],
             "payable": false,
@@ -1019,8 +917,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": true,
                     "name": "participant",
                     "type": "address"
@@ -1036,8 +933,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": true,
                     "name": "student",
                     "type": "address"
@@ -1053,8 +949,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": true,
                     "name": "participant",
                     "type": "address"
@@ -1080,8 +975,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": false,
                     "name": "topInteger",
                     "type": "uint256"
@@ -1097,8 +991,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": true,
                     "name": "participant",
                     "type": "address"
@@ -1114,8 +1007,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": false,
                     "name": "studentAddress",
                     "type": "address"
@@ -1151,8 +1043,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": true,
                     "name": "_from",
                     "type": "address"
@@ -1173,8 +1064,7 @@ function getDHUCoinABI() {
         },
         {
             "anonymous": false,
-            "inputs": [
-                {
+            "inputs": [{
                     "indexed": true,
                     "name": "_owner",
                     "type": "address"

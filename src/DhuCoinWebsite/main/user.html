@@ -150,6 +150,25 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">folder</i>
+                  </div>
+                  <p class="card-category">現在使用中のデータベース</p>
+                  <h3 class="card-title">
+                    <small id="currDatabase"></small>
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-md-8" style="flex:none; max-width:none">
               <div class="card">
                 <div class="card-header card-header-primary">
@@ -178,13 +197,8 @@
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">アクションタイプ：　</label>
-                        <!-- <input type="email" class="form-control" id="actionDescription"> -->
-                        <select id="actionPullDown" class="selectBox">
-                          <option value="追加">追加</option>
-                          <option value="更新">更新</option>
-                          <option value="削除">削除</option>
-                        </select>
+                        <label class="bmd-label-floating">アクションタイプ</label>
+                        <input type="text" class="form-control" id="actionDescription" value="追加" readonly="true" style="background:white; border-bottom: 1px solid #d2d2d2">
                       </div>
                     </div>
                   </div>
@@ -211,6 +225,81 @@
                     </div>
                   </div>
                   <input type="button" class="btn btn-primary pull-right" id="createStudent" value="学生を追加する" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8" style="flex:none; max-width:none">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">学生情報を更新する</h4>
+                  <p class="card-category">学生情報を更新して下さい</p>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">更新する学生のアドレス</label>
+                        <input type="text" class="form-control" id="updateStudentAddr">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">学生の名前</label>
+                        <input type="text" class="form-control" id="studenUpdatetName">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">学籍番号</label>
+                        <input type="email" class="form-control" id="studentUpdateId">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">学生のGPA</label>
+                        <input type="text" class="form-control" id="GPAUpdate">
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">アクションタイプ：　</label>
+                        <!-- <input type="email" class="form-control" id="actionDescription"> -->
+                        <select id="actionUpdatePullDown" class="selectBox">
+                          <option value="更新">更新</option>
+                          <option value="削除">削除</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">ゼミのアドレス</label>
+                        <input type="text" class="form-control" id="seminarUpdateAddress">
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">ゼミの名前</label>
+                        <input type="text" class="form-control" id="seminarUpdateName">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label class="bmd-label-floating">データベースのアドレス</label>
+                        <input type="text" class="form-control" id="dataBaseAddrUpdate">
+                      </div>
+                    </div>
+                  </div>
+                  <input type="button" class="btn btn-primary pull-right" id="updateStudent" value="更新する" />
                 </div>
               </div>
             </div>
@@ -248,7 +337,7 @@
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
   <script>
-    var DatabaseAddr = '0x4d2e56d8ff8589a624b61398ef3a37a5293c0df4';
+    var DatabaseAddr = '0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001';
     /////////////////////////////////////////////////STUDENT CONTRACT/////////////////////////////////////////////////
 
     //ABI for contract
@@ -442,7 +531,8 @@
       var _GPA = $("#GPA").val();
       var _seminarName = $("#seminarName").val();
       var _seminarAddress = $("#seminarAddress").val();
-      var _actionDescription = $('#actionPullDown option:selected').val();
+      var _actionDescription = $("#actionDescription").val();
+      // var _actionDescription = $('#actionPullDown option:selected').val();
       var _dataBaseAddr = $("#dataBaseAddr").val();
 
       //Input check
@@ -483,10 +573,53 @@
       return data;
     }
 
+    $("#updateStudent").click(function () {
+      var updateStudentAddr = $("#updateStudentAddr").val();
+
+      var _studenUpdatetName = $("#studenUpdatetName").val();
+      var _studentUpdateId = $("#studentUpdateId").val();
+      var _GPAUpdate = $("#GPAUpdate").val();
+      var _seminarUpdateName = $("#seminarUpdateName").val();
+      var _seminarUpdateAddress = $("#seminarUpdateAddress").val();
+      var _actionUpdatePullDown = $('#actionUpdatePullDown option:selected').val();
+      var _dataBaseAddrUpdate = $("#dataBaseAddrUpdate").val();
+
+      //Input check
+      if (isEmpty(_seminarUpdateAddress) || !isNumber(_seminarUpdateAddress)) {
+        InvalidAddressAlert();
+        return;
+      }
+
+      if (isEmpty(_dataBaseAddrUpdate) || !isNumber(_dataBaseAddrUpdate)) {
+        InvalidAddressAlert();
+        return;
+      }
+
+      if (isEmpty(updateStudentAddr) || !isNumber(updateStudentAddr)) {
+        InvalidAddressAlert();
+        return;
+      }
+
+      Showloader();
+      _studentContract = studentContract.at(updateStudentAddr);
+      _studentContract.updateStudentInfo(
+        _actionUpdatePullDown + '.' + _studenUpdatetName + '.' + _studentUpdateId + '.' + _seminarUpdateName,
+        _seminarUpdateAddress,
+        _dataBaseAddrUpdate,
+        _GPAUpdate * 100,
+        (err, res) => {
+          if (err) {
+            console.log(res);
+            hideloader();
+          } else {
+            alert('学生情報を更新しました。');
+            hideloader();
+          }
+        });
+    });
+
     function loadDatabaseAddr() {
-      var element = $('#dataBaseAddr');
-      element.focus();
-      element.val(DatabaseAddr);
+      $("#currDatabase").html(DatabaseAddr);
     }
 
     //Check if input is a number (address)

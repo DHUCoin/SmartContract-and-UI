@@ -436,7 +436,7 @@
       ///////////////////////////////////////Database Contract///////////////////////////////////////////
 
       //Change address to the database address in use////////////////////////////////////////////////////////
-      var DatabaseAddr = '0x4d2e56d8ff8589a624b61398ef3a37a5293c0df4';
+      var DatabaseAddr = '0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001';
 
       //ABI for contract
       var DatabaseContract = web3.eth.contract([{
@@ -829,10 +829,8 @@
             alert("学生が見つかりませんでした。");
             hideloader();
           } else {
-            var currNo = 0;
             for (i = 0; i < res; i++) {
               _StudentContract.studentInfo(i, (err, res) => {
-                currNo = i;
                 if (res) {
 
                   // alert(res);

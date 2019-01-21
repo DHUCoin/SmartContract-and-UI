@@ -152,6 +152,25 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                      <div class="card-icon">
+                        <i class="material-icons">folder</i>
+                      </div>
+                      <p class="card-category">現在使用中のデータベース</p>
+                      <h3 class="card-title">
+                        <small id="currDatabase"></small>
+                      </h3>
+                    </div>
+                    <div class="card-footer">
+                      <div class="stats">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
           <div class="row">
             <div class="col-md-8" style="flex:none; max-width:none">
               <div class="card">
@@ -283,7 +302,7 @@
     /////////////////////////////////////////////////DATABASE CONTRACT///////////////////////////////////////////////
 
     //Change address to the database address in use////////////////////////////////////////////////////////
-    var DatabaseAddr = '0x4d2e56d8ff8589a624b61398ef3a37a5293c0df4';
+    var DatabaseAddr = '0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001';
 
     //ABI for contract
     var DatabaseContract = web3.eth.contract([{
@@ -590,9 +609,7 @@
     }
 
     function loadDatabaseAddr() {
-      var element = $('#dataBaseAddr');
-      element.focus();
-      element.val(DatabaseAddr);
+      $("#currDatabase").html(DatabaseAddr);
     }
 
     //Check if input is a number (address)
