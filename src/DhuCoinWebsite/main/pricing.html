@@ -122,17 +122,18 @@
                 <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
+                  <span class="notification"></span>
                   <p class="d-lg-none d-md-block">
                     Some Actions
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                  <a class="dropdown-item" href="#">Another Notification</a>
-                  <a class="dropdown-item" href="#">Another One</a>
+                  <a class="dropdown-item" onclick="copyToClipboard('#p1')" href="#">デジココントラクト:
+                    0xe95872d9cefe6c92228d19a80b290cbaca3d191e</a>
+                  <p style="display:none" id="p1">0xe95872d9cefe6c92228d19a80b290cbaca3d191e</p>
+                  <a class="dropdown-item" onclick="copyToClipboard('#p2')" href="#">データベース:
+                    0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001</a>
+                  <p style="display:none" id="p2">0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001</p>
                 </div>
               </li>
               <li class="nav-item">
@@ -149,25 +150,25 @@
       </nav>
       <!-- End Navbar -->
       <div class="content">
-        <div class="container-fluid">  
+        <div class="container-fluid">
           <div class="row">
-              <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="card card-stats">
-                    <div class="card-header card-header-success card-header-icon">
-                      <div class="card-icon">
-                        <i class="material-icons">money</i>
-                      </div>
-                      <p class="card-category">トークン価格</p>
-                      <h3 class="card-title">
-                        <small id="tokenPrice"></small>
-                      </h3>
-                    </div>
-                    <div class="card-footer">
-                      <div class="stats">
-                      </div>
-                    </div>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">money</i>
+                  </div>
+                  <p class="card-category">トークン価格</p>
+                  <h3 class="card-title">
+                    <small id="tokenPrice"></small>
+                  </h3>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
                   </div>
                 </div>
+              </div>
+            </div>
             <div class="col-md-8" style="flex:none; max-width:none">
               <div class="card">
                 <div class="card-header card-header-primary">
@@ -218,7 +219,7 @@
         </div>
       </div>
       <footer class="footer">
-          <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none"/>
+        <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none" />
         <div class="container-fluid">
 
           <div class="copyright float-right">
@@ -248,10 +249,20 @@
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
   <script>
-      $(document).ready(function () {
-        getPrice();
-      });
-    </script>
+    $(document).ready(function () {
+      getPrice();
+    });
+  </script>
+  <script>
+    function copyToClipboard(element) {
+      var $temp = $("<input>");
+      $("body").append($temp);
+      $temp.val($(element).text()).select();
+      document.execCommand("copy");
+      $temp.remove();
+    }
+  </script>
+
 </body>
 
 </html>

@@ -121,17 +121,18 @@
                 <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
+                  <span class="notification"></span>
                   <p class="d-lg-none d-md-block">
                     Some Actions
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                  <a class="dropdown-item" href="#">Another Notification</a>
-                  <a class="dropdown-item" href="#">Another One</a>
+                  <a class="dropdown-item" onclick="copyToClipboard('#p1')" href="#">デジココントラクト:
+                    0xe95872d9cefe6c92228d19a80b290cbaca3d191e</a>
+                  <p style="display:none" id="p1">0xe95872d9cefe6c92228d19a80b290cbaca3d191e</p>
+                  <a class="dropdown-item" onclick="copyToClipboard('#p2')" href="#">データベース:
+                    0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001</a>
+                  <p style="display:none" id="p2">0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001</p>
                 </div>
               </li>
               <li class="nav-item">
@@ -154,7 +155,7 @@
               <div class="card">
                 <div class="card-header card-header-primary">
                   <h4 class="card-title">マイニングステータス</h4>
-                  <p class="card-category">秘密鍵を入力して下さい</p>
+                  <p class="card-category">マイニングステータスが確認できます</p>
                 </div>
                 <div class="card-body">
                   <form>
@@ -162,12 +163,14 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">ID（秘密鍵）</label>
-                          <input type="text" class="form-control" id="privateKey">
+                          <input type="text" class="form-control" id="privateKeyCheck">
                         </div>
                       </div>
                     </div>
-                    
-                    <input type="button" class="btn btn-primary pull-right" id="btnMine" value="ステータスを確認" />
+
+                    <label class="bmd-label-floating">マイニングステータス</label>
+                    <input type="text" class="form-control" id="miningStatus" readonly="true" style="background:white; border-bottom: 1px solid #d2d2d2">
+                    <input type="button" class="btn btn-primary pull-right" id="btnMineStatusCheck" value="ステータスを確認" />
                     <div class="clearfix"></div>
                   </form>
                 </div>
@@ -191,7 +194,7 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <input type="button" class="btn btn-primary pull-right" id="btnMine" value="マイニングする" />
                     <div class="clearfix"></div>
                   </form>
@@ -202,7 +205,7 @@
         </div>
       </div>
       <footer class="footer">
-          <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none"/>
+        <img id="loadingImg" src="../assets/img/loading.gif" width="100px" height="100px" style="display:none" />
         <div class="container-fluid">
 
           <div class="copyright float-right">
@@ -231,6 +234,245 @@
   <script src="../assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
+  <script>
+    /////////////////////////////////////////////////STUDENT CONTRACT/////////////////////////////////////////////////
+
+    //ABI for contract
+    var studentContract = web3.eth.contract([{
+        "constant": true,
+        "inputs": [{
+          "name": "",
+          "type": "uint256"
+        }],
+        "name": "studentInfo",
+        "outputs": [{
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "actionAdmin",
+            "type": "address"
+          },
+          {
+            "name": "DATABASE_CONTRACT",
+            "type": "address"
+          },
+          {
+            "name": "studentName",
+            "type": "string"
+          },
+          {
+            "name": "studentId",
+            "type": "string"
+          },
+          {
+            "name": "gpa",
+            "type": "uint256"
+          },
+          {
+            "name": "seminarName",
+            "type": "string"
+          },
+          {
+            "name": "seminarAddress",
+            "type": "address"
+          },
+          {
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "name": "blockNumber",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getStudentHistoryCount",
+        "outputs": [{
+          "name": "",
+          "type": "uint256"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [{
+            "name": "newStudentInfo",
+            "type": "string"
+          },
+          {
+            "name": "seminarAddr",
+            "type": "address"
+          },
+          {
+            "name": "databaseAddr",
+            "type": "address"
+          },
+          {
+            "name": "newGpa",
+            "type": "uint256"
+          }
+        ],
+        "name": "updateStudentInfo",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "getMiningStatus",
+        "outputs": [{
+          "name": "",
+          "type": "bool"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [{
+            "name": "_studentInfo",
+            "type": "string"
+          },
+          {
+            "name": "seminarAddr",
+            "type": "address"
+          },
+          {
+            "name": "databaseAddr",
+            "type": "address"
+          },
+          {
+            "name": "newGpa",
+            "type": "uint256"
+          }
+        ],
+        "name": "InsertStudentInfo",
+        "outputs": [{
+          "name": "",
+          "type": "string"
+        }],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [],
+        "name": "canMine",
+        "outputs": [{
+          "name": "",
+          "type": "bool"
+        }],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "constant": false,
+        "inputs": [{
+          "name": "status",
+          "type": "bool"
+        }],
+        "name": "updateMiningStatus",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [{
+            "name": "_studentInfo",
+            "type": "string"
+          },
+          {
+            "name": "seminarAddr",
+            "type": "address"
+          },
+          {
+            "name": "databaseAddr",
+            "type": "address"
+          },
+          {
+            "name": "newGpa",
+            "type": "uint256"
+          }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "fallback"
+      }
+    ]);
+
+    $('#btnMineStatusCheck').click(function () {
+      var _privateKeyCheck = $("#privateKeyCheck").val();
+      //Input check
+      if (isEmpty(_privateKeyCheck) || !isNumber(_privateKeyCheck)) {
+        InvalidAddressAlert();
+        return;
+      }
+      Showloader();
+
+      var _studentContract = studentContract.at(_privateKeyCheck);
+      _studentContract.canMine((err, res) => {
+        $("#miningStatus").attr('value', res ? '可能' : '不可能');
+        hideloader();
+      });
+    });
+
+    //Check if input is a number (address)
+    function isNumber(str) {
+      if (isNaN(str)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    //Alert if no address is found
+    function InvalidAddressAlert() {
+      alert('Please enter a valid address');
+    }
+
+    //Empty string check
+    function isEmpty(str) {
+      return (!str || 0 === str.length);
+    }
+
+    function Showloader() {
+      $("#loadingImg").show();
+    }
+
+    function hideloader() {
+      $("#loadingImg").hide();
+    }
+  </script>
+
+  <script>
+    function copyToClipboard(element) {
+      var $temp = $("<input>");
+      $("body").append($temp);
+      $temp.val($(element).text()).select();
+      document.execCommand("copy");
+      $temp.remove();
+    }
+  </script>
 </body>
 
 </html>

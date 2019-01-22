@@ -43,7 +43,7 @@ function getContractName() {
 		if (err) {
 			$("#contractName").html('N/A');
 		} else {
-			$("#contractName").html(res);
+			$("#contractName").html('デジコ');
 		}
 	});
 }

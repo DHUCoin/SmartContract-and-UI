@@ -124,17 +124,18 @@
                 <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
+                  <span class="notification"></span>
                   <p class="d-lg-none d-md-block">
                     Some Actions
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="#">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="#">You're now friend with Andrew</a>
-                  <a class="dropdown-item" href="#">Another Notification</a>
-                  <a class="dropdown-item" href="#">Another One</a>
+                  <a class="dropdown-item" onclick="copyToClipboard('#p1')" href="#">デジココントラクト:
+                    0xe95872d9cefe6c92228d19a80b290cbaca3d191e</a>
+                  <p style="display:none" id="p1">0xe95872d9cefe6c92228d19a80b290cbaca3d191e</p>
+                  <a class="dropdown-item" onclick="copyToClipboard('#p2')" href="#">データベース:
+                    0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001</a>
+                  <p style="display:none" id="p2">0x2fc9d16f1c83c8c2c721b21fe06bff5808f0c001</p>
                 </div>
               </li>
               <li class="nav-item">
@@ -152,25 +153,6 @@
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="card card-stats">
-                    <div class="card-header card-header-success card-header-icon">
-                      <div class="card-icon">
-                        <i class="material-icons">folder</i>
-                      </div>
-                      <p class="card-category">現在使用中のデータベース</p>
-                      <h3 class="card-title">
-                        <small id="currDatabase"></small>
-                      </h3>
-                    </div>
-                    <div class="card-footer">
-                      <div class="stats">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
           <div class="row">
             <div class="col-md-8" style="flex:none; max-width:none">
               <div class="card">
@@ -496,7 +478,7 @@
           gas: '4700000'
         },
         function (e, contract) {
-          if(contract){
+          if (contract) {
             alert('ゼミを追加しました。\n反映されるまで少々時間がかかることがございます。')
           }
           console.log(e, contract);
@@ -637,6 +619,16 @@
 
     function hideloader() {
       $("#loadingImg").hide();
+    }
+  </script>
+
+  <script>
+    function copyToClipboard(element) {
+      var $temp = $("<input>");
+      $("body").append($temp);
+      $temp.val($(element).text()).select();
+      document.execCommand("copy");
+      $temp.remove();
     }
   </script>
 
