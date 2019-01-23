@@ -22,6 +22,19 @@
   width: 260px;
 }
 
+.link-button {
+  font: 15px Arial;
+  text-decoration: none;
+  background-color: #ffa02e;
+  color: white;
+  padding: 4px 8px 4px 8px;
+  border-top: 1px solid #f3bd7c;
+  border-right: 1px solid #fd910c;
+  border-bottom: 1px solid #fd910c;
+  border-left: 1px solid #f3bd7c;
+  border-radius: 10px;
+}
+
 .selectBox{
   width:140px;
   height:25px;
