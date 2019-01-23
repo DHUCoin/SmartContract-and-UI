@@ -436,7 +436,7 @@
         InvalidAddressAlert();
         return;
       }
-
+      Showloader();
       var seminar = seminarContract.new(
         _dataBaseAddr,
         _seminarName, {
@@ -447,10 +447,14 @@
         function (e, contract) {
           if (contract) {
             alert('ゼミを追加しました。\n反映されるまで少々時間がかかることがございます。')
+            hideloader();
+          } else {
+            hideloader();
           }
           console.log(e, contract);
           if (typeof contract.address !== 'undefined') {
             console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
+            hideloader();
           }
         })
     });

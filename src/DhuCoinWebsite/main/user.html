@@ -515,9 +515,12 @@
           if (contract) {
             alert('学生を追加しました。\n反映されるまで少々時間がかかることがございます。');
             hideloader();
+          } else {
+            hideloader();
           }
           if (typeof contract.address !== 'undefined') {
             console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
+            hideloader();
           }
         })
     });

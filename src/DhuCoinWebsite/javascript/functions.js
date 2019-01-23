@@ -103,17 +103,17 @@ $(document).ready(function () {
 			InvalidAddressAlert();
 			return;
 		}
-		showHideLoader(1);
+		Showloader();
 
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
 			_DHUCoinContract.changeMainWallet.sendTransaction(_addMW, {
 				nonce: res + 1
 			}, (err, res) => {
 				if (err) {
-					showHideLoader(0);
+					hideloader();
 				} else {
 					$("#transactionResult").html('Transaction Hash: ' + res);
-					showHideLoader(0);
+					hideloader();
 				}
 			});
 		});
@@ -143,17 +143,17 @@ $(document).ready(function () {
 			InvalidAddressAlert();
 			return;
 		}
-		showHideLoader(1);
+		Showloader();
 
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
 			_DHUCoinContract.changeSecondaryWallet.sendTransaction(_addSW, {
 				nonce: res + 1
 			}, (err, res) => {
 				if (err) {
-					showHideLoader(0);
+					hideloader();
 				} else {
 					$("#transactionResult").html('Transaction Hash: ' + res);
-					showHideLoader(0);
+					hideloader();
 				}
 			});
 		});
@@ -178,14 +178,14 @@ $(document).ready(function () {
 	//button to update top price integer
 	$("#btnUpdatePrice").click(function () {
 		ResetNavbar();
-		showHideLoader(1);
+		Showloader();
 		var _updatePriceTop = $("#updatePriceTop").val();
 		_DHUCoinContract.updatePriceDHU(_updatePriceTop, (err, res) => {
 			if (err) {
-				showHideLoader(0);
+				hideloader();
 			} else {
 				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
+				hideloader();
 			}
 		});
 	});
@@ -193,14 +193,14 @@ $(document).ready(function () {
 	//button to update bottom price integer
 	$("#btnUpdateBtmPrice").click(function () {
 		ResetNavbar();
-		showHideLoader(1);
+		Showloader();
 		var _updatePriceBtm = $("#updatePriceBtm").val();
 		_DHUCoinContract.updatePriceBottomInteger(_updatePriceBtm, (err, res) => {
 			if (err) {
-				showHideLoader(0);
+				hideloader();
 			} else {
 				$("#transactionResult").html('Transaction Hash: ' + res);
-				showHideLoader(0);
+				hideloader();
 			}
 		});
 	});
@@ -394,16 +394,16 @@ $(document).ready(function () {
 		ResetNavbar();
 		var _privateKey = $("#privateKey").val();
 
-		showHideLoader(1);
+		Showloader();
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
 			_DHUCoinContract.proofOfWork.sendTransaction(_privateKey, {
 				nonce: res + 1
 			}, (err, res) => {
 				if (err) {
-					showHideLoader(0);
+					hideloader();
 				} else {
 					$("#transactionResult").html('Transaction Hash: ' + res);
-					showHideLoader(0);
+					hideloader();
 				}
 			});
 		});
@@ -465,6 +465,14 @@ $(document).ready(function () {
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
 
 		return text;
+	}
+
+	function Showloader() {
+		$("#loadingImg").show();
+	}
+
+	function hideloader() {
+		$("#loadingImg").hide();
 	}
 
 });
