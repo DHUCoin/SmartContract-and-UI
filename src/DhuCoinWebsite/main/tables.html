@@ -821,15 +821,23 @@
             d.setUTCSeconds(sortedData[i][9]);
             text += 'タイムスタンプ: ' + d + '\n';
             text += 'ブロック数: ' + sortedData[i][10] + '\n';
-            text += 'Etherscanで確認リンク: ' + 'https://rinkeby.etherscan.io/address/' + studentAddress;
 
             var textArea = $(
-              '<textarea style="margin-top:20px; padding:10px; border-radius:5px; width:100%; height:275px !important" />'
+              '<textarea style="margin-top:20px; padding:10px; border-radius:10px; width:100%; height:275px !important" />'
             );
             textArea.attr("readonly", "true");
             textArea.text(text);
 
+            var hyperlink = $('<a />');
+            hyperlink.attr('target', '_blank');
+            hyperlink.attr('href', 'https://rinkeby.etherscan.io/address/' + studentAddress);
+            hyperlink.html('▲クリックしてetherscanで確認!');
+
+            var hyperLinkDiv = $("<div />");
+            hyperlink.appendTo(hyperLinkDiv);
+
             textArea.appendTo(newDiv);
+            hyperLinkDiv.appendTo(newDiv);
             newDiv.appendTo(tabForm);
           }
           hideloader();
