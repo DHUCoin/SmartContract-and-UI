@@ -12,7 +12,7 @@ web3.eth.defaultAccount = web3.eth.accounts[0];
 var DHUCoinContract = getDHUCoinABI();
 
 //set contract address
-var contractAddr = '0x14e5ce493b7b94d7316551e084380f20afa1c1b4';
+var contractAddr = '0x0db3355e94fe02d6fe953d3256a3be7a7d42c179';
 // $('#ContractAddress').html('Contract Address: ' + contractAddr);
 
 //get the contract at the address

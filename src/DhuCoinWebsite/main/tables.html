@@ -884,7 +884,7 @@
       $('#searchStudent').click(function () {
         var _studentToSearch = $('#studentToSearch').val();
         if (_studentToSearch.length > 0) {
-          getIndividualStudent(_studentToSearch);
+          getIndividualStudent(_studentToSearch.trim());
         }
       });
 
