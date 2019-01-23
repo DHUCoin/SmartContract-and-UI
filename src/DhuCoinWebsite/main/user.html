@@ -131,25 +131,25 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label class="bmd-label-floating">学生の名前</label>
+                        <label for="studentName" class="bmd-label-floating">学生の名前</label>
                         <input type="text" class="form-control" id="studentName">
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label class="bmd-label-floating">学籍番号</label>
+                        <label for="studentId" class="bmd-label-floating">学籍番号</label>
                         <input type="email" class="form-control" id="studentId">
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label class="bmd-label-floating">学生のGPA</label>
+                        <label for="GPA" class="bmd-label-floating">学生のGPA</label>
                         <input type="text" class="form-control" id="GPA">
                       </div>
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">アクションタイプ</label>
+                        <label for="actionDescription" class="bmd-label-floating">アクションタイプ</label>
                         <input type="text" class="form-control" id="actionDescription" value="追加" readonly="true" style="background:white; border-bottom: 1px solid #d2d2d2">
                       </div>
                     </div>
@@ -157,13 +157,13 @@
                   <div class="row">
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">ゼミのアドレス</label>
+                        <label for="seminarAddress" class="bmd-label-floating">ゼミのアドレス</label>
                         <input type="text" class="form-control" id="seminarAddress">
                       </div>
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">ゼミの名前</label>
+                        <label for="seminarName" class="bmd-label-floating">ゼミの名前</label>
                         <input type="text" class="form-control" id="seminarName">
                       </div>
                     </div>
@@ -171,7 +171,7 @@
                   <div class="row">
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">データベースのアドレス</label>
+                        <label for="dataBaseAddr" class="bmd-label-floating">データベースのアドレス</label>
                         <input type="text" class="form-control" id="dataBaseAddr">
                       </div>
                     </div>
@@ -194,7 +194,7 @@
                   <div class="row">
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">更新する学生のアドレス</label>
+                        <label for="updateStudentAddr" class="bmd-label-floating">更新する学生のアドレス</label>
                         <input type="text" class="form-control" id="updateStudentAddr">
                       </div>
                     </div>
@@ -202,25 +202,25 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label class="bmd-label-floating">学生の名前</label>
+                        <label for="studenUpdatetName" class="bmd-label-floating">学生の名前</label>
                         <input type="text" class="form-control" id="studenUpdatetName">
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label class="bmd-label-floating">学籍番号</label>
+                        <label for="studentUpdateId" class="bmd-label-floating">学籍番号</label>
                         <input type="email" class="form-control" id="studentUpdateId">
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label class="bmd-label-floating">学生のGPA</label>
+                        <label for="GPAUpdate" class="bmd-label-floating">学生のGPA</label>
                         <input type="text" class="form-control" id="GPAUpdate">
                       </div>
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">アクションタイプ：　</label>
+                        <label for="actionUpdatePullDown" class="bmd-label-floating">アクションタイプ：　</label>
                         <!-- <input type="email" class="form-control" id="actionDescription"> -->
                         <select id="actionUpdatePullDown" class="selectBox">
                           <option value="更新">更新</option>
@@ -232,13 +232,13 @@
                   <div class="row">
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">ゼミのアドレス</label>
+                        <label for="seminarUpdateAddress" class="bmd-label-floating">ゼミのアドレス</label>
                         <input type="text" class="form-control" id="seminarUpdateAddress">
                       </div>
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">ゼミの名前</label>
+                        <label for="seminarUpdateName" class="bmd-label-floating">ゼミの名前</label>
                         <input type="text" class="form-control" id="seminarUpdateName">
                       </div>
                     </div>
@@ -246,7 +246,7 @@
                   <div class="row">
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">データベースのアドレス</label>
+                        <label for="dataBaseAddrUpdate" class="bmd-label-floating">データベースのアドレス</label>
                         <input type="text" class="form-control" id="dataBaseAddrUpdate">
                       </div>
                     </div>
@@ -481,23 +481,31 @@
     //Get the information of a product by deploying
     //the product contract at the product address
     $("#createStudent").click(function () {
-      var _studentName = $("#studentName").val();
-      var _studentId = $("#studentId").val();
-      var _GPA = $("#GPA").val();
-      var _seminarName = $("#seminarName").val();
-      var _seminarAddress = $("#seminarAddress").val();
-      var _actionDescription = $("#actionDescription").val();
+      var _studentName = checkUserInput("studentName");
+      if (_studentName === "") return;
+      var _studentId = checkUserInput("studentId");
+      if (_studentId === "") return;
+      var _GPA = checkUserInput("GPA");
+      if (_GPA === "") return;
+      var _seminarName = checkUserInput("seminarName");
+      if (_seminarName === "") return;
+      var _seminarAddress = checkUserInput("seminarAddress");
+      if (_seminarAddress === "") return;
+      var _actionDescription = checkUserInput("actionDescription");
+      if (_actionDescription === "") return;
       // var _actionDescription = $('#actionPullDown option:selected').val();
-      var _dataBaseAddr = $("#dataBaseAddr").val();
+      var _dataBaseAddr = checkUserInput("dataBaseAddr");
+      if (_dataBaseAddr === "") return;
+
 
       //Input check
-      if (isEmpty(_seminarAddress) || !isNumber(_seminarAddress)) {
-        InvalidAddressAlert();
+      if (!isNumber(_seminarAddress)) {
+        InvalidAddressAlert("seminarAddress");
         return;
       }
 
-      if (isEmpty(_dataBaseAddr) || !isNumber(_dataBaseAddr)) {
-        InvalidAddressAlert();
+      if (!isNumber(_dataBaseAddr)) {
+        InvalidAddressAlert("dataBaseAddr");
         return;
       }
 
@@ -532,29 +540,36 @@
     }
 
     $("#updateStudent").click(function () {
-      var updateStudentAddr = $("#updateStudentAddr").val();
-
-      var _studenUpdatetName = $("#studenUpdatetName").val();
-      var _studentUpdateId = $("#studentUpdateId").val();
-      var _GPAUpdate = $("#GPAUpdate").val();
-      var _seminarUpdateName = $("#seminarUpdateName").val();
-      var _seminarUpdateAddress = $("#seminarUpdateAddress").val();
-      var _actionUpdatePullDown = $('#actionUpdatePullDown option:selected').val();
-      var _dataBaseAddrUpdate = $("#dataBaseAddrUpdate").val();
+      var updateStudentAddr = checkUserInput("updateStudentAddr");
+      if (updateStudentAddr === "") return;
+      var _studenUpdatetName = checkUserInput("studenUpdatetName");
+      if (_studenUpdatetName === "") return;
+      var _studentUpdateId = checkUserInput("studentUpdateId");
+      if (_studentUpdateId === "") return;
+      var _GPAUpdate = checkUserInput("GPAUpdate");
+      if (_GPAUpdate === "") return;
+      var _seminarUpdateName = checkUserInput("seminarUpdateName");
+      if (_seminarUpdateName === "") return;
+      var _seminarUpdateAddress = checkUserInput("seminarUpdateAddress");
+      if (_seminarUpdateAddress === "") return;
+      var _actionUpdatePullDown = checkUserInput('actionUpdatePullDown option:selected');
+      if (_actionUpdatePullDown === "") return;
+      var _dataBaseAddrUpdate = checkUserInput("dataBaseAddrUpdate");
+      if (_dataBaseAddrUpdate === "") return;
 
       //Input check
-      if (isEmpty(_seminarUpdateAddress) || !isNumber(_seminarUpdateAddress)) {
-        InvalidAddressAlert();
+      if (!isNumber(_seminarUpdateAddress)) {
+        InvalidAddressAlert("seminarUpdateAddress");
         return;
       }
 
-      if (isEmpty(_dataBaseAddrUpdate) || !isNumber(_dataBaseAddrUpdate)) {
-        InvalidAddressAlert();
+      if (!isNumber(_dataBaseAddrUpdate)) {
+        InvalidAddressAlert("dataBaseAddrUpdate");
         return;
       }
 
-      if (isEmpty(updateStudentAddr) || !isNumber(updateStudentAddr)) {
-        InvalidAddressAlert();
+      if (!isNumber(updateStudentAddr)) {
+        InvalidAddressAlert("updateStudentAddr");
         return;
       }
 
@@ -590,8 +605,8 @@
     }
 
     //Alert if no address is found
-    function InvalidAddressAlert() {
-      alert('Please enter a valid address');
+    function InvalidAddressAlert(id) {
+      alert($('label[for="' + id + '"]').html() + 'を正しく入力してください。');
     }
 
     //Empty string check
@@ -605,6 +620,14 @@
 
     function hideloader() {
       $("#loadingImg").hide();
+    }
+
+    function checkUserInput(id) {
+      if ($('#' + id).val() === "") {
+        alert($('label[for="' + id + '"]').html() + 'を入力してください。');
+        return "";
+      }
+      return $('#' + id).val();
     }
   </script>
   <script>

@@ -131,7 +131,7 @@
                   <div class="row">
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">ゼミ名</label>
+                        <label for="seminarName" class="bmd-label-floating">ゼミ名</label>
                         <input type="email" class="form-control" id="seminarName">
                       </div>
                     </div>
@@ -139,7 +139,7 @@
                   <div class="row">
                     <div class="col-md-8">
                       <div class="form-group">
-                        <label class="bmd-label-floating">データベースアドレス</label>
+                        <label for="dataBaseAddr" class="bmd-label-floating">データベースアドレス</label>
                         <input type="text" class="form-control" id="dataBaseAddr">
                       </div>
                     </div>
@@ -181,7 +181,7 @@
                   <h4 class="card-title">ゼミの詳細</h4>
                   <div class="col-md-8" style="float: left">
                     <div class="input-group no-border">
-                      <input type="text" class="form-control" placeholder="ゼミ検索" id="seminarToSearch" style="color:white">
+                      <input type="text" class="form-control" placeholder="ゼミ検索アドレス" id="seminarToSearch" style="color:white">
                       <button class="btn btn-white btn-round btn-just-icon" id="btnSearchSeminar" value="検索">
                         <i class="material-icons">search</i>
                         <div class="ripple-container"></div>
@@ -429,13 +429,16 @@
     ]);
 
     $('#createSeminar').click(function () {
-      var _dataBaseAddr = $('#dataBaseAddr').val();
-      var _seminarName = $('#seminarName').val();
+      var _seminarName = checkUserInput('seminarName');
+      if (_seminarName === "") return;
+      var _dataBaseAddr = checkUserInput('dataBaseAddr');
+      if (_dataBaseAddr === "") return;
 
-      if (isEmpty(_dataBaseAddr) || !isNumber(_dataBaseAddr)) {
-        InvalidAddressAlert();
+      if (!isNumber(_dataBaseAddr)) {
+        InvalidAddressAlert('dataBaseAddr');
         return;
       }
+
       Showloader();
       var seminar = seminarContract.new(
         _dataBaseAddr,
@@ -576,7 +579,7 @@
 
     //Alert if no address is found
     function InvalidAddressAlert() {
-      alert('Please enter a valid address');
+      alert($('label[for="' + id + '"]').html() + 'を正しく入力してください。');
     }
 
     //Empty string check
@@ -590,6 +593,14 @@
 
     function hideloader() {
       $("#loadingImg").hide();
+    }
+
+    function checkUserInput(id) {
+      if ($('#' + id).val() === "") {
+        alert($('label[for="' + id + '"]').html() + 'を入力してください。');
+        return "";
+      }
+      return $('#' + id).val();
     }
   </script>
 

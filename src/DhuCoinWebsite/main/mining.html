@@ -132,7 +132,7 @@
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">ID（秘密鍵）</label>
+                          <label for="privateKeyCheck" class="bmd-label-floating">ID（秘密鍵）</label>
                           <input type="text" class="form-control" id="privateKeyCheck">
                         </div>
                       </div>
@@ -159,7 +159,7 @@
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">ID（秘密鍵）</label>
+                          <label for="privateKey" class="bmd-label-floating">ID（秘密鍵）</label>
                           <input type="text" class="form-control" id="privateKey">
                         </div>
                       </div>
@@ -394,10 +394,12 @@
     ]);
 
     $('#btnMineStatusCheck').click(function () {
-      var _privateKeyCheck = $("#privateKeyCheck").val();
+      var _privateKeyCheck = checkUserInput("privateKeyCheck");
+      if (_privateKeyCheck === "") return;
+
       //Input check
-      if (isEmpty(_privateKeyCheck) || !isNumber(_privateKeyCheck)) {
-        InvalidAddressAlert();
+      if (!isNumber(_privateKeyCheck)) {
+        InvalidAddressAlert("privateKeyCheck");
         return;
       }
       Showloader();
@@ -419,8 +421,8 @@
     }
 
     //Alert if no address is found
-    function InvalidAddressAlert() {
-      alert('Please enter a valid address');
+    function InvalidAddressAlert(id) {
+      alert($('label[for="' + id + '"]').html() + 'を正しく入力してください。');
     }
 
     //Empty string check
@@ -434,6 +436,14 @@
 
     function hideloader() {
       $("#loadingImg").hide();
+    }
+
+    function checkUserInput(id) {
+      if ($('#' + id).val() === "") {
+        alert($('label[for="' + id + '"]').html() + 'を入力してください。');
+        return "";
+      }
+      return $('#' + id).val();
     }
   </script>
 

@@ -95,14 +95,15 @@ $(document).ready(function () {
 
 	//Button to update main wallet
 	$("#btnNewMW").click(function () {
-		ResetNavbar();
-		var _addMW = $("#addMW").val();
+		var _addMW = checkUserInput("addMW");
+		if (_addMW === "") return;
 
 		//Input check
-		if (isEmpty(_addMW) || !isNumber(_addMW)) {
-			InvalidAddressAlert();
+		if (!isNumber(_addMW)) {
+			InvalidAddressAlert("addMW");
 			return;
 		}
+
 		Showloader();
 
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
@@ -135,12 +136,12 @@ $(document).ready(function () {
 
 	//Button to update secondary wallet
 	$("#btnNewSW").click(function () {
-		ResetNavbar();
-		var _addSW = $("#addSW").val();
+		var _addSW = checkUserInput("addSW");
+		if (_addSW === "") return;
 
 		//Input check
-		if (isEmpty(_addSW) || !isNumber(_addSW)) {
-			InvalidAddressAlert();
+		if (!isNumber(_addSW)) {
+			InvalidAddressAlert("addSW");
 			return;
 		}
 		Showloader();
@@ -177,9 +178,16 @@ $(document).ready(function () {
 
 	//button to update top price integer
 	$("#btnUpdatePrice").click(function () {
-		ResetNavbar();
+		var _updatePriceTop = checkUserInput("updatePriceTop");
+		if (_updatePriceTop === "") return;
+
+		//Input check
+		if (!isNumber(_updatePriceTop)) {
+			InvalidAddressAlert("updatePriceTop");
+			return;
+		}
+
 		Showloader();
-		var _updatePriceTop = $("#updatePriceTop").val();
 		_DHUCoinContract.updatePriceDHU(_updatePriceTop, (err, res) => {
 			if (err) {
 				hideloader();
@@ -192,9 +200,16 @@ $(document).ready(function () {
 
 	//button to update bottom price integer
 	$("#btnUpdateBtmPrice").click(function () {
-		ResetNavbar();
+		var _updatePriceBtm = checkUserInput("updatePriceBtm");
+		if (_updatePriceBtm === "") return;
+
+		//Input check
+		if (!isNumber(_updatePriceBtm)) {
+			InvalidAddressAlert("updatePriceBtm");
+			return;
+		}
+
 		Showloader();
-		var _updatePriceBtm = $("#updatePriceBtm").val();
 		_DHUCoinContract.updatePriceBottomInteger(_updatePriceBtm, (err, res) => {
 			if (err) {
 				hideloader();
@@ -392,7 +407,14 @@ $(document).ready(function () {
 	//button to mint tokens
 	$("#btnMine").click(function () {
 		ResetNavbar();
-		var _privateKey = $("#privateKey").val();
+		var _privateKey = checkUserInput("privateKey");
+		if (_privateKey === "") return;
+
+		//Input check
+		if (!isNumber(_privateKey)) {
+			InvalidAddressAlert("privateKey");
+			return;
+		}
 
 		Showloader();
 		web3.eth.getTransactionCount(web3.eth.accounts[0], "pending", (err, res) => {
@@ -475,6 +497,18 @@ $(document).ready(function () {
 		$("#loadingImg").hide();
 	}
 
+	//Alert if no address is found
+	function InvalidAddressAlert(id) {
+		alert($('label[for="' + id + '"]').html() + 'を正しく入力してください。');
+	}
+
+	function checkUserInput(id) {
+		if ($('#' + id).val() === "") {
+			alert($('label[for="' + id + '"]').html() + 'を入力してください。');
+			return "";
+		}
+		return $('#' + id).val();
+	}
 });
 
 ////////////////////////////NOT USED CODE//////////////////////////////
