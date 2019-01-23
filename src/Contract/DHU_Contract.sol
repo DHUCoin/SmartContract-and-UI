@@ -710,6 +710,8 @@ contract Student {
    bool public canMine;
    
    struct StudentInfoStruct{
+       // sortId
+       uint sortId;
        // description of the action.
         string description;
        // admin that adds a student's action
@@ -768,6 +770,7 @@ contract Student {
         // make a new student object
         StudentInfoStruct memory newStudentInfo;
 
+        newStudentInfo.sortId = getSortId();
         newStudentInfo.description = studentInfoSliced[0]; //description
         newStudentInfo.actionAdmin = msg.sender;
         newStudentInfo.DATABASE_CONTRACT = databaseAddr; // database address
@@ -790,24 +793,32 @@ contract Student {
         return studentInfoSliced[3];
     }
 
-      function updateStudentInfo(string newStudentInfo, address seminarAddr, address databaseAddr, uint newGpa) {
+    function getSortId() private returns(uint){
+        if(studentInfo.length == 0){
+            return 1;
+        }else{
+            return studentInfo[studentInfo.length - 1].sortId + 1;
+        }
+    } 
 
-        // throw if no student info is present prior to updating the student info
-        if(studentInfo.length < 1)throw;
-        InsertStudentInfo(newStudentInfo, seminarAddr, databaseAddr, newGpa);
-      }
+    function updateStudentInfo(string newStudentInfo, address seminarAddr, address databaseAddr, uint newGpa) {
+        
+      // throw if no student info is present prior to updating the student info
+      if(studentInfo.length < 1)throw;
+      InsertStudentInfo(newStudentInfo, seminarAddr, databaseAddr, newGpa);
+    }
       
-      function updateMiningStatus(bool status){
-          canMine = status;
-      }
+     function updateMiningStatus(bool status){
+        canMine = status;
+    }
       
-      function getMiningStatus()public view returns (bool){
-          return canMine;
-      }
+    function getMiningStatus()public view returns (bool){
+        return canMine;
+    }
       
-      function getStudentHistoryCount()public view returns (uint){
-          return studentInfo.length;
-      }
+    function getStudentHistoryCount()public view returns (uint){
+        return studentInfo.length;
+    }
 }
 
 

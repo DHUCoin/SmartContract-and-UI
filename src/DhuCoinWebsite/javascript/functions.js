@@ -17,7 +17,7 @@ $(document).ready(function () {
 	var DHUCoinContract = getDHUCoinABI();
 
 	//set contract address
-	var contractAddr = '0xe95872d9cefe6c92228d19a80b290cbaca3d191e';
+	var contractAddr = '0x0db3355e94fe02d6fe953d3256a3be7a7d42c179';
 
 	//get the contract at the address
 	var _DHUCoinContract = DHUCoinContract.at(contractAddr);
